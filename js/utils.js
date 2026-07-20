@@ -20,8 +20,4 @@ window.AuroraTravels.utils = {
       requestAnimationFrame(fn);
     }, delay);
   },
-
-  prefersReducedMotion() {
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  },
 };

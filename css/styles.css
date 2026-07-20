@@ -77,7 +77,7 @@ img {
       var(--moss-deep) 75%,
       var(--moss-mid) 100%
     ),
-    radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.22), transparent 55%);
+    radial-gradient(circle at 70% 70%, rgba(207, 159, 46, 0.22), transparent 55%);
   opacity: 0.95;
   animation: bgSpin 18s linear infinite;
 }
@@ -211,29 +211,6 @@ img {
     transform: translateY(-6px);
     opacity: 1;
   }
-}
-
-.skip-landing {
-  margin-top: 28px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 10px 18px;
-  border-radius: 6px;
-  opacity: 0;
-  animation: heroIn 0.5s var(--ease) forwards;
-  animation-delay: 1.2s;
-}
-
-.skip-landing:hover,
-.skip-landing:focus-visible {
-  border-color: var(--gold);
-  color: #fff;
-  outline: none;
 }
 
 /* shared wipe transition (landing -> app) */
@@ -1306,16 +1283,3 @@ img {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  .landing-bg {
-    animation: none;
-  }
-}

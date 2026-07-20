@@ -3,7 +3,7 @@
  */
 (function initAuroraTravels() {
   const { destinations, utils, createMapController } = window.AuroraTravels;
-  const { escapeHtml, whenReady, prefersReducedMotion } = utils;
+  const { escapeHtml, whenReady } = utils;
 
   let current = 0;
 
@@ -36,7 +36,6 @@
   const landing = document.getElementById("landing");
   const landingOverlay = document.getElementById("landingOverlay");
   const stage = document.getElementById("stage");
-  const skipLandingBtn = document.getElementById("skipLanding");
 
   const mapController = createMapController({
     destinations,
@@ -291,40 +290,18 @@
     tempVal.textContent = `${t}°`;
   }, 8000);
 
-  /* ---- landing → app transition ---- */
-  let landingFinished = false;
-
-  function finishLanding() {
-    if (landingFinished) return;
-    landingFinished = true;
-
-    const reduceMotion = prefersReducedMotion();
-
-    if (reduceMotion) {
-      landing.style.display = "none";
-      landingOverlay.classList.remove("run");
-      stage.classList.add("visible");
-      mapController.invalidate();
-      return;
-    }
-
-    landingOverlay.classList.add("run");
-    window.setTimeout(() => {
-      landing.style.display = "none";
-      stage.classList.add("visible");
-      mapController.invalidate();
-    }, 600);
-    window.setTimeout(() => {
-      landingOverlay.classList.remove("run");
-    }, 1080);
-  }
-
-  if (skipLandingBtn) {
-    skipLandingBtn.addEventListener("click", finishLanding);
-  }
-
+  /* ---- landing → app transition (auto, uses the wipe) ---- */
   window.addEventListener("load", () => {
-    const delay = prefersReducedMotion() ? 400 : 2400;
-    window.setTimeout(finishLanding, delay);
+    window.setTimeout(() => {
+      landingOverlay.classList.add("run");
+      window.setTimeout(() => {
+        landing.style.display = "none";
+        stage.classList.add("visible");
+        mapController.invalidate();
+      }, 600);
+      window.setTimeout(() => {
+        landingOverlay.classList.remove("run");
+      }, 1080);
+    }, 2400);
   });
 })();
