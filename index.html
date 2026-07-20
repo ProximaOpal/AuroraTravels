@@ -230,59 +230,20 @@
   </div>
 </div>
 
-<!-- PAGE 2 — Kenyan Artifacts marketplace -->
-<div class="page-marketplace" id="pageMarketplace" aria-label="Kenyan artifacts marketplace" style="display:none;">
-  <div class="mv-frame">
-    <header class="mv-nav">
-      <div class="mv-logo">Aurora</div>
-      <ul class="mv-menu">
-        <li><button type="button" data-page="home">Home</button></li>
-        <li><button type="button" data-page="page1">Page 1</button></li>
-        <li><button type="button" class="active" data-page="page2">Page 2</button></li>
-      </ul>
-      <button class="mv-search" id="mvSearchBtn" type="button" aria-label="Search artifacts">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      </button>
-    </header>
+<!-- PAGE 2 — Expanding pill gallery -->
+<div class="page-marketplace" id="pageMarketplace" aria-label="Kenyan artifacts gallery" style="display:none;">
+  <header class="gal-top">
+    <div class="gal-logo">Aurora</div>
+    <ul class="gal-menu">
+      <li><button type="button" data-page="home">Home</button></li>
+      <li><button type="button" data-page="page1">Page 1</button></li>
+      <li><button type="button" class="active" data-page="page2">Page 2</button></li>
+    </ul>
+    <span aria-hidden="true" style="width:64px"></span>
+  </header>
 
-    <div class="mv-search-panel" id="mvSearchPanel">
-      <input type="search" id="mvSearchInput" placeholder="Search masks, beads, shops…" autocomplete="off">
-    </div>
-
-    <section class="mv-hero">
-      <div class="mv-hero-visual" id="mvHeroVisual" aria-hidden="true"></div>
-      <div class="mv-hero-copy">
-        <h1 class="mv-title" id="mvTitle">MAASAI BEADED COLLAR</h1>
-        <div class="mv-meta">
-          <div class="mv-price-tag">
-            <span class="currency">PRICE</span>
-            <span class="amount"><span id="mvPrice">4,500</span></span>
-          </div>
-          <div class="mv-stars" id="mvStars" aria-label="Rating"></div>
-          <span class="mv-genres" id="mvGenres">Jewelry | Beadwork | Heritage</span>
-        </div>
-        <div class="mv-actions">
-          <button class="mv-btn mv-btn-buy" id="mvBuyBtn" type="button" aria-label="Buy with M-Pesa">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7L8 5z"/></svg>
-            Buy
-          </button>
-          <button class="mv-btn" id="mvAddBtn" type="button" aria-label="Save artifact">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-        </div>
-        <p class="mv-desc" id="mvDesc">Hand-strung Maasai beaded collar in traditional colour bands.</p>
-        <div class="mv-shop">
-          <strong id="mvShopName">Maasai Market — Village Market · Nairobi</strong>
-          <a id="mvShopMaps" href="#" target="_blank" rel="noopener noreferrer">Open in Google Maps ↗</a>
-        </div>
-      </div>
-    </section>
-
-    <div class="mv-rail-wrap">
-      <div class="mv-rail" id="mvRail" role="listbox" aria-label="Artifact posters"></div>
-    </div>
-
-    <button class="mv-explore-link" id="mvExploreKenya" type="button">Explore Kenya map →</button>
+  <div class="gal-stage">
+    <div class="gal-track" id="galTrack" role="list" aria-label="Artifact cards"></div>
   </div>
 </div>
 

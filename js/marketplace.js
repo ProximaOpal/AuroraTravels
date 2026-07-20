@@ -1,5 +1,6 @@
 /**
- * Page 2 — Kenyan Artifacts marketplace (MOVIESTAN-style UI)
+ * Page 2 — Expanding pill gallery (GIF clone)
+ * Click a side pill → it expands to the featured card; previous featured shrinks into a pill.
  */
 window.AuroraTravels = window.AuroraTravels || {};
 
@@ -9,21 +10,8 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
   onNavigate,
 }) {
   const page = document.getElementById("pageMarketplace");
-  const titleEl = document.getElementById("mvTitle");
-  const priceEl = document.getElementById("mvPrice");
-  const genresEl = document.getElementById("mvGenres");
-  const descEl = document.getElementById("mvDesc");
-  const shopNameEl = document.getElementById("mvShopName");
-  const shopMapsEl = document.getElementById("mvShopMaps");
-  const starsEl = document.getElementById("mvStars");
-  const heroVisual = document.getElementById("mvHeroVisual");
-  const rail = document.getElementById("mvRail");
-  const buyBtn = document.getElementById("mvBuyBtn");
-  const addBtn = document.getElementById("mvAddBtn");
-  const searchBtn = document.getElementById("mvSearchBtn");
-  const searchPanel = document.getElementById("mvSearchPanel");
-  const searchInput = document.getElementById("mvSearchInput");
-  const menuBtns = document.querySelectorAll(".mv-menu button");
+  const track = document.getElementById("galTrack");
+  const menuBtns = document.querySelectorAll(".gal-menu button[data-page]");
 
   const payModal = document.getElementById("payModal");
   const payPhone = document.getElementById("payPhone");
@@ -36,98 +24,106 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
   const payStatusDot = document.getElementById("payStatusDot");
 
   let current = 0;
-  let railLocked = false;
-  const wishlist = new Set();
+  let animating = false;
+  const cards = [];
+
+  const ICONS = {
+    bead: '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" fill="currentColor"/><circle cx="12" cy="12" r="7.2" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.8v2.2M12 19v2.2M2.8 12h2.2M19 12h2.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+    mask: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 10c0-4.4 3.6-8 8-8s8 3.6 8 8v3.5c0 2.4-1.2 4.6-3.2 5.9L12 22l-4.8-2.6A7.1 7.1 0 0 1 4 13.5V10z" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 11.5c.6-.7 1.4-1 2.2-1M15.5 11.5c-.6-.7-1.4-1-2.2-1M9 15c1 .9 2 .9 3 .9s2 0 3-.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    carving: '<svg viewBox="0 0 24 24" fill="none"><path d="M12 3l3.2 5.2L21 9.2l-4.2 4.3.9 5.8L12 16.8 6.3 19.3l.9-5.8L3 9.2l5.8-1L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+    bracelet: '<svg viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8" ry="5.5" stroke="currentColor" stroke-width="1.7"/><ellipse cx="12" cy="12" rx="4.8" ry="3.2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="6.6" r="1.2" fill="currentColor"/></svg>',
+    spear: '<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.2 5.2L20 9l-4.4 3.2L16.8 18 12 15.2 7.2 18l1.2-5.8L4 9l5.8-1.8L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 15.2V22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  };
 
   function formatPrice(amount) {
     return `KES ${Number(amount).toLocaleString("en-KE")}`;
   }
 
-  function renderStars(rating) {
-    starsEl.innerHTML = "";
-    for (let i = 1; i <= 5; i += 1) {
-      const span = document.createElement("span");
-      span.className = i <= rating ? "" : "empty";
-      span.innerHTML =
-        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.4l1.1-6.5L2.6 9.3l6.5-.9L12 2.5z"/></svg>';
-      starsEl.appendChild(span);
-    }
-  }
+  function buildCards() {
+    track.innerHTML = "";
+    cards.length = 0;
 
-  function buildHeroLayers() {
-    heroVisual.innerHTML = "";
     artifacts.forEach((item, index) => {
-      const layer = document.createElement("div");
-      layer.className = `mv-hero-img${index === 0 ? " active" : ""}`;
-      layer.style.backgroundImage = `url('${item.hero}')`;
-      layer.dataset.index = String(index);
-      heroVisual.appendChild(layer);
-    });
-  }
+      const card = document.createElement("article");
+      card.className = `gal-card${index === 0 ? " active" : ""}`;
+      card.dataset.index = String(index);
+      card.setAttribute("role", "button");
+      card.tabIndex = index === 0 ? -1 : 0;
+      card.setAttribute(
+        "aria-label",
+        `${item.shop}: ${item.artifact}, ${formatPrice(item.price)}`
+      );
 
-  function buildRail() {
-    rail.innerHTML = "";
-    artifacts.forEach((item, index) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = `mv-poster${index === 0 ? " active" : ""}`;
-      btn.dataset.index = String(index);
-      btn.setAttribute("aria-label", item.shortTitle);
-      btn.innerHTML = `
-        <div class="mv-poster-thumb" style="background-image:url('${item.poster}')"></div>
-        <span class="mv-poster-label">${item.shortTitle}</span>
+      card.innerHTML = `
+        <div class="gal-card-media" style="background-image:url('${item.image}')"></div>
+        <div class="gal-card-shade"></div>
+        <div class="gal-badge" style="color:${item.accent}">${ICONS[item.icon] || ICONS.bead}</div>
+        <div class="gal-meta">
+          <div class="gal-meta-text">
+            <h2 class="gal-shop">${item.shop}</h2>
+            <p class="gal-artifact">${item.artifact} · ${item.city}</p>
+          </div>
+          <div class="gal-meta-actions">
+            <div class="gal-price"><span>PRICE</span>${Number(item.price).toLocaleString("en-KE")}</div>
+            <div class="gal-actions">
+              <a class="gal-btn gal-btn-maps" href="${item.maps}" target="_blank" rel="noopener noreferrer">Maps</a>
+              <button type="button" class="gal-btn gal-btn-buy" data-buy="${index}">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7L8 5z"/></svg>
+                Buy
+              </button>
+            </div>
+          </div>
+        </div>
       `;
-      btn.addEventListener("click", () => select(index, true));
-      rail.appendChild(btn);
+
+      card.addEventListener("click", (event) => {
+        if (event.target.closest("[data-buy]") || event.target.closest("a")) return;
+        activate(index);
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activate(index);
+        }
+      });
+
+      track.appendChild(card);
+      cards.push(card);
+    });
+
+    track.querySelectorAll("[data-buy]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const idx = Number(btn.getAttribute("data-buy"));
+        activate(idx, false);
+        openPayModal(idx);
+      });
     });
   }
 
-  function select(index, scrollPoster) {
+  function activate(index, allowToggle = true) {
     if (index < 0 || index >= artifacts.length) return;
-    if (index === current && !scrollPoster) return;
+    if (index === current && allowToggle) return;
+    if (animating) return;
 
-    const item = artifacts[index];
+    animating = true;
     current = index;
 
-    titleEl.classList.add("is-changing");
-    descEl.style.opacity = "0";
+    cards.forEach((card, i) => {
+      const active = i === index;
+      card.classList.toggle("active", active);
+      card.tabIndex = active ? -1 : 0;
+    });
 
     window.setTimeout(() => {
-      titleEl.textContent = item.title;
-      priceEl.textContent = Number(item.price).toLocaleString("en-KE");
-      genresEl.textContent = item.category;
-      descEl.textContent = item.desc;
-      shopNameEl.textContent = `${item.shop.name} · ${item.shop.city}`;
-      shopMapsEl.href = item.shop.maps;
-      shopMapsEl.textContent = "Open in Google Maps ↗";
-      renderStars(item.rating);
-      titleEl.classList.remove("is-changing");
-      descEl.style.opacity = "1";
-    }, 180);
-
-    heroVisual.querySelectorAll(".mv-hero-img").forEach((layer, i) => {
-      layer.classList.toggle("active", i === index);
-    });
-
-    rail.querySelectorAll(".mv-poster").forEach((poster, i) => {
-      poster.classList.toggle("active", i === index);
-    });
-
-    if (scrollPoster) {
-      const activePoster = rail.querySelector(`.mv-poster[data-index="${index}"]`);
-      activePoster?.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-
-    addBtn.classList.toggle("wish", wishlist.has(item.id));
+      animating = false;
+    }, 750);
   }
 
-  function openPayModal() {
-    const item = artifacts[current];
-    payItemName.textContent = item.shortTitle;
+  function openPayModal(index = current) {
+    const item = artifacts[index];
+    payItemName.textContent = `${item.artifact}`;
     payItemPrice.textContent = formatPrice(item.price);
     payAmount.value = String(item.price);
     payPhone.value = "";
@@ -184,25 +180,18 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
     });
   }
 
-  /* wheel on rail / page → next/prev artifact with smooth animation */
   function onWheel(event) {
     if (!page.classList.contains("visible")) return;
     if (payModal.classList.contains("open")) return;
-    if (railLocked) return;
-
+    if (animating) return;
     const delta = event.deltaY || event.deltaX;
-    if (Math.abs(delta) < 18) return;
-
+    if (Math.abs(delta) < 20) return;
     event.preventDefault();
-    railLocked = true;
     const next =
       delta > 0
         ? (current + 1) % artifacts.length
         : (current - 1 + artifacts.length) % artifacts.length;
-    select(next, true);
-    window.setTimeout(() => {
-      railLocked = false;
-    }, 520);
+    activate(next);
   }
 
   function onKey(event) {
@@ -213,59 +202,18 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
     }
     if (event.key === "ArrowRight" || event.key === "ArrowDown") {
       event.preventDefault();
-      select((current + 1) % artifacts.length, true);
+      activate((current + 1) % artifacts.length);
     }
     if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
       event.preventDefault();
-      select((current - 1 + artifacts.length) % artifacts.length, true);
+      activate((current - 1 + artifacts.length) % artifacts.length);
     }
   }
 
-  buyBtn.addEventListener("click", openPayModal);
-  addBtn.addEventListener("click", () => {
-    const id = artifacts[current].id;
-    if (wishlist.has(id)) wishlist.delete(id);
-    else wishlist.add(id);
-    addBtn.classList.toggle("wish", wishlist.has(id));
-    payment.TOAST.success(
-      wishlist.has(id) ? "SAVED" : "REMOVED",
-      wishlist.has(id)
-        ? `${artifacts[current].shortTitle} added to list`
-        : `${artifacts[current].shortTitle} removed`
-    );
-  });
-
-  searchBtn.addEventListener("click", () => {
-    searchPanel.classList.toggle("open");
-    if (searchPanel.classList.contains("open")) searchInput.focus();
-  });
-
-  searchInput.addEventListener("keydown", (event) => {
-    if (event.key !== "Enter") return;
-    const q = searchInput.value.trim().toLowerCase();
-    if (!q) return;
-    const idx = artifacts.findIndex(
-      (a) =>
-        a.title.toLowerCase().includes(q) ||
-        a.shortTitle.toLowerCase().includes(q) ||
-        a.category.toLowerCase().includes(q) ||
-        a.shop.name.toLowerCase().includes(q)
-    );
-    if (idx >= 0) {
-      select(idx, true);
-      searchPanel.classList.remove("open");
-    } else {
-      payment.TOAST.error("NO_MATCH", "No artifact matched that search.");
-    }
-  });
-
   menuBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const page = btn.dataset.page;
-      if (page && onNavigate) {
-        onNavigate(page);
-        return;
-      }
+      const pageId = btn.dataset.page;
+      if (pageId) onNavigate?.(pageId);
     });
   });
 
@@ -275,17 +223,10 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
     if (event.target === payModal) closePayModal();
   });
 
-  document.getElementById("mvExploreKenya")?.addEventListener("click", () => {
-    onNavigate?.("page1");
-  });
-
   page.addEventListener("wheel", onWheel, { passive: false });
   document.addEventListener("keydown", onKey);
 
-  buildHeroLayers();
-  buildRail();
-  current = -1;
-  select(0, false);
+  buildCards();
 
   return {
     show() {
@@ -296,7 +237,7 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
       page.classList.remove("visible");
       window.setTimeout(() => {
         if (!page.classList.contains("visible")) page.style.display = "none";
-      }, 560);
+      }, 480);
     },
     isVisible() {
       return page.classList.contains("visible");

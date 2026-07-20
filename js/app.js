@@ -263,10 +263,7 @@
   });
 
   function syncNavActive() {
-    document.querySelectorAll(".page-nav-item").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.page === activePage);
-    });
-    document.querySelectorAll(".mv-menu button[data-page]").forEach((btn) => {
+    document.querySelectorAll(".gal-menu button[data-page], .page-nav-item").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.page === activePage);
     });
   }
