@@ -1,47 +1,40 @@
 # Aurora Travels — Kenya
 
-Interactive travel experience exploring destinations across Kenya: Maasai Mara, Mount Kenya, and Lamu Old Town.
+Interactive travel + craft marketplace experience for Kenya.
+
+## Pages
+
+1. **Landing** — animated Aurora intro. Press **Space**, **Enter**, or **scroll** to continue (auto-advances if idle).
+2. **Artifacts marketplace** — cinematic shop of Kenyan crafts with real shop locations, Google Maps links, KES prices, and M-Pesa STK push checkout.
+3. **Explore Kenya** — destination map experience (from marketplace → “Explore Kenya map”).
 
 ## Project structure
 
 ```
 auroratravels/
-├── index.html          # Page markup
+├── index.html
 ├── css/
-│   └── styles.css      # Layout, landing, map, panels
+│   ├── styles.css          # Landing + destinations app
+│   └── marketplace.css     # Page 2 marketplace UI
 ├── js/
-│   ├── destinations.js # Destination catalogue
-│   ├── utils.js        # Shared helpers (HTML escape, motion prefs)
-│   ├── map.js          # Leaflet map, search, expand, fullscreen
-│   └── app.js          # UI wiring: nav, drawer, overview, landing
+│   ├── destinations.js
+│   ├── artifacts.js        # Craft catalogue + shops
+│   ├── payment.js          # M-Pesa STK push + polling
+│   ├── marketplace.js
+│   ├── map.js
+│   ├── utils.js
+│   └── app.js
 └── README.md
 ```
 
 ## Run locally
 
-Serve the folder over HTTP (required for some browser APIs and CDN assets):
-
 ```bash
-# Python
 python3 -m http.server 8080
-
-# Node
-npx serve .
 ```
 
-Then open `http://localhost:8080`.
+Open `http://localhost:8080`.
 
-## Features
+## Payments
 
-- Landing intro with wipe transition into the app
-- Destination carousel (prev / next) with hero imagery
-- Leaflet map: pins, expand, fullscreen, Nominatim search (Kenya)
-- Destination / landmark search in the detail panel
-- Destinations drawer and overview grid
-- Heritage video lightbox
-- ElevenLabs conversational AI widget
-
-## Notes
-
-- Map geocoding uses [Nominatim](https://nominatim.org/) and is limited to Kenya (`countrycodes=ke`). Respect their [usage policy](https://operations.osmfoundation.org/policies/nominatim/) for production traffic.
-- Images are loaded from Unsplash; map tiles from OpenStreetMap.
+STK push uses `https://marvel-network-3e75.onrender.com` (`/api/stk-push`, `/api/query-payment`). Enter a valid Kenyan M-Pesa number (`07…` / `254…`) on Buy.
