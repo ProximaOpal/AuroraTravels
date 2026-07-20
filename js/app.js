@@ -251,7 +251,8 @@
   }, 8000);
 
   /* ---- landing → page navigation ---- */
-  const { artifacts, payment, createMarketplace } = window.AuroraTravels;
+  const { artifacts, payment, createMarketplace, guides, createGuidesPage } =
+    window.AuroraTravels;
 
   let activePage = "home";
   let transitionBusy = false;
@@ -262,10 +263,19 @@
     onNavigate: (page) => goToPage(page),
   });
 
+  const guidesPage = createGuidesPage({
+    guides,
+    onNavigate: (page) => goToPage(page),
+  });
+
   function syncNavActive() {
-    document.querySelectorAll(".gal-menu button[data-page], .page-nav-item").forEach((btn) => {
-      btn.classList.toggle("active", btn.dataset.page === activePage);
-    });
+    document
+      .querySelectorAll(
+        ".gal-menu button[data-page], .page-nav-item, .gd-menu-inline button[data-page]"
+      )
+      .forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.page === activePage);
+      });
   }
 
   function hideLanding() {
@@ -292,6 +302,7 @@
 
       if (page === "home") {
         marketplace.hide();
+        guidesPage.hide();
         stage.classList.remove("visible");
         showLanding();
         syncNavActive();
@@ -302,11 +313,17 @@
 
       if (page === "page1") {
         marketplace.hide();
+        guidesPage.hide();
         stage.classList.add("visible");
         mapController.invalidate();
       } else if (page === "page2") {
         stage.classList.remove("visible");
+        guidesPage.hide();
         marketplace.show();
+      } else if (page === "page3") {
+        stage.classList.remove("visible");
+        marketplace.hide();
+        guidesPage.show();
       }
 
       syncNavActive();

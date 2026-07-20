@@ -107,18 +107,35 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
     if (index === current && allowToggle) return;
     if (animating) return;
 
+    const direction = index > current ? "right" : "left";
     animating = true;
     current = index;
 
     cards.forEach((card, i) => {
       const active = i === index;
+      card.classList.remove("is-entering-left", "is-entering-right");
       card.classList.toggle("active", active);
       card.tabIndex = active ? -1 : 0;
+      if (active) {
+        card.classList.add(
+          direction === "right" ? "is-entering-right" : "is-entering-left"
+        );
+      }
     });
 
+    const activeCard = cards[index];
+    if (activeCard) {
+      activeCard.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+
     window.setTimeout(() => {
+      cards[index]?.classList.remove("is-entering-left", "is-entering-right");
       animating = false;
-    }, 750);
+    }, 780);
   }
 
   function openPayModal(index = current) {

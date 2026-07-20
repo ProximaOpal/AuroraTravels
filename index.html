@@ -7,10 +7,11 @@
   <title>Aurora Travels — Kenya</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112.5,700;125,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112.5,700;125,800&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/marketplace.css">
+  <link rel="stylesheet" href="css/guides.css">
 </head>
 <body>
 
@@ -216,6 +217,13 @@
         <span class="page-nav-desc">Craft marketplace &amp; M-Pesa</span>
       </button>
     </li>
+    <li role="none">
+      <button type="button" class="page-nav-item" data-page="page3" role="menuitem">
+        <span class="page-nav-kicker">Page 3</span>
+        <span class="page-nav-label">Pair up with a Guide</span>
+        <span class="page-nav-desc">Tourist + student guides</span>
+      </button>
+    </li>
   </ul>
 </div>
 
@@ -234,10 +242,11 @@
 <div class="page-marketplace" id="pageMarketplace" aria-label="Kenyan artifacts gallery" style="display:none;">
   <header class="gal-top">
     <div class="gal-logo">Aurora</div>
-    <ul class="gal-menu">
+      <ul class="gal-menu">
       <li><button type="button" data-page="home">Home</button></li>
       <li><button type="button" data-page="page1">Page 1</button></li>
       <li><button type="button" class="active" data-page="page2">Page 2</button></li>
+      <li><button type="button" data-page="page3">Page 3</button></li>
     </ul>
     <span aria-hidden="true" style="width:64px"></span>
   </header>
@@ -275,6 +284,53 @@
   </div>
 </div>
 
+<!-- PAGE 3 — Pair up with a Guide (edge-to-edge cast gallery) -->
+<div class="page-guides" id="pageGuides" aria-label="Pair up with a Guide" style="display:none;">
+  <div class="gd-hero" id="gdHero"></div>
+  <div class="gd-hero-next" id="gdHeroNext"></div>
+  <div class="gd-veil" aria-hidden="true"></div>
+
+  <header class="gd-top">
+    <div>
+      <div class="gd-brand">Aurora</div>
+      <div class="gd-menu-inline">
+        <button type="button" data-page="home">Home</button>
+        <button type="button" data-page="page1">Page 1</button>
+        <button type="button" data-page="page2">Page 2</button>
+        <button type="button" class="active" data-page="page3">Page 3</button>
+      </div>
+    </div>
+    <div class="gd-cast-label"><span>Guides</span></div>
+    <div class="gd-tools">
+      <button type="button" aria-label="Search" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2"/></svg>
+      </button>
+      <button type="button" aria-label="Profile" tabindex="-1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.2"/><path d="M5 19c1.5-3.2 4-5 7-5s5.5 1.8 7 5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="gd-copy" id="gdCopy">
+    <p class="gd-kicker" id="gdKicker">Nairobi City Guide</p>
+    <h1 class="gd-title">Pair up with a Guide.</h1>
+    <p class="gd-name" id="gdName">Amina Wanjiku</p>
+    <p class="gd-school" id="gdSchool">University of Nairobi</p>
+  </div>
+
+  <div class="gd-counter" id="gdCounter">01 / 12</div>
+
+  <div class="gd-rail-shell">
+    <button class="gd-nav-btn" id="gdPrev" type="button" aria-label="Previous guide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="gd-rail" id="gdRail" role="listbox" aria-label="Student guides"></div>
+    <button class="gd-nav-btn" id="gdNext" type="button" aria-label="Next guide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/destinations.js"></script>
@@ -282,6 +338,7 @@
 <script src="js/payment.js"></script>
 <script src="js/map.js"></script>
 <script src="js/marketplace.js"></script>
+<script src="js/guides.js"></script>
 <script src="js/app.js"></script>
 
 <elevenlabs-convai agent-id="agent_7501kxv7jj4gezv8kcqj5f5kbepg"></elevenlabs-convai>
