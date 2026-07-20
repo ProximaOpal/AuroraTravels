@@ -261,17 +261,11 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
 
   menuBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      menuBtns.forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      const filter = btn.dataset.filter;
-      if (!filter || filter === "all") {
-        select(0, true);
+      const page = btn.dataset.page;
+      if (page && onNavigate) {
+        onNavigate(page);
         return;
       }
-      const idx = artifacts.findIndex((a) =>
-        a.category.toLowerCase().includes(filter)
-      );
-      if (idx >= 0) select(idx, true);
     });
   });
 
@@ -282,7 +276,7 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
   });
 
   document.getElementById("mvExploreKenya")?.addEventListener("click", () => {
-    onExploreKenya?.();
+    onNavigate?.("page1");
   });
 
   page.addEventListener("wheel", onWheel, { passive: false });
