@@ -6,7 +6,7 @@ window.AuroraTravels = window.AuroraTravels || {};
 window.AuroraTravels.createMarketplace = function createMarketplace({
   artifacts,
   payment,
-  onExploreKenya,
+  onNavigate,
 }) {
   const page = document.getElementById("pageMarketplace");
   const titleEl = document.getElementById("mvTitle");

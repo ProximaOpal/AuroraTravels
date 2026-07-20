@@ -150,13 +150,14 @@
     }
   });
 
-  /* ---- menu drawer ---- */
+  /* ---- page navigation drawer ---- */
   function openDrawer() {
     drawer.classList.add("open");
     scrim.classList.add("open");
     drawer.setAttribute("aria-hidden", "false");
     menuBtn.setAttribute("aria-expanded", "true");
     document.body.classList.add("drawer-open");
+    syncNavActive();
   }
 
   function closeDrawer() {
@@ -166,47 +167,6 @@
     menuBtn.setAttribute("aria-expanded", "false");
     document.body.classList.remove("drawer-open");
   }
-
-  destinations.forEach((destination, index) => {
-    const li = document.createElement("li");
-    li.setAttribute("role", "button");
-    li.tabIndex = 0;
-
-    const img = document.createElement("img");
-    img.src = destination.thumb;
-    img.alt = "";
-    img.width = 52;
-    img.height = 52;
-    img.loading = "lazy";
-
-    const meta = document.createElement("div");
-    const nameEl = document.createElement("div");
-    nameEl.className = "dn";
-    nameEl.textContent = destination.name;
-    const regionEl = document.createElement("div");
-    regionEl.className = "dt";
-    regionEl.textContent = destination.region;
-    meta.append(nameEl, regionEl);
-
-    li.append(img, meta);
-
-    const select = () => {
-      current = index;
-      render();
-      closeDrawer();
-      overview.classList.remove("open");
-    };
-
-    li.addEventListener("click", select);
-    li.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        select();
-      }
-    });
-
-    drawerList.appendChild(li);
-  });
 
   menuBtn.addEventListener("click", openDrawer);
   document.getElementById("closeDrawer").addEventListener("click", closeDrawer);
@@ -290,57 +250,115 @@
     tempVal.textContent = `${t}°`;
   }, 8000);
 
-  /* ---- landing → page 2 (marketplace) on Space / Enter / scroll ---- */
+  /* ---- landing → page navigation ---- */
   const { artifacts, payment, createMarketplace } = window.AuroraTravels;
+
+  let activePage = "home";
+  let transitionBusy = false;
 
   const marketplace = createMarketplace({
     artifacts,
     payment,
-    onExploreKenya: () => {
-      marketplace.hide();
-      stage.classList.add("visible");
-      mapController.invalidate();
-    },
+    onNavigate: (page) => goToPage(page),
   });
 
-  let page2Opened = false;
+  function syncNavActive() {
+    document.querySelectorAll(".page-nav-item").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.page === activePage);
+    });
+    document.querySelectorAll(".mv-menu button[data-page]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.page === activePage);
+    });
+  }
 
-  function openPage2() {
-    if (page2Opened) return;
-    page2Opened = true;
+  function hideLanding() {
+    landing.style.display = "none";
+    landing.classList.remove("visible-home");
+  }
 
+  function showLanding() {
+    landing.style.display = "flex";
+    landing.classList.add("visible-home");
+  }
+
+  function goToPage(page, { animate = true } = {}) {
+    if (transitionBusy) return;
+    if (page === activePage && page !== "home") {
+      closeDrawer();
+      return;
+    }
+
+    const run = () => {
+      activePage = page;
+      closeDrawer();
+      overview.classList.remove("open");
+
+      if (page === "home") {
+        marketplace.hide();
+        stage.classList.remove("visible");
+        showLanding();
+        syncNavActive();
+        return;
+      }
+
+      hideLanding();
+
+      if (page === "page1") {
+        marketplace.hide();
+        stage.classList.add("visible");
+        mapController.invalidate();
+      } else if (page === "page2") {
+        stage.classList.remove("visible");
+        marketplace.show();
+      }
+
+      syncNavActive();
+    };
+
+    if (!animate || activePage === page) {
+      run();
+      return;
+    }
+
+    transitionBusy = true;
     landingOverlay.classList.add("run");
     window.setTimeout(() => {
-      landing.style.display = "none";
-      marketplace.show();
+      run();
     }, 600);
     window.setTimeout(() => {
       landingOverlay.classList.remove("run");
+      transitionBusy = false;
     }, 1080);
   }
 
+  drawerList.querySelectorAll(".page-nav-item").forEach((btn) => {
+    btn.addEventListener("click", () => goToPage(btn.dataset.page));
+  });
+
   function onLandingKey(event) {
-    if (page2Opened || landing.style.display === "none") return;
+    if (activePage !== "home" || landing.style.display === "none") return;
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault();
-      openPage2();
+      goToPage("page1");
     }
   }
 
   function onLandingWheel(event) {
-    if (page2Opened || landing.style.display === "none") return;
+    if (activePage !== "home" || landing.style.display === "none") return;
     if (Math.abs(event.deltaY) < 8 && Math.abs(event.deltaX) < 8) return;
     event.preventDefault();
-    openPage2();
+    goToPage("page1");
   }
 
   window.addEventListener("keydown", onLandingKey);
   window.addEventListener("wheel", onLandingWheel, { passive: false });
 
-  // Soft auto-advance if the visitor does nothing
+  // Soft auto-advance from home → page 1 if idle
   window.addEventListener("load", () => {
     window.setTimeout(() => {
-      if (!page2Opened) openPage2();
+      if (activePage === "home") goToPage("page1");
     }, 5200);
   });
+
+  syncNavActive();
 })();
