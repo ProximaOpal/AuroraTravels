@@ -290,18 +290,57 @@
     tempVal.textContent = `${t}°`;
   }, 8000);
 
-  /* ---- landing → app transition (auto, uses the wipe) ---- */
+  /* ---- landing → page 2 (marketplace) on Space / Enter / scroll ---- */
+  const { artifacts, payment, createMarketplace } = window.AuroraTravels;
+
+  const marketplace = createMarketplace({
+    artifacts,
+    payment,
+    onExploreKenya: () => {
+      marketplace.hide();
+      stage.classList.add("visible");
+      mapController.invalidate();
+    },
+  });
+
+  let page2Opened = false;
+
+  function openPage2() {
+    if (page2Opened) return;
+    page2Opened = true;
+
+    landingOverlay.classList.add("run");
+    window.setTimeout(() => {
+      landing.style.display = "none";
+      marketplace.show();
+    }, 600);
+    window.setTimeout(() => {
+      landingOverlay.classList.remove("run");
+    }, 1080);
+  }
+
+  function onLandingKey(event) {
+    if (page2Opened || landing.style.display === "none") return;
+    if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      openPage2();
+    }
+  }
+
+  function onLandingWheel(event) {
+    if (page2Opened || landing.style.display === "none") return;
+    if (Math.abs(event.deltaY) < 8 && Math.abs(event.deltaX) < 8) return;
+    event.preventDefault();
+    openPage2();
+  }
+
+  window.addEventListener("keydown", onLandingKey);
+  window.addEventListener("wheel", onLandingWheel, { passive: false });
+
+  // Soft auto-advance if the visitor does nothing
   window.addEventListener("load", () => {
     window.setTimeout(() => {
-      landingOverlay.classList.add("run");
-      window.setTimeout(() => {
-        landing.style.display = "none";
-        stage.classList.add("visible");
-        mapController.invalidate();
-      }, 600);
-      window.setTimeout(() => {
-        landingOverlay.classList.remove("run");
-      }, 1080);
-    }, 2400);
+      if (!page2Opened) openPage2();
+    }, 5200);
   });
 })();

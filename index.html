@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112.5,700;125,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/marketplace.css">
 </head>
 <body>
 
@@ -34,6 +35,7 @@
     <h1 class="landing-hero">Aurora Travels</h1>
     <p class="landing-sub">Your passport to Kenya and Africa's living heritage</p>
     <div class="landing-loader"><span></span><span></span><span></span></div>
+    <p class="landing-hint">Press Space / Enter or scroll to enter</p>
   </div>
 </div>
 
@@ -206,10 +208,98 @@
   </div>
 </div>
 
+<!-- PAGE 2 — Kenyan Artifacts marketplace -->
+<div class="page-marketplace" id="pageMarketplace" aria-label="Kenyan artifacts marketplace" style="display:none;">
+  <div class="mv-frame">
+    <header class="mv-nav">
+      <div class="mv-logo">Aurora</div>
+      <ul class="mv-menu">
+        <li><button type="button" data-filter="all">Home</button></li>
+        <li><button type="button" class="active" data-filter="jewelry">Tv Shows</button></li>
+        <li><button type="button" data-filter="sculpture">Movies</button></li>
+        <li><button type="button" data-filter="weaving">Upcoming</button></li>
+      </ul>
+      <button class="mv-search" id="mvSearchBtn" type="button" aria-label="Search artifacts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+    </header>
+
+    <div class="mv-search-panel" id="mvSearchPanel">
+      <input type="search" id="mvSearchInput" placeholder="Search masks, beads, shops…" autocomplete="off">
+    </div>
+
+    <section class="mv-hero">
+      <div class="mv-hero-visual" id="mvHeroVisual" aria-hidden="true"></div>
+      <div class="mv-hero-copy">
+        <h1 class="mv-title" id="mvTitle">MAASAI BEADED COLLAR</h1>
+        <div class="mv-meta">
+          <div class="mv-price-tag">
+            <span class="currency">PRICE</span>
+            <span class="amount"><span id="mvPrice">4,500</span></span>
+          </div>
+          <div class="mv-stars" id="mvStars" aria-label="Rating"></div>
+          <span class="mv-genres" id="mvGenres">Jewelry | Beadwork | Heritage</span>
+        </div>
+        <div class="mv-actions">
+          <button class="mv-btn mv-btn-buy" id="mvBuyBtn" type="button" aria-label="Buy with M-Pesa">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7L8 5z"/></svg>
+            Buy
+          </button>
+          <button class="mv-btn" id="mvAddBtn" type="button" aria-label="Save artifact">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <p class="mv-desc" id="mvDesc">Hand-strung Maasai beaded collar in traditional colour bands.</p>
+        <div class="mv-shop">
+          <strong id="mvShopName">Maasai Market — Village Market · Nairobi</strong>
+          <a id="mvShopMaps" href="#" target="_blank" rel="noopener noreferrer">Open in Google Maps ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="mv-rail-wrap">
+      <div class="mv-rail" id="mvRail" role="listbox" aria-label="Artifact posters"></div>
+    </div>
+
+    <button class="mv-explore-link" id="mvExploreKenya" type="button">Explore Kenya map →</button>
+  </div>
+</div>
+
+<!-- M-Pesa STK modal -->
+<div class="pay-modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle" aria-hidden="true">
+  <div class="pay-card">
+    <h3 id="payTitle">Complete purchase</h3>
+    <p class="pay-sub">An M-Pesa STK push will be sent to your phone. Enter your PIN to pay.</p>
+    <div class="pay-item">
+      <span class="name" id="payItemName">Artifact</span>
+      <span class="price" id="payItemPrice">KES 0</span>
+    </div>
+    <div class="pay-field">
+      <label for="payPhone">M-Pesa phone</label>
+      <input id="payPhone" type="tel" inputmode="tel" placeholder="07XXXXXXXX or 2547XXXXXXXX" autocomplete="tel">
+    </div>
+    <div class="pay-field">
+      <label for="payAmount">Amount (KES)</label>
+      <input id="payAmount" type="number" min="1" step="1">
+    </div>
+    <div class="pay-actions">
+      <button type="button" class="pay-cancel" id="payCancel">Cancel</button>
+      <button type="button" class="pay-confirm" id="payConfirm">Buy · STK Push</button>
+    </div>
+    <div class="pay-status">
+      <span class="pay-status-dot" id="payStatusDot"></span>
+      <span id="payStatusText">Ready for M-Pesa STK</span>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/destinations.js"></script>
+<script src="js/artifacts.js"></script>
+<script src="js/payment.js"></script>
 <script src="js/map.js"></script>
+<script src="js/marketplace.js"></script>
 <script src="js/app.js"></script>
 
 <elevenlabs-convai agent-id="agent_7501kxv7jj4gezv8kcqj5f5kbepg"></elevenlabs-convai>
