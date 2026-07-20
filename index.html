@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aurora Travels — discover Kenya's wildlife, highlands, and Swahili coast.">
+  <title>Aurora Travels — Kenya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112.5,700;125,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="landing" id="landing" role="dialog" aria-label="Welcome to Aurora Travels">
+  <div class="landing-bg" aria-hidden="true"></div>
+  <div class="landing-content">
+    <div class="landing-icons" aria-hidden="true">
+      <div class="landing-icon" title="Fly">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M10.5 3.5L3 11l4 1.2L9 16l1.6-2.6L14 17l1-1-2.4-3.4 4-4-6.1-5.1z" stroke="#8b5cf6" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 21l3-1 1-3" stroke="#8b5cf6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="landing-icon" title="Explore">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8b5cf6" stroke-width="1.6"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z" stroke="#8b5cf6" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="landing-icon" title="Discover">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#8b5cf6" stroke-width="1.6"/><path d="M21 21l-4.3-4.3" stroke="#8b5cf6" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </div>
+      <div class="landing-icon" title="Stay">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 5.5 7 13 7 13s7-7.5 7-13c0-4-3-7-7-7z" stroke="#8b5cf6" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.2" stroke="#8b5cf6" stroke-width="1.4"/></svg>
+      </div>
+    </div>
+    <h1 class="landing-hero">Aurora Travels</h1>
+    <p class="landing-sub">Your passport to Kenya and Africa's living heritage</p>
+    <div class="landing-loader" aria-hidden="true"><span></span><span></span><span></span></div>
+    <button type="button" class="skip-landing" id="skipLanding">Enter experience</button>
+  </div>
+</div>
+
+<div class="transition-overlay" id="landingOverlay" aria-hidden="true">
+  <div class="wipe"></div>
+  <div class="loader-logo"><span></span><span></span></div>
+</div>
+
+<!-- MAIN APP -->
+<div id="stage">
+  <div class="app">
+
+    <!-- LEFT: HERO -->
+    <section class="hero" aria-label="Destination hero">
+      <div class="hero-bg" id="heroBg" role="img" aria-label="Destination photograph"></div>
+
+      <div class="hero-top">
+        <div class="brand"><b>AURORA</b>TRAVELS</div>
+        <div class="weather" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="9" cy="9" r="3.4"/>
+            <path d="M9 2.6v1.4M9 15.8v1.2M2.6 9h1.4M15.4 9h1.2M4.6 4.6l1 1M13 12.4l1 1M13.4 4.6l-1 1M5.6 12.4l-1 1"/>
+            <path d="M9.5 16.8a3.7 3.7 0 0 1 .6-7.36 4.7 4.7 0 0 1 9.05 1.66 3.35 3.35 0 0 1-.6 6.7h-9.1z"/>
+          </svg>
+          <span id="tempVal">32°</span>
+        </div>
+      </div>
+
+      <div class="hero-mid">
+        <h1 class="hero-title">Kenya</h1>
+        <p class="hero-sub">Get the most out of your trip by discovering impressive places across the Republic of Kenya</p>
+      </div>
+
+      <div class="hero-bottom">
+        <div class="nav-arrows">
+          <button class="arrow-btn" id="prevBtn" type="button" aria-label="Previous destination">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button class="arrow-btn" id="nextBtn" type="button" aria-label="Next destination">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="map-widget" id="mapWidget">
+        <div class="map-frame">
+          <div id="leafletMap" role="application" aria-label="Interactive map of Kenya"></div>
+        </div>
+
+        <div class="map-controls">
+          <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search a place in Kenya…" aria-label="Search a place in Kenya">
+          <button class="map-ctrl-btn" id="mapSearchToggle" type="button" title="Search" aria-label="Search the map" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+          <button class="map-ctrl-btn" id="mapExpandBtn" type="button" title="Expand map" aria-label="Expand map" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H3v-6M3 21l7-7M15 3h6v6M21 3l-7 7"/></svg>
+          </button>
+          <button class="map-ctrl-btn" id="mapFullscreenBtn" type="button" title="Fullscreen" aria-label="Fullscreen map" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 9V5a1 1 0 0 1 1-1h4"/><path d="M15 4h4a1 1 0 0 1 1 1v4"/>
+              <path d="M20 15v4a1 1 0 0 1-1 1h-4"/><path d="M9 20H5a1 1 0 0 1-1-1v-4"/>
+            </svg>
+          </button>
+          <button class="map-ctrl-btn" id="mapCollapseBtn" type="button" title="Collapse map" aria-label="Collapse map" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+
+        <div class="map-zoom">
+          <button id="zoomIn" type="button" aria-label="Zoom in">+</button>
+          <button id="zoomOut" type="button" aria-label="Zoom out">–</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: DETAIL -->
+    <section class="detail" aria-label="Destination details">
+
+      <div class="detail-top">
+        <button class="back-btn" id="backBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          BACK
+        </button>
+        <div class="top-right">
+          <div class="coord">
+            <span class="coord-pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#8b5cf6"><path d="M12 2C8 2 5 5 5 9c0 5.5 7 13 7 13s7-7.5 7-13c0-4-3-7-7-7z"/></svg></span>
+            <span id="coordVal">1.5000° S 35.1435° E</span>
+            <span id="distVal">≋ 270 km</span>
+          </div>
+          <button class="icon-btn" id="searchBtn" type="button" aria-label="Search destinations" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+          <button class="icon-btn" id="menuBtn" type="button" aria-label="Open destinations menu" aria-expanded="false" aria-controls="drawer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 9V5a1 1 0 0 1 1-1h4"/>
+              <path d="M15 4h4a1 1 0 0 1 1 1v4"/>
+              <path d="M20 15v4a1 1 0 0 1-1 1h-4"/>
+              <path d="M9 20H5a1 1 0 0 1-1-1v-4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="search-wrap" id="searchWrap">
+        <input type="text" id="destSearchInput" placeholder="Search destinations, ruins, trails… (press Enter)" autocomplete="off" aria-label="Search destinations">
+        <div class="search-hint" id="searchHint">Try "Mount Kenya", "Lamu" or "Shela Beach"</div>
+      </div>
+
+      <div class="pin-badge">
+        <div class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <span id="regionTag">Narok County, Great Rift Valley</span>
+      </div>
+
+      <div class="title-block">
+        <h1 id="destTitle">Maasai Mara</h1>
+        <p id="destDesc">The Maasai Mara is the beating heart of East Africa's wildlife heritage, an open savanna where the Great Migration carries over a million wildebeest and zebra across the Mara River each year. It shares an unbroken border with Tanzania's Serengeti and takes its name from the Maasai people, whose cattle-herding culture, beadwork and age-old relationship with this land continue alongside the lion, elephant and cheetah that draw travellers from across the world. For those interested in wildlife, conservation and living Maasai tradition.</p>
+      </div>
+
+      <div class="info-row">
+        <div class="ext-tag" id="extTag">Extension: 1,510 km²</div>
+        <div class="loc-block">
+          <strong id="locVal">Location: Great Rift Valley, southwestern Kenya</strong>
+          <a id="mapLink" href="https://www.google.com/maps/search/?api=1&query=Maasai+Mara+National+Reserve" target="_blank" rel="noopener noreferrer">Link: Google maps ↗</a>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <button class="video-bar" id="videoBar" type="button">
+        <p>You can watch the video about Kenya's Great Rift Valley heritage</p>
+        <div class="video-bar-actions">
+          <div class="video-thumbs" aria-hidden="true">
+            <div class="th" style="background-image:url('https://images.unsplash.com/photo-1750232944224-9c7f6fd306a7?w=200&q=70&auto=format&fit=crop')"></div>
+            <div class="th" style="background-image:url('https://images.unsplash.com/photo-1615399144021-822ba908c6f3?w=200&q=70&auto=format&fit=crop')"></div>
+          </div>
+          <div class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div>
+        </div>
+      </button>
+
+      <!-- OVERVIEW / BACK TARGET -->
+      <div class="overview" id="overview" aria-label="Explore Kenya destinations">
+        <div class="overview-head">
+          <h2>Explore Kenya</h2>
+          <button class="icon-btn" id="closeOverview" type="button" aria-label="Close overview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+        <div class="grid-cards" id="cardGrid"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- MENU DRAWER -->
+<div class="scrim" id="scrim"></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+  <button class="close-x" id="closeDrawer" type="button" aria-label="Close menu">×</button>
+  <h3 id="drawerTitle">Destinations</h3>
+  <ul class="dest-list" id="drawerList"></ul>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle" aria-hidden="true">
+  <div class="lightbox-inner">
+    <img src="https://images.unsplash.com/photo-1750232944224-9c7f6fd306a7?w=1200&q=80&auto=format&fit=crop" alt="Great Rift Valley heritage">
+    <h4 id="lightboxTitle">The Great Rift Valley &amp; Swahili Coast</h4>
+    <p>A short visual introduction to the Great Migration across the Mara, the highland traditions of Mount Kenya's peoples, and the centuries-old Swahili culture of the Lamu archipelago.</p>
+    <button class="lightbox-close" id="closeLightbox" type="button">Close</button>
+    <a class="yt-link" href="https://www.youtube.com/results?search_query=great+rift+valley+kenya+documentary" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/destinations.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+
+<elevenlabs-convai agent-id="agent_7501kxv7jj4gezv8kcqj5f5kbepg"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+</body>
+</html>
