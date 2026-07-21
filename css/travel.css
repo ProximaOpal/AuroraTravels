@@ -51,20 +51,11 @@
 .travel-hero-top {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   gap: 12px;
   padding: 28px 32px 0;
-}
-
-.travel-hero-top .site-nav {
-  position: relative;
-  top: auto;
-  left: auto;
-  transform: none;
-  justify-self: center;
-  max-width: 100%;
 }
 
 .travel-hero-mid {

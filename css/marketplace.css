@@ -39,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 28px 8px;
+  padding: 12px 28px 8px;
   position: relative;
   z-index: 5;
 }

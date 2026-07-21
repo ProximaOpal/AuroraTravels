@@ -11,7 +11,6 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
 }) {
   const page = document.getElementById("pageMarketplace");
   const track = document.getElementById("galTrack");
-  const menuBtns = document.querySelectorAll(".gal-menu button[data-page]");
 
   const payModal = document.getElementById("payModal");
   const payPhone = document.getElementById("payPhone");

@@ -292,14 +292,22 @@
     onNavigate: (page) => goToPage(page),
   });
 
+  const globalHeader = document.getElementById("globalHeader");
+
   function syncNavActive() {
     document
       .querySelectorAll(
-        ".gal-menu button[data-page], .page-nav-item, .gd-menu-inline button[data-page], .site-nav button[data-page]"
+        ".global-nav button[data-page], .global-logo[data-page], .page-nav-item"
       )
       .forEach((btn) => {
         btn.classList.toggle("active", btn.dataset.page === activePage);
       });
+  }
+
+  function setHeaderVisible(show) {
+    if (!globalHeader) return;
+    if (show) globalHeader.removeAttribute("hidden");
+    else globalHeader.setAttribute("hidden", "");
   }
 
   function hideLanding() {
@@ -334,12 +342,14 @@
       if (page === "home") {
         hideAllContent();
         showLanding();
+        setHeaderVisible(false);
         syncNavActive();
         return;
       }
 
       hideLanding();
       hideAllContent();
+      setHeaderVisible(true);
 
       if (page === "page1") {
         stage.classList.add("visible");
@@ -375,9 +385,11 @@
     btn.addEventListener("click", () => goToPage(btn.dataset.page));
   });
 
-  document.querySelectorAll(".site-nav button[data-page]").forEach((btn) => {
-    btn.addEventListener("click", () => goToPage(btn.dataset.page));
-  });
+  document
+    .querySelectorAll("#globalHeader [data-page]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => goToPage(btn.dataset.page));
+    });
 
   function onLandingKey(event) {
     if (activePage !== "home" || landing.style.display === "none") return;

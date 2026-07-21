@@ -210,10 +210,6 @@ window.AuroraTravels.createGuidesPage = function createGuidesPage({
   prevBtn.addEventListener("click", () => step(-1));
   nextBtn.addEventListener("click", () => step(1));
 
-  page.querySelectorAll(".gd-menu-inline button[data-page]").forEach((btn) => {
-    btn.addEventListener("click", () => onNavigate?.(btn.dataset.page));
-  });
-
   page.addEventListener(
     "wheel",
     (event) => {
