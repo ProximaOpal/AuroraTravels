@@ -43,6 +43,9 @@
     whenReady,
   });
 
+  const parkCounter = document.getElementById("parkCounter");
+  const heroTitle = document.querySelector(".hero-title");
+
   function render() {
     const destination = destinations[current];
     heroBg.style.opacity = "0";
@@ -52,6 +55,7 @@
       heroBg.style.opacity = "1";
     }, 150);
 
+    if (heroTitle) heroTitle.textContent = destination.name;
     destTitle.textContent = destination.name;
     destDesc.textContent = destination.desc;
     regionTag.textContent = destination.region;
@@ -64,6 +68,11 @@
       "aria-label",
       `Open ${destination.name} in Google Maps`
     );
+    if (parkCounter) {
+      const n = String(current + 1).padStart(2, "0");
+      const t = String(destinations.length).padStart(2, "0");
+      parkCounter.textContent = `${n} / ${t}`;
+    }
 
     mapController.flyMapTo(destination);
   }
@@ -251,8 +260,16 @@
   }, 8000);
 
   /* ---- landing → page navigation ---- */
-  const { artifacts, payment, createMarketplace, guides, createGuidesPage } =
-    window.AuroraTravels;
+  const {
+    artifacts,
+    payment,
+    createMarketplace,
+    guides,
+    createGuidesPage,
+    travelModes,
+    stays,
+    createTravelPage,
+  } = window.AuroraTravels;
 
   let activePage = "home";
   let transitionBusy = false;
@@ -265,6 +282,13 @@
 
   const guidesPage = createGuidesPage({
     guides,
+    onNavigate: (page) => goToPage(page),
+  });
+
+  const travelPage = createTravelPage({
+    travelModes,
+    stays,
+    payment,
     onNavigate: (page) => goToPage(page),
   });
 
@@ -288,6 +312,13 @@
     landing.classList.add("visible-home");
   }
 
+  function hideAllContent() {
+    marketplace.hide();
+    guidesPage.hide();
+    travelPage.hide();
+    stage.classList.remove("visible");
+  }
+
   function goToPage(page, { animate = true } = {}) {
     if (transitionBusy) return;
     if (page === activePage && page !== "home") {
@@ -301,28 +332,23 @@
       overview.classList.remove("open");
 
       if (page === "home") {
-        marketplace.hide();
-        guidesPage.hide();
-        stage.classList.remove("visible");
+        hideAllContent();
         showLanding();
         syncNavActive();
         return;
       }
 
       hideLanding();
+      hideAllContent();
 
       if (page === "page1") {
-        marketplace.hide();
-        guidesPage.hide();
         stage.classList.add("visible");
         mapController.invalidate();
       } else if (page === "page2") {
-        stage.classList.remove("visible");
-        guidesPage.hide();
-        marketplace.show();
+        travelPage.show();
       } else if (page === "page3") {
-        stage.classList.remove("visible");
-        marketplace.hide();
+        marketplace.show();
+      } else if (page === "page4") {
         guidesPage.show();
       }
 

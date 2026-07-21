@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112.5,700;125,800&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/travel.css">
   <link rel="stylesheet" href="css/marketplace.css">
   <link rel="stylesheet" href="css/guides.css">
 </head>
@@ -67,7 +68,8 @@
 
       <div class="hero-mid">
         <h1 class="hero-title">Kenya</h1>
-        <p class="hero-sub">Get the most out of your trip by discovering impressive places across the Republic of Kenya</p>
+        <p class="hero-sub">National parks across Kenya and major parks of Africa — use the arrows to browse</p>
+        <p class="park-counter" id="parkCounter">01 / 15</p>
       </div>
 
       <div class="hero-bottom">
@@ -142,7 +144,7 @@
 
       <div class="search-wrap" id="searchWrap">
         <input type="text" id="destSearchInput" placeholder="Search destinations, ruins, trails… (press Enter)" autocomplete="off" aria-label="Search destinations">
-        <div class="search-hint" id="searchHint">Try "Mount Kenya", "Lamu" or "Shela Beach"</div>
+        <div class="search-hint" id="searchHint">Try "Amboseli", "Kruger" or "Serengeti"</div>
       </div>
 
       <div class="pin-badge">
@@ -179,7 +181,7 @@
       <!-- OVERVIEW / BACK TARGET -->
       <div class="overview" id="overview" aria-label="Explore Kenya destinations">
         <div class="overview-head">
-          <h2>Explore Kenya</h2>
+          <h2>National Parks</h2>
           <button class="icon-btn" id="closeOverview" type="button" aria-label="Close overview">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
           </button>
@@ -206,20 +208,27 @@
     <li role="none">
       <button type="button" class="page-nav-item" data-page="page1" role="menuitem">
         <span class="page-nav-kicker">Page 1</span>
-        <span class="page-nav-label">Explore Kenya</span>
-        <span class="page-nav-desc">Destinations &amp; map</span>
+        <span class="page-nav-label">National Parks</span>
+        <span class="page-nav-desc">Kenya + major Africa parks</span>
       </button>
     </li>
     <li role="none">
       <button type="button" class="page-nav-item" data-page="page2" role="menuitem">
         <span class="page-nav-kicker">Page 2</span>
-        <span class="page-nav-label">Artifacts</span>
-        <span class="page-nav-desc">Craft marketplace &amp; M-Pesa</span>
+        <span class="page-nav-label">Travel &amp; Stay</span>
+        <span class="page-nav-desc">Book transport or accommodation</span>
       </button>
     </li>
     <li role="none">
       <button type="button" class="page-nav-item" data-page="page3" role="menuitem">
         <span class="page-nav-kicker">Page 3</span>
+        <span class="page-nav-label">Artifacts</span>
+        <span class="page-nav-desc">Craft marketplace &amp; M-Pesa</span>
+      </button>
+    </li>
+    <li role="none">
+      <button type="button" class="page-nav-item" data-page="page4" role="menuitem">
+        <span class="page-nav-kicker">Page 4</span>
         <span class="page-nav-label">Pair up with a Guide</span>
         <span class="page-nav-desc">Tourist + student guides</span>
       </button>
@@ -238,15 +247,103 @@
   </div>
 </div>
 
-<!-- PAGE 2 — Expanding pill gallery -->
+<!-- PAGE 2 — Travel & Stay booking -->
+<div class="page-travel" id="pageTravel" aria-label="Travel and accommodation booking" style="display:none;">
+  <div class="travel-app">
+    <section class="travel-hero">
+      <div class="travel-hero-bg" id="travelHeroBg"></div>
+      <div class="travel-hero-top">
+        <div class="brand"><b>AURORA</b>TRAVELS</div>
+        <div class="weather" aria-live="polite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+          <span>Book</span>
+        </div>
+      </div>
+      <div class="travel-hero-mid">
+        <h1 class="travel-hero-title" id="travelHeroTitle">Domestic Flight</h1>
+        <p class="travel-hero-sub" id="travelHeroSub">Wilson ↔ Mara and coast hops.</p>
+      </div>
+      <div class="travel-hero-bottom">
+        <div class="nav-arrows">
+          <button class="arrow-btn" id="travelPrev" type="button" aria-label="Previous option">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button class="arrow-btn" id="travelNext" type="button" aria-label="Next option">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <span class="travel-mode-pill" id="travelModePill">Air</span>
+      </div>
+    </section>
+
+    <section class="travel-detail">
+      <div class="travel-detail-top">
+        <div class="travel-toggle" role="tablist" aria-label="Travel or accommodation">
+          <button type="button" id="toggleTravel" class="active">Travel</button>
+          <button type="button" id="toggleStay">Stay</button>
+        </div>
+        <div class="top-right">
+          <button class="icon-btn" type="button" data-page="page1" aria-label="National parks">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"/></svg>
+          </button>
+          <button class="icon-btn" type="button" data-page="home" aria-label="Home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11l8-7 8 7v9H4v-9z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="travel-pin">
+        <div class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <span id="travelPinLabel">Kenya &amp; East Africa mobility</span>
+      </div>
+
+      <div class="travel-heading">
+        <h1 id="travelHeadingTitle">Book your journey</h1>
+        <p id="travelHeadingDesc">Plane, train, coach, taxi, bike and ferry — one M-Pesa checkout.</p>
+      </div>
+
+      <div class="travel-cards" id="travelCards"></div>
+
+      <div class="book-overlay" id="bookOverlay">
+        <div class="book-panel" role="dialog" aria-modal="true" aria-labelledby="bookTitle">
+          <h3 id="bookTitle">Domestic Flight</h3>
+          <p class="book-sub" id="bookSub">Reserve with M-Pesa STK push.</p>
+          <div class="book-row"><span>Operator</span><strong id="bookOperator">—</strong></div>
+          <div class="book-row"><span>Timing</span><strong id="bookEta">—</strong></div>
+          <div class="book-row"><span>From</span><strong id="bookPrice">—</strong></div>
+          <div class="book-field">
+            <label for="bookDate">Travel / check-in date</label>
+            <input id="bookDate" type="date">
+          </div>
+          <div class="book-field">
+            <label for="bookPhone">M-Pesa phone</label>
+            <input id="bookPhone" type="tel" placeholder="07XXXXXXXX or 2547XXXXXXXX">
+          </div>
+          <div class="book-field">
+            <label for="bookAmount">Amount (KES)</label>
+            <input id="bookAmount" type="number" min="1" step="1">
+          </div>
+          <div class="book-actions">
+            <button type="button" class="book-cancel" id="bookCancel">Cancel</button>
+            <button type="button" class="book-pay" id="bookPay">Pay · STK Push</button>
+          </div>
+          <div class="book-status" id="bookStatus">Ready for M-Pesa STK</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- PAGE 3 — Expanding pill gallery -->
 <div class="page-marketplace" id="pageMarketplace" aria-label="Kenyan artifacts gallery" style="display:none;">
   <header class="gal-top">
     <div class="gal-logo">Aurora</div>
-      <ul class="gal-menu">
+    <ul class="gal-menu">
       <li><button type="button" data-page="home">Home</button></li>
       <li><button type="button" data-page="page1">Page 1</button></li>
-      <li><button type="button" class="active" data-page="page2">Page 2</button></li>
-      <li><button type="button" data-page="page3">Page 3</button></li>
+      <li><button type="button" data-page="page2">Page 2</button></li>
+      <li><button type="button" class="active" data-page="page3">Page 3</button></li>
+      <li><button type="button" data-page="page4">Page 4</button></li>
     </ul>
     <span aria-hidden="true" style="width:64px"></span>
   </header>
@@ -297,7 +394,8 @@
         <button type="button" data-page="home">Home</button>
         <button type="button" data-page="page1">Page 1</button>
         <button type="button" data-page="page2">Page 2</button>
-        <button type="button" class="active" data-page="page3">Page 3</button>
+        <button type="button" data-page="page3">Page 3</button>
+        <button type="button" class="active" data-page="page4">Page 4</button>
       </div>
     </div>
     <div class="gd-cast-label"><span>Guides</span></div>
@@ -334,10 +432,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/destinations.js"></script>
+<script src="js/travel-data.js"></script>
 <script src="js/artifacts.js"></script>
 <script src="js/payment.js"></script>
 <script src="js/map.js"></script>
 <script src="js/marketplace.js"></script>
+<script src="js/travel.js"></script>
 <script src="js/guides.js"></script>
 <script src="js/app.js"></script>
 

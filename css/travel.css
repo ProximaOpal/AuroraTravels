@@ -1,0 +1,436 @@
+/* Page 2 — Travel booking (Page 1 twin layout) */
+
+.page-travel {
+  position: fixed;
+  inset: 0;
+  z-index: 48;
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease, cubic-bezier(0.65, 0, 0.35, 1));
+  background: var(--moss, #241333);
+}
+
+.page-travel.visible {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.travel-app {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.travel-hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #150a1f;
+}
+
+.travel-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.4s ease;
+}
+
+.travel-hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 15, 8, 0.55) 0%, rgba(10, 15, 8, 0.08) 28%, rgba(8, 12, 6, 0.15) 55%, rgba(6, 10, 5, 0.85) 100%),
+    linear-gradient(90deg, rgba(6, 10, 5, 0.35) 0%, transparent 30%);
+}
+
+.travel-hero-top {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 28px 32px 0;
+}
+
+.travel-hero-mid {
+  position: relative;
+  z-index: 2;
+  padding: 0 32px;
+  margin-top: 28vh;
+}
+
+.travel-hero-title {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-stretch: 125%;
+  font-weight: 800;
+  color: #fff;
+  font-size: clamp(42px, 7vw, 88px);
+  line-height: 0.92;
+  letter-spacing: -2px;
+  margin: 0;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.travel-hero-sub {
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 340px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 14px;
+}
+
+.travel-hero-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 32px 28px;
+}
+
+.travel-mode-pill {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(139, 92, 246, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 8px 12px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+
+.travel-detail {
+  background: var(--cream, #f5f1fa);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.travel-detail-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 32px 0;
+  gap: 12px;
+}
+
+.travel-toggle {
+  display: inline-flex;
+  background: var(--white, #fdfbff);
+  border: 1px solid var(--line, rgba(27, 28, 23, 0.12));
+  border-radius: 999px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.travel-toggle button {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: var(--ink-soft, #4a4256);
+}
+
+.travel-toggle button.active {
+  background: var(--gold, #8b5cf6);
+  color: #fff;
+}
+
+.travel-pin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 32px 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold-deep, #6d28d9);
+  text-transform: uppercase;
+}
+
+.travel-pin .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--gold, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.travel-pin .dot svg {
+  width: 11px;
+  height: 11px;
+}
+
+.travel-heading {
+  padding: 8px 32px 0;
+}
+
+.travel-heading h1 {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-stretch: 125%;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  margin: 4px 0 8px;
+}
+
+.travel-heading p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--ink-soft, #4a4256);
+}
+
+.travel-cards {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.travel-card {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  border: 1px solid var(--line, rgba(27, 28, 23, 0.12));
+  background: var(--white, #fdfbff);
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.travel-card:hover,
+.travel-card:focus-visible,
+.travel-card.active {
+  border-color: var(--gold, #8b5cf6);
+  box-shadow: 0 10px 24px rgba(109, 40, 217, 0.12);
+  outline: none;
+}
+
+.travel-card.active {
+  transform: translateY(-1px);
+}
+
+.travel-card-thumb {
+  width: 92px;
+  height: 72px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+}
+
+.travel-card-body strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.travel-card-body span {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-soft, #4a4256);
+  line-height: 1.45;
+}
+
+.travel-card-meta {
+  text-align: right;
+  padding-right: 6px;
+}
+
+.travel-card-meta .tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-deep, #6d28d9);
+  margin-bottom: 6px;
+}
+
+.travel-card-meta .price {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink, #1e1626);
+}
+
+/* Booking overlay */
+.book-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgba(21, 10, 31, 0.45);
+  display: none;
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+.book-overlay.open {
+  display: flex;
+}
+
+.book-panel {
+  width: min(420px, 100%);
+  background: var(--cream, #f5f1fa);
+  padding: 28px 26px;
+  overflow-y: auto;
+  box-shadow: -16px 0 40px rgba(0, 0, 0, 0.2);
+  animation: bookSlide 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes bookSlide {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.book-panel h3 {
+  font-family: var(--font-display, "Archivo", sans-serif);
+  font-stretch: 125%;
+  font-size: 24px;
+  margin: 0 0 6px;
+}
+
+.book-panel .book-sub {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--ink-soft, #4a4256);
+  line-height: 1.55;
+}
+
+.book-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line, rgba(27, 28, 23, 0.12));
+  font-size: 13px;
+}
+
+.book-row strong {
+  color: var(--gold-deep, #6d28d9);
+}
+
+.book-field {
+  margin-top: 14px;
+}
+
+.book-field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft, #4a4256);
+  margin-bottom: 7px;
+}
+
+.book-field input,
+.book-field select {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line, rgba(27, 28, 23, 0.12));
+  background: #fff;
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.book-field input:focus,
+.book-field select:focus {
+  border-color: var(--gold, #8b5cf6);
+}
+
+.book-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.book-actions button {
+  flex: 1;
+  height: 46px;
+  border-radius: 8px;
+  border: none;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.book-cancel {
+  background: transparent;
+  border: 1px solid var(--line, rgba(27, 28, 23, 0.12)) !important;
+  color: var(--ink-soft, #4a4256);
+}
+
+.book-pay {
+  background: var(--gold, #8b5cf6);
+  color: #fff;
+}
+
+.book-pay:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.book-status {
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft, #4a4256);
+}
+
+@media (max-width: 880px) {
+  .travel-app {
+    grid-template-columns: 1fr;
+  }
+
+  .travel-hero {
+    min-height: 48vh;
+  }
+
+  .travel-hero-mid {
+    margin-top: 16vh;
+  }
+
+  .travel-card {
+    grid-template-columns: 72px 1fr;
+  }
+
+  .travel-card-meta {
+    display: none;
+  }
+}

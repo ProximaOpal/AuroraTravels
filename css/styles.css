@@ -443,6 +443,14 @@ img {
   margin-top: 14px;
 }
 
+.park-counter {
+  margin: 14px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .hero-bottom {
   position: absolute;
   left: 0;
