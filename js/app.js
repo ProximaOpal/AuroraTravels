@@ -417,4 +417,18 @@
   });
 
   syncNavActive();
+
+  // Keep ElevenLabs widget pinned bottom-left (host may inject default right styles)
+  function pinConvaiLeft() {
+    const el = document.querySelector("elevenlabs-convai");
+    if (!el) return;
+    el.classList.add("aurora-convai");
+    el.style.setProperty("position", "fixed", "important");
+    el.style.setProperty("left", "18px", "important");
+    el.style.setProperty("right", "auto", "important");
+    el.style.setProperty("bottom", "18px", "important");
+    el.style.setProperty("z-index", "2500", "important");
+  }
+  pinConvaiLeft();
+  window.setInterval(pinConvaiLeft, 1500);
 })();

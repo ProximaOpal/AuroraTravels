@@ -226,13 +226,6 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
     }
   }
 
-  menuBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const pageId = btn.dataset.page;
-      if (pageId) onNavigate?.(pageId);
-    });
-  });
-
   payCancel.addEventListener("click", closePayModal);
   payConfirm.addEventListener("click", confirmPay);
   payModal.addEventListener("click", (event) => {
