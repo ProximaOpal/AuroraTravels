@@ -857,16 +857,12 @@ img {
   top: 64px;
 }
 
-/* ElevenLabs widget — bottom LEFT (clear of centered map) */
+/* ElevenLabs — placement is controlled by placement="bottom-left" on the host.
+   Do not force left/right on the host alone (that leaves a ghost bubble while
+   the real launcher stays bottom-right inside the shadow tree). */
 elevenlabs-convai.aurora-convai,
 elevenlabs-convai {
-  position: fixed !important;
-  left: 18px !important;
-  right: auto !important;
-  bottom: 18px !important;
-  z-index: 2500 !important;
-  transform: none !important;
-  pointer-events: auto;
+  z-index: 2500;
 }
 
 /* Shared named page header (legacy helpers unused by global header) */

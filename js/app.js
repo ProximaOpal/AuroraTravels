@@ -418,17 +418,19 @@
 
   syncNavActive();
 
-  // Keep ElevenLabs widget pinned bottom-left (host may inject default right styles)
-  function pinConvaiLeft() {
+  // ElevenLabs uses its own `placement` attribute for screen position.
+  // Keep the attribute correct if the embed rewrites the host.
+  function ensureConvaiPlacement() {
     const el = document.querySelector("elevenlabs-convai");
     if (!el) return;
+    if (el.getAttribute("placement") !== "bottom-left") {
+      el.setAttribute("placement", "bottom-left");
+    }
+    if (el.getAttribute("variant") !== "compact") {
+      el.setAttribute("variant", "compact");
+    }
     el.classList.add("aurora-convai");
-    el.style.setProperty("position", "fixed", "important");
-    el.style.setProperty("left", "18px", "important");
-    el.style.setProperty("right", "auto", "important");
-    el.style.setProperty("bottom", "18px", "important");
-    el.style.setProperty("z-index", "2500", "important");
   }
-  pinConvaiLeft();
-  window.setInterval(pinConvaiLeft, 1500);
+  ensureConvaiPlacement();
+  window.setInterval(ensureConvaiPlacement, 2000);
 })();
