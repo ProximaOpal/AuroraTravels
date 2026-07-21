@@ -1,6 +1,7 @@
 /**
- * Page 3 — Pair up with a Guide
- * Main hero: tourist scenes · Thumbnails: student guides
+ * Page 4 — Pair up with a Guide
+ * Hero: Kenyan tourist / place scenes · Thumbnails: Kenyan / East African people
+ * Images sourced from Wikimedia Commons (local assets).
  */
 window.AuroraTravels = window.AuroraTravels || {};
 
@@ -10,120 +11,96 @@ window.AuroraTravels.guides = [
     name: "Amina Wanjiku",
     role: "Nairobi City Guide",
     school: "University of Nairobi",
-    tourist:
-      "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/nairobi-skyline.jpg",
+    student: "assets/guides/students/s12.jpg",
   },
   {
     id: "brian",
     name: "Brian Otieno",
     role: "Rift Valley Trek Lead",
     school: "Kenyatta University",
-    tourist:
-      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/mt-kenya.jpg",
+    student: "assets/guides/students/s8.jpg",
   },
   {
     id: "faith",
     name: "Faith Chebet",
     role: "Kalenjin Heritage Walk",
     school: "Moi University",
-    tourist:
-      "https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/nairobi-buffalo.jpg",
+    student: "assets/guides/students/s1.jpg",
   },
   {
     id: "daniel",
     name: "Daniel Kamau",
     role: "Safari Photography",
     school: "USIU-Africa",
-    tourist:
-      "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/amboseli-elephants.jpg",
+    student: "assets/guides/students/s2.jpg",
   },
   {
     id: "zara",
     name: "Zara Hassan",
     role: "Swahili Coast Guide",
     school: "Technical University of Mombasa",
-    tourist:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/mombasa.jpg",
+    student: "assets/guides/students/s7.jpg",
   },
   {
     id: "kevin",
     name: "Kevin Mutiso",
     role: "Mount Kenya Base Camp",
     school: "Dedan Kimathi University",
-    tourist:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/amboseli-2.jpg",
+    student: "assets/guides/students/s4.jpg",
   },
   {
     id: "mercy",
     name: "Mercy Achieng",
     role: "Lake Victoria Culture",
     school: "Maseno University",
-    tourist:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/lake-victoria.jpg",
+    student: "assets/guides/students/s3.jpg",
   },
   {
     id: "james",
     name: "James Lekishon",
     role: "Maasai Mara Field Guide",
     school: "Maasai Mara University",
-    tourist:
-      "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/maasai-mara.jpg",
+    student: "assets/guides/students/s11.jpg",
   },
   {
     id: "nina",
     name: "Nina Wekesa",
     role: "Craft Market Navigator",
     school: "Strathmore University",
-    tourist:
-      "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/maasai-market.jpg",
+    student: "assets/guides/students/s5.jpg",
   },
   {
     id: "omar",
     name: "Omar Ali",
     role: "Lamu Archipelago Host",
     school: "Pwani University",
-    tourist:
-      "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/lamu.jpg",
+    student: "assets/guides/students/s6.jpg",
   },
   {
     id: "grace",
     name: "Grace Njeri",
     role: "Food & Market Trails",
     school: "Jomo Kenyatta University",
-    tourist:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/lamu-2.jpg",
+    student: "assets/guides/students/s10.jpg",
   },
   {
     id: "sam",
     name: "Sam Kiprop",
-    role: "Highlands Running Tour",
+    role: "Highlands Walking Tour",
     school: "University of Eldoret",
-    tourist:
-      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1800&q=80&auto=format&fit=crop",
-    student:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80&auto=format&fit=crop",
+    tourist: "assets/guides/tourists/maasai-guide.jpg",
+    student: "assets/guides/students/s9.jpg",
   },
 ];
 

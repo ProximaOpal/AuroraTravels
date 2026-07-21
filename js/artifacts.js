@@ -1,37 +1,42 @@
 /**
- * Kenyan / East African artifacts only — masks, carvings, shields, spears, beads, soapstone
+ * Kenyan artifacts — masks, carvings, shields, spears, beads, soapstone, baskets.
+ * Images: Wikimedia Commons photos of Kenyan crafts / markets (local assets).
  */
 window.AuroraTravels = window.AuroraTravels || {};
 
 const ACCENTS = ["#ff4d6d", "#ffd166", "#06d6a0", "#4cc9f0", "#8b5cf6", "#f77f00", "#e63946", "#2a9d8f"];
 const ICONS = ["mask", "carving", "spear", "bead", "bracelet", "mask", "carving", "spear"];
 
-/** Curated craft / cultural object photographs (African art & heritage) */
+/** Authentic Kenyan craft photographs (Wikimedia Commons → /assets/crafts) */
 const CRAFT_IMAGES = [
-  "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1551913902-c92207326525?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1544967082-d9d25d747e20?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1604871000636-074fa5117948?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1515405297840-7ebe83dfd6bb?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1493106819501-66d381c466f1?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1513519245088-0e12902e35a6?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1577083552431-6e5fd01988d8?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1400&q=80&auto=format&fit=crop&sat=-20",
-  "https://images.unsplash.com/photo-1578301978018-3005759f48f7?w=1400&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1549490349-8643362247b5?w=1400&q=80&auto=format&fit=crop",
+  "assets/crafts/maasai-beads-1.jpg",
+  "assets/crafts/soapstone-tabaka.jpg",
+  "assets/crafts/akamba-carver.jpg",
+  "assets/crafts/kazuri-1.jpg",
+  "assets/crafts/spears-shields.jpg",
+  "assets/crafts/wood-carvings-kenya.jpg",
+  "assets/crafts/lamu-door-1.jpg",
+  "assets/crafts/kiondo-1.jpg",
+  "assets/crafts/calabash-kenya.jpg",
+  "assets/crafts/turkana-jewelry-1.jpg",
+  "assets/crafts/soapstone-art.jpg",
+  "assets/crafts/mombasa-oldtown.jpg",
+  "assets/crafts/samburu-beads.jpg",
+  "assets/crafts/kiondo-2.jpg",
+  "assets/crafts/maasai-beading.jpg",
+  "assets/crafts/lamu-door-2.jpg",
+  "assets/crafts/calabash-2.jpg",
+  "assets/crafts/kiondo-3.jpg",
+  "assets/crafts/maasai-beads-2.jpg",
+  "assets/crafts/soapstone-cutter.jpg",
+  "assets/crafts/turkana-jewelry-2.jpg",
+  "assets/crafts/kazuri-2.jpg",
+  "assets/crafts/samburu-beadwork.jpg",
+  "assets/crafts/maasai-market-1.jpg",
+  "assets/crafts/maasai-blankets.jpg",
+  "assets/crafts/spears-shields.jpg",
+  "assets/crafts/kazuri-3.jpg",
+  "assets/crafts/maasai-market-2.jpg",
 ];
 
 const CATALOGUE = [
