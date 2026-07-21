@@ -1,5 +1,5 @@
 /**
- * Leaflet map widget: markers, search, expand, fullscreen
+ * Leaflet map widget — satellite default, amenities, search routes, fly-to pulse
  */
 window.AuroraTravels = window.AuroraTravels || {};
 
@@ -21,13 +21,59 @@ window.AuroraTravels.createMapController = function createMapController({
     attributionControl: true,
   }).setView([first.lat, first.lng], first.zoom);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-    maxZoom: 19,
-  }).addTo(map);
+  // Default: satellite imagery (Esri World Imagery)
+  L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution:
+        "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics",
+      maxZoom: 19,
+    }
+  ).addTo(map);
+
+  // Light labels overlay for place names on satellite
+  L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution: "",
+      maxZoom: 19,
+      opacity: 0.85,
+      pane: "overlayPane",
+    }
+  ).addTo(map);
 
   const markerLayer = L.layerGroup().addTo(map);
+  const amenityLayer = L.layerGroup().addTo(map);
+  const routeLayer = L.layerGroup().addTo(map);
   let searchMarker = null;
+  let pulseCircle = null;
+  let pulseRing = null;
+  let lastOrigin = L.latLng(first.lat, first.lng);
+  let flyToken = 0;
+
+  const AMENITY_DEFS = [
+    { key: "lodge", label: "Safari Lodge", color: "#f59e0b", glyph: "⌂" },
+    { key: "camp", label: "Campsite", color: "#10b981", glyph: "⛺" },
+    { key: "gate", label: "Park Gate", color: "#ef4444", glyph: "⬡" },
+    { key: "water", label: "Waterhole", color: "#38bdf8", glyph: "◉" },
+    { key: "view", label: "Viewpoint", color: "#a78bfa", glyph: "◎" },
+    { key: "airstrip", label: "Airstrip", color: "#f8fafc", glyph: "✈" },
+    { key: "ranger", label: "Ranger Post", color: "#f97316", glyph: "⚑" },
+    { key: "clinic", label: "Clinic", color: "#fb7185", glyph: "+" },
+    { key: "fuel", label: "Fuel / Pump", color: "#facc15", glyph: "⛽" },
+    { key: "picnic", label: "Picnic Site", color: "#34d399", glyph: "❀" },
+    { key: "shop", label: "Curio Shop", color: "#e879f9", glyph: "◆" },
+    { key: "toilet", label: "Restroom", color: "#94a3b8", glyph: "☰" },
+  ];
+
+  function amenityIcon(def) {
+    return L.divIcon({
+      className: "map-amenity-icon",
+      html: `<div class="amenity-bubble" style="--c:${def.color}" title="${def.label}"><span>${def.glyph}</span></div>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+  }
 
   function goldPinIcon(size) {
     return L.divIcon({
@@ -63,6 +109,135 @@ window.AuroraTravels.createMapController = function createMapController({
     }
   }
 
+  function clearPulse() {
+    if (pulseCircle) {
+      map.removeLayer(pulseCircle);
+      pulseCircle = null;
+    }
+    if (pulseRing) {
+      map.removeLayer(pulseRing);
+      pulseRing = null;
+    }
+  }
+
+  function showFlyPulse(latlng) {
+    clearPulse();
+    const center = L.latLng(latlng);
+
+    pulseCircle = L.circle(center, {
+      radius: 350,
+      color: "#3b82f6",
+      weight: 2,
+      fillColor: "#3b82f6",
+      fillOpacity: 0.22,
+      className: "fly-pulse-fill",
+    }).addTo(map);
+
+    pulseRing = L.circle(center, {
+      radius: 350,
+      color: "#60a5fa",
+      weight: 3,
+      fillOpacity: 0,
+      className: "fly-pulse-ring",
+    }).addTo(map);
+
+    let radius = 350;
+    const max = 2800;
+    const step = () => {
+      if (!pulseRing || !map.hasLayer(pulseRing)) return;
+      radius += 90;
+      pulseRing.setRadius(radius);
+      pulseCircle.setRadius(Math.min(radius * 0.45, 1200));
+      pulseCircle.setStyle({
+        fillOpacity: Math.max(0.05, 0.28 - radius / 9000),
+      });
+      if (radius < max) {
+        requestAnimationFrame(step);
+      } else {
+        window.setTimeout(clearPulse, 900);
+      }
+    };
+    requestAnimationFrame(step);
+  }
+
+  function flyWithPulse(latlng, zoom, duration = 1.1) {
+    const token = ++flyToken;
+    map.flyTo(latlng, zoom, { duration });
+    map.once("moveend", () => {
+      if (token !== flyToken) return;
+      showFlyPulse(latlng);
+      lastOrigin = L.latLng(latlng);
+    });
+  }
+
+  function offsetPoint(lat, lng, metersNorth, metersEast) {
+    const dLat = metersNorth / 111320;
+    const dLng = metersEast / (111320 * Math.cos((lat * Math.PI) / 180));
+    return [lat + dLat, lng + dLng];
+  }
+
+  function buildAmenities(destination) {
+    amenityLayer.clearLayers();
+    const base = destination.amenities || [];
+
+    // Seed many amenity overlays around the park centre + stops
+    const seeds = [
+      ...destination.stops.map((s, i) => ({
+        lat: s.lat,
+        lng: s.lng,
+        def: AMENITY_DEFS[i % AMENITY_DEFS.length],
+        name: s.name,
+      })),
+    ];
+
+    const offsets = [
+      [420, 180],
+      [-380, 260],
+      [520, -300],
+      [-260, -420],
+      [700, 80],
+      [-640, 140],
+      [180, 560],
+      [-120, -620],
+      [860, -200],
+      [-780, 340],
+      [300, -700],
+      [-480, 620],
+      [980, 260],
+      [-900, -160],
+      [120, 820],
+      [-220, -880],
+    ];
+
+    offsets.forEach((pair, i) => {
+      const [n, e] = pair;
+      const [lat, lng] = offsetPoint(destination.lat, destination.lng, n, e);
+      seeds.push({
+        lat,
+        lng,
+        def: AMENITY_DEFS[i % AMENITY_DEFS.length],
+        name: `${AMENITY_DEFS[i % AMENITY_DEFS.length].label}`,
+      });
+    });
+
+    base.forEach((a, i) => {
+      seeds.push({
+        lat: a.lat,
+        lng: a.lng,
+        def: AMENITY_DEFS.find((d) => d.key === a.type) || AMENITY_DEFS[i % AMENITY_DEFS.length],
+        name: a.name || a.type,
+      });
+    });
+
+    seeds.forEach((item) => {
+      L.marker([item.lat, item.lng], { icon: amenityIcon(item.def) })
+        .addTo(amenityLayer)
+        .bindPopup(
+          `<b>${escapeHtml(item.name)}</b><br><span style="opacity:.75">${escapeHtml(item.def.label)}</span>`
+        );
+    });
+  }
+
   function renderMapMarkers(destination) {
     markerLayer.clearLayers();
     destination.stops.forEach((stop, index) => {
@@ -71,6 +246,40 @@ window.AuroraTravels.createMapController = function createMapController({
         .addTo(markerLayer)
         .bindPopup(`<b>${escapeHtml(stop.name)}</b>`);
     });
+    buildAmenities(destination);
+  }
+
+  function drawToAndFro(from, to) {
+    routeLayer.clearLayers();
+    const outbound = L.polyline([from, to], {
+      color: "#38bdf8",
+      weight: 4,
+      opacity: 0.95,
+      dashArray: "10 8",
+      lineCap: "round",
+    }).addTo(routeLayer);
+
+    // Slightly offset return path for visible "fro" leg
+    const mid = L.latLng(
+      (from.lat + to.lat) / 2 + 0.035,
+      (from.lng + to.lng) / 2 - 0.035
+    );
+    const inbound = L.polyline([to, mid, from], {
+      color: "#818cf8",
+      weight: 3.5,
+      opacity: 0.85,
+      dashArray: "2 10",
+      lineCap: "round",
+    }).addTo(routeLayer);
+
+    try {
+      map.fitBounds(L.featureGroup([outbound, inbound]).getBounds().pad(0.25), {
+        animate: true,
+        duration: 0.8,
+      });
+    } catch (err) {
+      // ignore fit bounds errors for identical points
+    }
   }
 
   function invalidate() {
@@ -79,10 +288,11 @@ window.AuroraTravels.createMapController = function createMapController({
 
   function flyMapTo(destination) {
     clearSearchMarker();
-    map.flyTo([destination.lat, destination.lng], destination.zoom, {
-      duration: 1.1,
-    });
+    routeLayer.clearLayers();
+    const target = L.latLng(destination.lat, destination.lng);
+    flyWithPulse(target, destination.zoom, 1.1);
     renderMapMarkers(destination);
+    lastOrigin = target;
   }
 
   function setExpanded(open) {
@@ -120,27 +330,27 @@ window.AuroraTravels.createMapController = function createMapController({
         "https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=ke&q=" +
         encodeURIComponent(trimmed);
       const res = await fetch(url, {
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { Accept: "application/json" },
       });
 
-      if (!res.ok) {
-        throw new Error("Geocoding request failed");
-      }
+      if (!res.ok) throw new Error("Geocoding request failed");
 
       const data = await res.json();
       if (data && data[0]) {
         const { lat, lon, display_name: displayName } = data[0];
+        const target = L.latLng(Number(lat), Number(lon));
         clearSearchMarker();
         const shortPlace = escapeHtml(
           String(displayName).split(",").slice(0, 2).join(", ")
         );
-        searchMarker = L.marker([lat, lon], { icon: searchPinIcon() })
+        searchMarker = L.marker(target, { icon: searchPinIcon() })
           .addTo(map)
           .bindPopup(`<b>${escapeHtml(trimmed)}</b><br>${shortPlace}`)
           .openPopup();
-        map.flyTo([lat, lon], 13, { duration: 1.1 });
+
+        drawToAndFro(lastOrigin, target);
+        flyWithPulse(target, 13, 1.15);
+
         if (!mapWidget.classList.contains("expanded")) {
           setExpanded(true);
         }
@@ -155,13 +365,16 @@ window.AuroraTravels.createMapController = function createMapController({
       return false;
     } finally {
       window.setTimeout(() => {
-        mapSearchInput.placeholder = previousPlaceholder || "Search a place in Kenya…";
+        mapSearchInput.placeholder =
+          previousPlaceholder || "Search a place in Kenya…";
       }, 2500);
     }
   }
 
   function jumpToStop(stop) {
-    map.flyTo([stop.lat, stop.lng], 15, { duration: 1.0 });
+    const target = L.latLng(stop.lat, stop.lng);
+    drawToAndFro(lastOrigin, target);
+    flyWithPulse(target, 15, 1.0);
     const marker = markerLayer.getLayers().find((layer) => {
       const ll = layer.getLatLng();
       return (
@@ -227,7 +440,6 @@ window.AuroraTravels.createMapController = function createMapController({
     whenReady(() => map.invalidateSize(), 200);
   });
 
-  // Initial markers for first destination
   renderMapMarkers(first);
   whenReady(() => map.invalidateSize(), 300);
 

@@ -295,7 +295,7 @@
   function syncNavActive() {
     document
       .querySelectorAll(
-        ".gal-menu button[data-page], .page-nav-item, .gd-menu-inline button[data-page]"
+        ".gal-menu button[data-page], .page-nav-item, .gd-menu-inline button[data-page], .site-nav button[data-page]"
       )
       .forEach((btn) => {
         btn.classList.toggle("active", btn.dataset.page === activePage);
@@ -372,6 +372,10 @@
   }
 
   drawerList.querySelectorAll(".page-nav-item").forEach((btn) => {
+    btn.addEventListener("click", () => goToPage(btn.dataset.page));
+  });
+
+  document.querySelectorAll(".site-nav button[data-page]").forEach((btn) => {
     btn.addEventListener("click", () => goToPage(btn.dataset.page));
   });
 

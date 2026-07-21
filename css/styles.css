@@ -374,15 +374,25 @@ img {
 .hero-top {
   position: relative;
   z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
   padding: 28px 32px 0 32px;
   pointer-events: none;
 }
 
 .hero-top > * {
   pointer-events: auto;
+}
+
+.hero-top .site-nav {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  justify-self: center;
+  max-width: 100%;
 }
 
 .brand {
@@ -500,7 +510,7 @@ img {
 /* ---- Leaflet map widget ---- */
 .map-widget {
   position: absolute;
-  right: 32px;
+  left: 32px;
   bottom: 28px;
   width: 150px;
   height: 112px;
@@ -583,11 +593,13 @@ img {
 .map-controls {
   position: absolute;
   top: 8px;
-  right: 8px;
+  left: 8px;
+  right: auto;
   z-index: 1000;
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-direction: row;
 }
 
 .map-search-input {
@@ -679,6 +691,104 @@ img {
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
   background: transparent !important;
   border: none !important;
+}
+
+.map-amenity-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.amenity-bubble {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--c, #8b5cf6);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--c, #8b5cf6);
+}
+
+.fly-pulse-fill,
+.fly-pulse-ring {
+  pointer-events: none;
+}
+
+/* Shared named page header */
+.site-nav {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  background: rgba(15, 10, 22, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.site-nav button {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.site-nav button:hover,
+.site-nav button.active {
+  color: #fff;
+  background: rgba(139, 92, 246, 0.45);
+}
+
+.detail .site-nav,
+.travel-detail .site-nav {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.7);
+  border-color: var(--line);
+}
+
+.detail .site-nav button,
+.travel-detail .site-nav button {
+  color: var(--ink-soft);
+}
+
+.detail .site-nav button:hover,
+.detail .site-nav button.active,
+.travel-detail .site-nav button:hover,
+.travel-detail .site-nav button.active {
+  color: #fff;
+  background: var(--gold);
+}
+
+@media (max-width: 980px) {
+  .site-nav {
+    max-width: calc(100vw - 120px);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .map-pin-label {
@@ -1343,7 +1453,8 @@ img {
   .map-widget {
     width: 110px;
     height: 84px;
-    right: 20px;
+    left: 20px;
+    right: auto;
     bottom: 20px;
   }
 
