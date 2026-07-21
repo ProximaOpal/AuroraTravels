@@ -468,7 +468,7 @@ img {
   bottom: 0;
   z-index: 3;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-end;
   padding: 0 32px 28px 32px;
   pointer-events: none;
