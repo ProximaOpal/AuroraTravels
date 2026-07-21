@@ -19,28 +19,84 @@ window.AuroraTravels.createMapController = function createMapController({
   const map = L.map("leafletMap", {
     zoomControl: false,
     attributionControl: true,
+    preferCanvas: false,
   }).setView([first.lat, first.lng], first.zoom);
 
-  // Default: satellite imagery (Esri World Imagery)
-  L.tileLayer(
-    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    {
-      attribution:
-        "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics",
-      maxZoom: 19,
-    }
-  ).addTo(map);
+  // Satellite tiles under markers / amenities
+  map.createPane("satellitePane");
+  map.getPane("satellitePane").style.zIndex = 200;
+  map.createPane("satLabelPane");
+  map.getPane("satLabelPane").style.zIndex = 250;
 
-  // Light labels overlay for place names on satellite
+  const SAT_ATTRIB =
+    "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics";
+
+  // Imagery only — never street OSM
+  const SATELLITE_URLS = [
+    "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+  ];
+
+  let satelliteLayer = null;
+  let satUrlIndex = 0;
+  let satErrorCount = 0;
+
+  function addSatelliteLayer(urlIndex) {
+    if (satelliteLayer) {
+      map.removeLayer(satelliteLayer);
+      satelliteLayer = null;
+    }
+    satUrlIndex = urlIndex;
+    satErrorCount = 0;
+    satelliteLayer = L.tileLayer(SATELLITE_URLS[urlIndex], {
+      attribution: SAT_ATTRIB,
+      maxZoom: 19,
+      maxNativeZoom: 19,
+      tileSize: 256,
+      updateWhenIdle: false,
+      updateWhenZooming: true,
+      keepBuffer: 4,
+      crossOrigin: true,
+      className: "sat-tiles",
+      pane: "satellitePane",
+      errorTileUrl:
+        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+    });
+    satelliteLayer.on("tileerror", () => {
+      satErrorCount += 1;
+      if (satErrorCount >= 4 && satUrlIndex < SATELLITE_URLS.length - 1) {
+        addSatelliteLayer(satUrlIndex + 1);
+      }
+    });
+    satelliteLayer.on("load", () => {
+      mapWidget.classList.add("sat-ready");
+    });
+    satelliteLayer.addTo(map);
+  }
+
+  addSatelliteLayer(0);
+
+  // Place-name labels over satellite (imagery still underneath)
   L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
     {
       attribution: "",
       maxZoom: 19,
-      opacity: 0.85,
-      pane: "overlayPane",
+      opacity: 0.75,
+      pane: "satLabelPane",
+      className: "sat-labels",
+      updateWhenIdle: false,
     }
   ).addTo(map);
+
+  if (!mapWidget.querySelector(".map-sat-badge")) {
+    const badge = document.createElement("div");
+    badge.className = "map-sat-badge";
+    badge.textContent = "SATELLITE";
+    badge.setAttribute("aria-hidden", "true");
+    mapWidget.appendChild(badge);
+  }
 
   const markerLayer = L.layerGroup().addTo(map);
   const amenityLayer = L.layerGroup().addTo(map);
@@ -283,7 +339,11 @@ window.AuroraTravels.createMapController = function createMapController({
   }
 
   function invalidate() {
-    whenReady(() => map.invalidateSize(), 60);
+    whenReady(() => {
+      map.invalidateSize({ pan: false });
+      if (satelliteLayer) satelliteLayer.redraw();
+    }, 60);
+    whenReady(() => map.invalidateSize({ pan: false }), 320);
   }
 
   function flyMapTo(destination) {
@@ -300,7 +360,10 @@ window.AuroraTravels.createMapController = function createMapController({
     mapCollapseBtn.style.display = open ? "flex" : "none";
     mapExpandBtn.style.display = open ? "none" : "flex";
     mapExpandBtn.setAttribute("aria-expanded", String(open));
-    whenReady(() => map.invalidateSize(), 480);
+    whenReady(() => {
+      map.invalidateSize();
+      if (satelliteLayer) satelliteLayer.redraw();
+    }, 480);
   }
 
   function toggleMapSearch(forceOpen) {
