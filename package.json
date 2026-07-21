@@ -4,7 +4,7 @@
   "description": "Interactive travel + craft marketplace experience for Kenya.",
   "main": "index.js",
   "scripts": {
-    "build:deck": "node pitch/build-deck.js",
+    "build:deck": "python3 pitch/fill_afrihealth_template.py",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
