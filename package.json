@@ -1,24 +1,25 @@
 {
-  "name": "workspace",
+  "name": "auroratravels",
   "version": "1.0.0",
   "description": "Interactive travel + craft marketplace experience for Kenya.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "build:deck": "python3 pitch/fill_afrihealth_template.py",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --check server.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/proximaopal/auroratravels.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["kenya", "travel", "mpesa"],
+  "author": "ProximaOpal",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/proximaopal/auroratravels/issues"
   },
-  "homepage": "https://github.com/proximaopal/auroratravels#readme",
-  "dependencies": {
-    "pptxgenjs": "^4.0.1"
-  }
+  "homepage": "https://github.com/proximaopal/auroratravels#readme"
 }
