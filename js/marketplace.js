@@ -50,7 +50,7 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
       card.tabIndex = index === 0 ? -1 : 0;
       card.setAttribute(
         "aria-label",
-        `${item.shop}: ${item.artifact}, ${formatPrice(item.price)}`
+        `${item.shop}: ${item.artifact}, ${formatPrice(item.price)}. ${item.description || ""}`
       );
 
       card.innerHTML = `
@@ -61,6 +61,7 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
           <div class="gal-meta-text">
             <h2 class="gal-shop">${item.shop}</h2>
             <p class="gal-artifact">${item.artifact} · ${item.city}</p>
+            <p class="gal-desc">${item.description || ""}</p>
           </div>
           <div class="gal-meta-actions">
             <div class="gal-price"><span>PRICE</span>${Number(item.price).toLocaleString("en-KE")}</div>

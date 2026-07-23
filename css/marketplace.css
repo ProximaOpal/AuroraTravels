@@ -325,6 +325,20 @@
   color: var(--gal-muted);
 }
 
+.gal-desc {
+  margin: 10px 0 0;
+  max-width: 42ch;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.72);
+  display: none;
+}
+
+.gal-card.active .gal-desc {
+  display: block;
+}
+
 .gal-meta-actions {
   display: flex;
   flex-direction: column;
