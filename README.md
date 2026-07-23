@@ -2,38 +2,33 @@
 
 Interactive travel + craft marketplace experience for Kenya.
 
+## Stage remote (phone → projector)
+
+1. On the projector / laptop, open the live app and leave that tab visible.
+2. On your phone, open the control page (scan the QR or tap the URL):
+   - **Control:** https://web-production-7e14a.up.railway.app/control.html
+   - **QR poster:** https://web-production-7e14a.up.railway.app/remote.html
+3. Tap **Home / Parks / Travel & Stay / Artifacts / Guides / Inclusivity** — the live app switches pages.
+4. Extra buttons: Park ←/→, Craft ←/→, Guide →.
+
+Optional: open the projector with `/?present=1` to skip the home auto-advance.
+
 ## Pages
 
-1. **Landing** — animated Aurora intro. Press **Space**, **Enter**, or **scroll** to continue (auto-advances if idle).
-2. **Artifacts marketplace** — cinematic shop of Kenyan crafts with real shop locations, Google Maps links, KES prices, and M-Pesa STK push checkout.
-3. **Explore Kenya** — destination map experience (from marketplace → “Explore Kenya map”).
-
-## Project structure
-
-```
-auroratravels/
-├── index.html
-├── css/
-│   ├── styles.css          # Landing + destinations app
-│   └── marketplace.css     # Page 2 marketplace UI
-├── js/
-│   ├── destinations.js
-│   ├── artifacts.js        # Craft catalogue + shops
-│   ├── payment.js          # M-Pesa STK push + polling
-│   ├── marketplace.js
-│   ├── map.js
-│   ├── utils.js
-│   └── app.js
-└── README.md
-```
+1. **Home** — animated Aurora intro.
+2. **Parks** — destination map experience.
+3. **Travel & Stay** — transport + lodges + M-Pesa.
+4. **Artifacts** — Kenyan crafts marketplace.
+5. **Guides** — student guide pairing.
+6. **Inclusivity** — languages + access pillars.
 
 ## Run locally
 
 ```bash
-python3 -m http.server 8080
+npm start
 ```
 
-Open `http://localhost:8080`.
+Open `http://localhost:8080` (or the Railway URL in production).
 
 ## Payments
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0b0d10">
+  <title>Aurora · Stage Remote</title>
+  <link rel="stylesheet" href="css/control.css?v=20260723b">
+</head>
+<body>
+  <main class="remote" id="remote">
+    <header class="remote-head">
+      <p class="remote-brand">AURORA</p>
+      <p class="remote-sub">Stage remote</p>
+      <p class="remote-status" id="status">Ready</p>
+    </header>
+
+    <section class="remote-section" aria-label="Pages">
+      <button type="button" data-page="home">Home</button>
+      <button type="button" data-page="page1">Parks</button>
+      <button type="button" data-page="page2">Travel &amp; Stay</button>
+      <button type="button" data-page="page3">Artifacts</button>
+      <button type="button" data-page="page4">Guides</button>
+      <button type="button" data-page="page5">Inclusivity</button>
+    </section>
+
+    <section class="remote-section remote-row" aria-label="Parks controls">
+      <button type="button" class="secondary" data-action="park-prev">Park ←</button>
+      <button type="button" class="secondary" data-action="park-next">Park →</button>
+    </section>
+
+    <section class="remote-section remote-row" aria-label="Gallery controls">
+      <button type="button" class="secondary" data-action="craft-prev">Craft ←</button>
+      <button type="button" class="secondary" data-action="craft-next">Craft →</button>
+      <button type="button" class="secondary" data-action="guide-next">Guide →</button>
+    </section>
+
+    <footer class="remote-foot">
+      <p>Projector: keep the live Aurora tab open. This phone drives that screen.</p>
+      <a class="remote-link" id="appLink" href="/">Open live app</a>
+      <a class="remote-link" href="/remote.html" style="display:block;margin-top:10px;">Show QR for stage</a>
+    </footer>
+  </main>
+  <script src="js/control.js?v=20260723b"></script>
+</body>
+</html>

@@ -252,5 +252,11 @@ window.AuroraTravels.createMarketplace = function createMarketplace({
     isVisible() {
       return page.classList.contains("visible");
     },
+    next() {
+      activate((current + 1) % artifacts.length, false);
+    },
+    prev() {
+      activate((current - 1 + artifacts.length) % artifacts.length, false);
+    },
   };
 };

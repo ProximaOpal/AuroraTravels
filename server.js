@@ -1,10 +1,12 @@
 /**
  * Static file server for Aurora Travels (Railway / Node hosts).
  * Serves the SPA from the repo root on process.env.PORT.
+ * Also hosts a tiny presentation remote API for phone → stage control.
  */
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { URL } = require("url");
 
 const PORT = Number(process.env.PORT) || 8080;
 const ROOT = __dirname;
@@ -25,8 +27,34 @@ const MIME = {
   ".woff2": "font/woff2",
   ".map": "application/json",
   ".txt": "text/plain; charset=utf-8",
-  ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ".pptx":
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 };
+
+/** Shared presentation remote state (phone → projector). */
+let remoteState = {
+  seq: 0,
+  page: null,
+  action: null,
+  ts: 0,
+};
+
+const ALLOWED_PAGES = new Set([
+  "home",
+  "page1",
+  "page2",
+  "page3",
+  "page4",
+  "page5",
+]);
+
+const ALLOWED_ACTIONS = new Set([
+  "park-next",
+  "park-prev",
+  "guide-next",
+  "craft-next",
+  "craft-prev",
+]);
 
 function safeJoin(root, requestPath) {
   const decoded = decodeURIComponent((requestPath || "/").split("?")[0]);
@@ -41,15 +69,104 @@ function send(res, status, body, headers = {}) {
   res.end(body);
 }
 
-const server = http.createServer((req, res) => {
-  let filePath = safeJoin(ROOT, req.url === "/" ? "/index.html" : req.url);
+function sendJson(res, status, obj) {
+  send(res, status, JSON.stringify(obj), {
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "no-store",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  });
+}
+
+function readBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    let size = 0;
+    req.on("data", (chunk) => {
+      size += chunk.length;
+      if (size > 8192) {
+        reject(new Error("body too large"));
+        req.destroy();
+        return;
+      }
+      chunks.push(chunk);
+    });
+    req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+    req.on("error", reject);
+  });
+}
+
+async function handleControlApi(req, res, pathname) {
+  if (pathname !== "/api/control") return false;
+
+  if (req.method === "OPTIONS") {
+    send(res, 204, "", {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    });
+    return true;
+  }
+
+  if (req.method === "GET") {
+    sendJson(res, 200, remoteState);
+    return true;
+  }
+
+  if (req.method === "POST") {
+    try {
+      const raw = await readBody(req);
+      const data = raw ? JSON.parse(raw) : {};
+      const page =
+        typeof data.page === "string" && ALLOWED_PAGES.has(data.page)
+          ? data.page
+          : null;
+      const action =
+        typeof data.action === "string" && ALLOWED_ACTIONS.has(data.action)
+          ? data.action
+          : null;
+
+      if (!page && !action) {
+        sendJson(res, 400, { error: "Need page or action" });
+        return true;
+      }
+
+      remoteState = {
+        seq: remoteState.seq + 1,
+        page,
+        action,
+        ts: Date.now(),
+      };
+      sendJson(res, 200, remoteState);
+      return true;
+    } catch (err) {
+      sendJson(res, 400, { error: "Invalid JSON" });
+      return true;
+    }
+  }
+
+  sendJson(res, 405, { error: "Method not allowed" });
+  return true;
+}
+
+const server = http.createServer(async (req, res) => {
+  let pathname = "/";
+  try {
+    pathname = new URL(req.url || "/", `http://${req.headers.host}`).pathname;
+  } catch {
+    pathname = (req.url || "/").split("?")[0] || "/";
+  }
+
+  if (await handleControlApi(req, res, pathname)) return;
+
+  let filePath = safeJoin(ROOT, pathname === "/" ? "/index.html" : pathname);
   if (!filePath) {
     return send(res, 403, "Forbidden");
   }
 
   fs.stat(filePath, (err, stat) => {
     if (err || !stat.isFile()) {
-      // SPA-style fallback for clean URLs
       const fallback = path.join(ROOT, "index.html");
       return fs.readFile(fallback, (readErr, data) => {
         if (readErr) return send(res, 404, "Not found");
@@ -62,8 +179,6 @@ const server = http.createServer((req, res) => {
 
     const ext = path.extname(filePath).toLowerCase();
     const type = MIME[ext] || "application/octet-stream";
-    // HTML/JS/CSS must not stick for a day — stale app.js hid Inclusivity
-    // content after nav updates (blank purple page with active Inclusivity tab).
     const immutable =
       ext === ".png" ||
       ext === ".jpg" ||

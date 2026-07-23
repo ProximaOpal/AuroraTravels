@@ -331,7 +331,7 @@
   }
 
   function goToPage(page, { animate = true } = {}) {
-    if (transitionBusy) return;
+    if (transitionBusy && animate) return;
     if (page === activePage && page !== "home") {
       closeDrawer();
       return;
@@ -386,6 +386,50 @@
     }, 1080);
   }
 
+  /* ---- presentation remote (phone → this display) ---- */
+  const presentMode = new URLSearchParams(window.location.search).has("present");
+  let remoteSeq = 0;
+  let autoAdvanceTimer = null;
+
+  function applyRemoteCommand(cmd) {
+    if (!cmd || !cmd.seq || cmd.seq <= remoteSeq) return;
+    remoteSeq = cmd.seq;
+    if (autoAdvanceTimer) {
+      window.clearTimeout(autoAdvanceTimer);
+      autoAdvanceTimer = null;
+    }
+
+    if (cmd.page) {
+      goToPage(cmd.page, { animate: false });
+    }
+
+    if (cmd.action === "park-next") {
+      document.getElementById("nextBtn")?.click();
+    } else if (cmd.action === "park-prev") {
+      document.getElementById("prevBtn")?.click();
+    } else if (cmd.action === "guide-next") {
+      guidesPage.next();
+    } else if (cmd.action === "craft-next") {
+      marketplace.next();
+    } else if (cmd.action === "craft-prev") {
+      marketplace.prev();
+    }
+  }
+
+  async function pollRemote() {
+    try {
+      const res = await fetch("/api/control", { cache: "no-store" });
+      if (!res.ok) return;
+      applyRemoteCommand(await res.json());
+    } catch {
+      /* offline / local file — ignore */
+    }
+  }
+
+  // Always listen so projector can stay on the normal URL.
+  window.setInterval(pollRemote, 450);
+  pollRemote();
+
   drawerList.querySelectorAll(".page-nav-item").forEach((btn) => {
     btn.addEventListener("click", () => goToPage(btn.dataset.page));
   });
@@ -414,12 +458,19 @@
   window.addEventListener("keydown", onLandingKey);
   window.addEventListener("wheel", onLandingWheel, { passive: false });
 
-  // Soft auto-advance from home → page 1 if idle
-  window.addEventListener("load", () => {
-    window.setTimeout(() => {
-      if (activePage === "home") goToPage("page1");
-    }, 5200);
-  });
+  // Soft auto-advance from home → page 1 if idle (skip in present mode)
+  if (!presentMode) {
+    window.addEventListener("load", () => {
+      autoAdvanceTimer = window.setTimeout(() => {
+        if (activePage === "home") goToPage("page1");
+      }, 5200);
+    });
+  }
+
+  window.AuroraTravels.remote = {
+    goToPage: (page) => goToPage(page, { animate: false }),
+    presentMode,
+  };
 
   syncNavActive();
 

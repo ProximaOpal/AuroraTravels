@@ -230,5 +230,11 @@ window.AuroraTravels.createGuidesPage = function createGuidesPage({
         if (!page.classList.contains("visible")) page.style.display = "none";
       }, 450);
     },
+    next() {
+      step(1);
+    },
+    prev() {
+      step(-1);
+    },
   };
 };
