@@ -23,5 +23,9 @@ window.AuroraTravels.createInclusivityPage = function createInclusivityPage() {
         if (!page.classList.contains("visible")) page.style.display = "none";
       }, 450);
     },
+    scrollBy(delta) {
+      if (!page) return;
+      page.scrollBy({ top: delta, behavior: "smooth" });
+    },
   };
 };

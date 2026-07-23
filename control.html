@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#0b0d10">
   <title>Aurora · Stage Remote</title>
-  <link rel="stylesheet" href="css/control.css?v=20260723b">
+  <link rel="stylesheet" href="css/control.css?v=20260723c">
 </head>
 <body>
   <main class="remote" id="remote">
@@ -16,32 +16,60 @@
       <p class="remote-status" id="status">Ready</p>
     </header>
 
-    <section class="remote-section" aria-label="Pages">
-      <button type="button" data-page="home">Home</button>
-      <button type="button" data-page="page1">Parks</button>
-      <button type="button" data-page="page2">Travel &amp; Stay</button>
-      <button type="button" data-page="page3">Artifacts</button>
-      <button type="button" data-page="page4">Guides</button>
-      <button type="button" data-page="page5">Inclusivity</button>
-    </section>
+    <div class="remote-pages" aria-label="Pages">
+      <section class="remote-block">
+        <button type="button" class="page-btn" data-page="home">Home</button>
+      </section>
 
-    <section class="remote-section remote-row" aria-label="Parks controls">
-      <button type="button" class="secondary" data-action="park-prev">Park ←</button>
-      <button type="button" class="secondary" data-action="park-next">Park →</button>
-    </section>
+      <section class="remote-block">
+        <button type="button" class="page-btn" data-page="page1">Parks</button>
+        <div class="remote-subs" aria-label="Parks controls">
+          <button type="button" class="sub-btn" data-page="page1" data-action="park-prev">Park ←</button>
+          <button type="button" class="sub-btn" data-page="page1" data-action="park-next">Park →</button>
+        </div>
+      </section>
 
-    <section class="remote-section remote-row" aria-label="Gallery controls">
-      <button type="button" class="secondary" data-action="craft-prev">Craft ←</button>
-      <button type="button" class="secondary" data-action="craft-next">Craft →</button>
-      <button type="button" class="secondary" data-action="guide-next">Guide →</button>
-    </section>
+      <section class="remote-block">
+        <button type="button" class="page-btn" data-page="page2">Travel &amp; Stay</button>
+        <div class="remote-subs" aria-label="Travel controls">
+          <button type="button" class="sub-btn" data-page="page2" data-action="travel-mode">Travel</button>
+          <button type="button" class="sub-btn" data-page="page2" data-action="stay-mode">Stay</button>
+          <button type="button" class="sub-btn" data-page="page2" data-action="travel-prev">Item ←</button>
+          <button type="button" class="sub-btn" data-page="page2" data-action="travel-next">Item →</button>
+        </div>
+      </section>
+
+      <section class="remote-block">
+        <button type="button" class="page-btn" data-page="page3">Artifacts</button>
+        <div class="remote-subs" aria-label="Marketplace photo controls">
+          <button type="button" class="sub-btn" data-page="page3" data-action="craft-prev">Photo ←</button>
+          <button type="button" class="sub-btn" data-page="page3" data-action="craft-next">Photo →</button>
+        </div>
+      </section>
+
+      <section class="remote-block">
+        <button type="button" class="page-btn" data-page="page4">Guides</button>
+        <div class="remote-subs" aria-label="Guides controls">
+          <button type="button" class="sub-btn" data-page="page4" data-action="guide-prev">Guide ←</button>
+          <button type="button" class="sub-btn" data-page="page4" data-action="guide-next">Guide →</button>
+        </div>
+      </section>
+
+      <section class="remote-block">
+        <button type="button" class="page-btn" data-page="page5">Inclusivity</button>
+        <div class="remote-subs" aria-label="Inclusivity scroll">
+          <button type="button" class="sub-btn" data-page="page5" data-action="inc-up">Scroll ↑</button>
+          <button type="button" class="sub-btn" data-page="page5" data-action="inc-down">Scroll ↓</button>
+        </div>
+      </section>
+    </div>
 
     <footer class="remote-foot">
-      <p>Projector: keep the live Aurora tab open. This phone drives that screen.</p>
+      <p>Projector: keep the live Aurora tab open. Sub-buttons open that page, then change it.</p>
       <a class="remote-link" id="appLink" href="/">Open live app</a>
       <a class="remote-link" href="/remote.html" style="display:block;margin-top:10px;">Show QR for stage</a>
     </footer>
   </main>
-  <script src="js/control.js?v=20260723b"></script>
+  <script src="js/control.js?v=20260723c"></script>
 </body>
 </html>

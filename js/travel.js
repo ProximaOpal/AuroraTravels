@@ -201,5 +201,14 @@ window.AuroraTravels.createTravelPage = function createTravelPage({
         if (!page.classList.contains("visible")) page.style.display = "none";
       }, 360);
     },
+    next() {
+      step(1);
+    },
+    prev() {
+      step(-1);
+    },
+    setMode(next) {
+      setMode(next === "stay" ? "stay" : "travel");
+    },
   };
 };

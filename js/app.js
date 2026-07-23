@@ -403,17 +403,34 @@
       goToPage(cmd.page, { animate: false });
     }
 
-    if (cmd.action === "park-next") {
-      document.getElementById("nextBtn")?.click();
-    } else if (cmd.action === "park-prev") {
-      document.getElementById("prevBtn")?.click();
-    } else if (cmd.action === "guide-next") {
-      guidesPage.next();
-    } else if (cmd.action === "craft-next") {
-      marketplace.next();
-    } else if (cmd.action === "craft-prev") {
-      marketplace.prev();
-    }
+    // Let page shell paint before stepping galleries.
+    window.setTimeout(() => {
+      if (cmd.action === "park-next") {
+        document.getElementById("nextBtn")?.click();
+      } else if (cmd.action === "park-prev") {
+        document.getElementById("prevBtn")?.click();
+      } else if (cmd.action === "guide-next") {
+        guidesPage.next();
+      } else if (cmd.action === "guide-prev") {
+        guidesPage.prev();
+      } else if (cmd.action === "craft-next") {
+        marketplace.next();
+      } else if (cmd.action === "craft-prev") {
+        marketplace.prev();
+      } else if (cmd.action === "travel-next") {
+        travelPage.next();
+      } else if (cmd.action === "travel-prev") {
+        travelPage.prev();
+      } else if (cmd.action === "travel-mode") {
+        travelPage.setMode("travel");
+      } else if (cmd.action === "stay-mode") {
+        travelPage.setMode("stay");
+      } else if (cmd.action === "inc-up") {
+        inclusivityPage.scrollBy(-320);
+      } else if (cmd.action === "inc-down") {
+        inclusivityPage.scrollBy(320);
+      }
+    }, cmd.page ? 40 : 0);
   }
 
   async function pollRemote() {

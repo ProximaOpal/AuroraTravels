@@ -52,8 +52,15 @@ const ALLOWED_ACTIONS = new Set([
   "park-next",
   "park-prev",
   "guide-next",
+  "guide-prev",
   "craft-next",
   "craft-prev",
+  "travel-next",
+  "travel-prev",
+  "travel-mode",
+  "stay-mode",
+  "inc-up",
+  "inc-down",
 ]);
 
 function safeJoin(root, requestPath) {

@@ -9,7 +9,7 @@ Interactive travel + craft marketplace experience for Kenya.
    - **Control:** https://web-production-7e14a.up.railway.app/control.html
    - **QR poster:** https://web-production-7e14a.up.railway.app/remote.html
 3. Tap **Home / Parks / Travel & Stay / Artifacts / Guides / Inclusivity** — the live app switches pages.
-4. Extra buttons: Park ←/→, Craft ←/→, Guide →.
+4. Under each page: sub-buttons (e.g. Artifacts **Photo ← / Photo →**, Parks **Park ← / →**, Guides, Travel/Stay, Inclusivity scroll).
 
 Optional: open the projector with `/?present=1` to skip the home auto-advance.
 

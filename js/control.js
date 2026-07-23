@@ -3,7 +3,9 @@
  */
 (function initControlRemote() {
   const statusEl = document.getElementById("status");
-  const buttons = Array.from(document.querySelectorAll("[data-page], [data-action]"));
+  const buttons = Array.from(
+    document.querySelectorAll("button[data-page], button[data-action]")
+  );
   let lastPage = null;
   let busy = false;
 
@@ -15,8 +17,9 @@
   }
 
   function markActive(page) {
+    if (!page) return;
     lastPage = page;
-    buttons.forEach((btn) => {
+    document.querySelectorAll(".page-btn").forEach((btn) => {
       btn.classList.toggle("is-active", btn.dataset.page === page);
     });
   }
@@ -33,10 +36,9 @@
         cache: "no-store",
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
+      await res.json();
       if (payload.page) markActive(payload.page);
       setStatus(`Live · ${label}`, "ok");
-      return data;
     } catch (err) {
       setStatus("Could not reach live app", "err");
       console.error(err);
@@ -49,11 +51,14 @@
     btn.addEventListener("click", async () => {
       btn.classList.add("is-sent");
       window.setTimeout(() => btn.classList.remove("is-sent"), 160);
-      if (btn.dataset.page) {
-        await send({ page: btn.dataset.page }, btn.textContent.trim());
-      } else if (btn.dataset.action) {
-        await send({ action: btn.dataset.action }, btn.textContent.trim());
-      }
+
+      const page = btn.dataset.page || null;
+      const action = btn.dataset.action || null;
+      const label = btn.textContent.trim();
+      const payload = {};
+      if (page) payload.page = page;
+      if (action) payload.action = action;
+      await send(payload, label);
     });
   });
 
@@ -63,5 +68,5 @@
   }
 
   markActive(lastPage);
-  setStatus("Ready — tap a page");
+  setStatus("Ready — tap a page or sub-control");
 })();
