@@ -322,12 +322,12 @@
     landing.classList.add("visible-home");
   }
 
-  function hideAllContent() {
-    marketplace.hide();
-    guidesPage.hide();
-    travelPage.hide();
-    inclusivityPage.hide();
-    stage.classList.remove("visible");
+  function hideAllContent(except) {
+    if (except !== "page3") marketplace.hide();
+    if (except !== "page4") guidesPage.hide();
+    if (except !== "page2") travelPage.hide();
+    if (except !== "page5") inclusivityPage.hide();
+    if (except !== "page1") stage.classList.remove("visible");
   }
 
   function goToPage(page, { animate = true } = {}) {
@@ -351,7 +351,7 @@
       }
 
       hideLanding();
-      hideAllContent();
+      hideAllContent(page);
       setHeaderVisible(true);
 
       if (page === "page1") {

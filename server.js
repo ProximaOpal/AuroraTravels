@@ -62,12 +62,26 @@ const server = http.createServer((req, res) => {
 
     const ext = path.extname(filePath).toLowerCase();
     const type = MIME[ext] || "application/octet-stream";
+    // HTML/JS/CSS must not stick for a day — stale app.js hid Inclusivity
+    // content after nav updates (blank purple page with active Inclusivity tab).
+    const immutable =
+      ext === ".png" ||
+      ext === ".jpg" ||
+      ext === ".jpeg" ||
+      ext === ".gif" ||
+      ext === ".webp" ||
+      ext === ".svg" ||
+      ext === ".ico" ||
+      ext === ".woff" ||
+      ext === ".woff2";
+    const cacheControl = immutable
+      ? "public, max-age=604800, immutable"
+      : "no-cache";
     fs.createReadStream(filePath)
       .on("open", () => {
         res.writeHead(200, {
           "Content-Type": type,
-          "Cache-Control":
-            ext === ".html" ? "no-cache" : "public, max-age=86400",
+          "Cache-Control": cacheControl,
         });
       })
       .on("error", () => send(res, 500, "Server error"))
