@@ -285,6 +285,8 @@
     onNavigate: (page) => goToPage(page),
   });
 
+  const inclusivityPage = window.AuroraTravels.createInclusivityPage();
+
   const travelPage = createTravelPage({
     travelModes,
     stays,
@@ -324,6 +326,7 @@
     marketplace.hide();
     guidesPage.hide();
     travelPage.hide();
+    inclusivityPage.hide();
     stage.classList.remove("visible");
   }
 
@@ -360,6 +363,8 @@
         marketplace.show();
       } else if (page === "page4") {
         guidesPage.show();
+      } else if (page === "page5") {
+        inclusivityPage.show();
       }
 
       syncNavActive();

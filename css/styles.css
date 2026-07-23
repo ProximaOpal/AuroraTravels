@@ -829,7 +829,8 @@ img {
 #stage.visible,
 .page-travel.visible,
 .page-marketplace.visible,
-.page-guides.visible {
+.page-guides.visible,
+.page-inclusivity.visible {
   padding-top: 64px;
   box-sizing: border-box;
 }
