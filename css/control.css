@@ -90,9 +90,41 @@ body {
   transition: background 0.12s ease, transform 0.12s ease;
 }
 
+.remote .page-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
 .remote .page-btn.is-active {
   border-color: var(--accent);
   box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.remote .chevron {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg);
+  transition: transform 0.18s ease;
+  flex-shrink: 0;
+}
+
+.remote-block.is-open .chevron {
+  transform: rotate(-135deg);
+  border-color: var(--accent);
+}
+
+.remote-children {
+  display: grid;
+  gap: 8px;
+}
+
+.remote-children[hidden] {
+  display: none !important;
 }
 
 .remote-subs {
@@ -117,12 +149,8 @@ body {
   color: var(--muted);
 }
 
-.remote-voice .remote-label:first-child {
-  margin-left: 0;
-}
-
 .remote-hint {
-  margin: 4px 0 0;
+  margin: 4px 0 0 14px;
   font-size: 12px;
   line-height: 1.4;
   color: var(--muted);

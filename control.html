@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#0b0d10">
   <title>Aurora · Stage Remote</title>
-  <link rel="stylesheet" href="css/control.css?v=20260724b">
+  <link rel="stylesheet" href="css/control.css?v=20260724c">
 </head>
 <body>
   <main class="remote" id="remote">
@@ -17,89 +17,128 @@
     </header>
 
     <div class="remote-pages" aria-label="Pages">
-      <section class="remote-block remote-voice">
-        <p class="remote-label">ElevenLabs · Aurora voice</p>
-        <div class="remote-subs" aria-label="Stage voice controls">
-          <button type="button" class="sub-btn" data-action="voice-start">Start on stage</button>
-          <button type="button" class="sub-btn" data-action="voice-end">End on stage</button>
-          <button type="button" class="sub-btn" data-action="voice-expand">Open widget</button>
-        </div>
-        <p class="remote-label">Stream from this phone</p>
-        <div class="remote-subs" aria-label="Phone voice stream">
-          <button type="button" class="sub-btn voice-emphasis" id="phoneVoiceStart" data-local="phone-start">Stream voice on phone</button>
-          <button type="button" class="sub-btn" id="phoneVoiceEnd" data-local="phone-end">End phone call</button>
-        </div>
-        <p class="remote-hint">Uses this phone’s mic + speaker. Allow microphone when Safari/Chrome asks.</p>
-      </section>
-
-      <section class="remote-block">
+      <section class="remote-block" data-accordion>
         <button type="button" class="page-btn" data-page="home">Home</button>
       </section>
 
-      <section class="remote-block">
-        <button type="button" class="page-btn" data-page="page1">Parks</button>
-        <div class="remote-subs" aria-label="Parks controls">
-          <button type="button" class="sub-btn" data-page="page1" data-action="park-prev">Park ←</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="park-next">Park →</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="park-search">Find park</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-overview">All parks</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-overview-close">Close grid</button>
-        </div>
-        <p class="remote-label">Map</p>
-        <div class="remote-subs remote-subs-map" aria-label="Map controls">
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-expand">Expand</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-collapse">Collapse</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-fullscreen">Fullscreen</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-search">Search</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-zoom-in">Zoom +</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-zoom-out">Zoom −</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-up">Pan ↑</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-down">Pan ↓</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-left">Pan ←</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-right">Pan →</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-recenter">Recenter</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-stop-prev">Stop ←</button>
-          <button type="button" class="sub-btn" data-page="page1" data-action="map-stop-next">Stop →</button>
+      <section class="remote-block" data-accordion>
+        <button type="button" class="page-btn accordion-toggle" data-page="page1" aria-expanded="false">
+          Parks
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+        <div class="remote-children" hidden>
+          <div class="remote-subs" aria-label="Parks controls">
+            <button type="button" class="sub-btn" data-page="page1" data-action="park-prev">Park ←</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="park-next">Park →</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="park-search">Find park</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-overview">All parks</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-overview-close">Close grid</button>
+          </div>
         </div>
       </section>
 
-      <section class="remote-block">
-        <button type="button" class="page-btn" data-page="page2">Travel &amp; Stay</button>
-        <div class="remote-subs" aria-label="Travel controls">
-          <button type="button" class="sub-btn" data-page="page2" data-action="travel-mode">Travel</button>
-          <button type="button" class="sub-btn" data-page="page2" data-action="stay-mode">Stay</button>
-          <button type="button" class="sub-btn" data-page="page2" data-action="travel-prev">Item ←</button>
-          <button type="button" class="sub-btn" data-page="page2" data-action="travel-next">Item →</button>
+      <section class="remote-block" data-accordion>
+        <button type="button" class="page-btn accordion-toggle" data-page="page1" data-panel="map" aria-expanded="false">
+          Maps
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+        <div class="remote-children" hidden>
+          <div class="remote-subs remote-subs-map" aria-label="Map controls">
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-expand">Expand</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-collapse">Collapse</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-fullscreen">Fullscreen</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-search">Search</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-zoom-in">Zoom +</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-zoom-out">Zoom −</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-up">Pan ↑</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-down">Pan ↓</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-left">Pan ←</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-pan-right">Pan →</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-recenter">Recenter</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-stop-prev">Stop ←</button>
+            <button type="button" class="sub-btn" data-page="page1" data-action="map-stop-next">Stop →</button>
+          </div>
         </div>
       </section>
 
-      <section class="remote-block">
-        <button type="button" class="page-btn" data-page="page3">Artifacts</button>
-        <div class="remote-subs" aria-label="Marketplace photo controls">
-          <button type="button" class="sub-btn" data-page="page3" data-action="craft-prev">Photo ←</button>
-          <button type="button" class="sub-btn" data-page="page3" data-action="craft-next">Photo →</button>
+      <section class="remote-block" data-accordion>
+        <button type="button" class="page-btn accordion-toggle" data-page="page2" aria-expanded="false">
+          Travel &amp; Stay
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+        <div class="remote-children" hidden>
+          <div class="remote-subs" aria-label="Travel controls">
+            <button type="button" class="sub-btn" data-page="page2" data-action="travel-mode">Travel</button>
+            <button type="button" class="sub-btn" data-page="page2" data-action="stay-mode">Stay</button>
+            <button type="button" class="sub-btn" data-page="page2" data-action="travel-prev">Item ←</button>
+            <button type="button" class="sub-btn" data-page="page2" data-action="travel-next">Item →</button>
+          </div>
         </div>
       </section>
 
-      <section class="remote-block">
-        <button type="button" class="page-btn" data-page="page4">Guides</button>
-        <div class="remote-subs" aria-label="Guides controls">
-          <button type="button" class="sub-btn" data-page="page4" data-action="guide-prev">Guide ←</button>
-          <button type="button" class="sub-btn" data-page="page4" data-action="guide-next">Guide →</button>
+      <section class="remote-block" data-accordion>
+        <button type="button" class="page-btn accordion-toggle" data-page="page3" aria-expanded="false">
+          Artifacts
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+        <div class="remote-children" hidden>
+          <div class="remote-subs" aria-label="Marketplace photo controls">
+            <button type="button" class="sub-btn" data-page="page3" data-action="craft-prev">Photo ←</button>
+            <button type="button" class="sub-btn" data-page="page3" data-action="craft-next">Photo →</button>
+          </div>
         </div>
       </section>
 
-      <section class="remote-block">
-        <button type="button" class="page-btn" data-page="page5">Inclusivity</button>
-        <div class="remote-subs" aria-label="Inclusivity scroll">
-          <button type="button" class="sub-btn" data-page="page5" data-action="inc-up">Scroll ↑</button>
-          <button type="button" class="sub-btn" data-page="page5" data-action="inc-down">Scroll ↓</button>
+      <section class="remote-block" data-accordion>
+        <button type="button" class="page-btn accordion-toggle" data-page="page4" aria-expanded="false">
+          Guides
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+        <div class="remote-children" hidden>
+          <div class="remote-subs" aria-label="Guides controls">
+            <button type="button" class="sub-btn" data-page="page4" data-action="guide-prev">Guide ←</button>
+            <button type="button" class="sub-btn" data-page="page4" data-action="guide-next">Guide →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="remote-block" data-accordion>
+        <button type="button" class="page-btn accordion-toggle" data-page="page5" aria-expanded="false">
+          Inclusivity
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+        <div class="remote-children" hidden>
+          <div class="remote-subs" aria-label="Inclusivity scroll">
+            <button type="button" class="sub-btn" data-page="page5" data-action="inc-up">Scroll ↑</button>
+            <button type="button" class="sub-btn" data-page="page5" data-action="inc-down">Scroll ↓</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="remote-block remote-voice" data-accordion>
+        <button type="button" class="page-btn accordion-toggle" data-panel="voice" aria-expanded="false">
+          Voice
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+        <div class="remote-children" hidden>
+          <p class="remote-label">ElevenLabs · stage</p>
+          <div class="remote-subs" aria-label="Stage voice controls">
+            <button type="button" class="sub-btn" data-action="voice-start">Start on stage</button>
+            <button type="button" class="sub-btn" data-action="voice-end">End on stage</button>
+            <button type="button" class="sub-btn" data-action="voice-expand">Open widget</button>
+          </div>
+          <p class="remote-label">Stream from this phone</p>
+          <div class="remote-subs" aria-label="Phone voice stream">
+            <button type="button" class="sub-btn voice-emphasis" id="phoneVoiceStart" data-local="phone-start">Stream voice on phone</button>
+            <button type="button" class="sub-btn" id="phoneVoiceEnd" data-local="phone-end">End phone call</button>
+          </div>
+          <p class="remote-hint">Uses this phone’s mic + speaker. Allow microphone when Safari/Chrome asks.</p>
         </div>
       </section>
     </div>
 
     <footer class="remote-foot">
-      <p>Projector: keep the live Aurora tab open. Voice: stage buttons drive the projector widget; phone stream talks here.</p>
+      <p>Tap a page to open it and reveal its controls. Maps and Voice are their own sections.</p>
       <a class="remote-link" id="appLink" href="/">Open live app</a>
       <a class="remote-link" href="/remote.html" style="display:block;margin-top:10px;">Show QR for stage</a>
     </footer>
@@ -116,6 +155,6 @@
     action-text="Aurora on phone"
   ></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-  <script src="js/control.js?v=20260724b"></script>
+  <script src="js/control.js?v=20260724c"></script>
 </body>
 </html>

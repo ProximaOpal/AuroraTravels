@@ -1,12 +1,11 @@
 /**
  * Phone stage remote — posts page/action commands to the live app,
  * plus local ElevenLabs voice streaming on this device.
+ * Accordion: child controls start collapsed.
  */
 (function initControlRemote() {
   const statusEl = document.getElementById("status");
-  const buttons = Array.from(
-    document.querySelectorAll("button[data-page], button[data-action]")
-  ).filter((btn) => !btn.hasAttribute("data-local"));
+  const blocks = Array.from(document.querySelectorAll("[data-accordion]"));
   let lastPage = null;
   let busy = false;
 
@@ -20,8 +19,36 @@
   function markActive(page) {
     if (!page) return;
     lastPage = page;
-    document.querySelectorAll(".page-btn").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.page === page);
+    document.querySelectorAll(".page-btn[data-page]").forEach((btn) => {
+      const isPage = btn.dataset.page === page && !btn.dataset.panel;
+      const isMap =
+        page === "page1" && btn.dataset.panel === "map" && lastPage === "page1";
+      // Highlight the primary page button; Maps stays highlighted only while its panel is open.
+      btn.classList.toggle(
+        "is-active",
+        btn.dataset.panel === "map"
+          ? btn.closest("[data-accordion]")?.classList.contains("is-open") &&
+              page === "page1"
+          : btn.dataset.page === page && !btn.dataset.panel
+      );
+    });
+  }
+
+  function setOpen(block, open) {
+    if (!block) return;
+    const toggle = block.querySelector(".accordion-toggle");
+    const children = block.querySelector(".remote-children");
+    block.classList.toggle("is-open", open);
+    if (toggle) toggle.setAttribute("aria-expanded", String(open));
+    if (children) {
+      if (open) children.removeAttribute("hidden");
+      else children.setAttribute("hidden", "");
+    }
+  }
+
+  function collapseAll(except) {
+    blocks.forEach((block) => {
+      if (block !== except) setOpen(block, false);
     });
   }
 
@@ -48,11 +75,49 @@
     }
   }
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      btn.classList.add("is-sent");
-      window.setTimeout(() => btn.classList.remove("is-sent"), 160);
+  function flash(btn) {
+    btn.classList.add("is-sent");
+    window.setTimeout(() => btn.classList.remove("is-sent"), 160);
+  }
 
+  // Main page / accordion toggles
+  blocks.forEach((block) => {
+    const toggle = block.querySelector(".page-btn");
+    if (!toggle) return;
+
+    toggle.addEventListener("click", async () => {
+      flash(toggle);
+      const hasChildren = !!block.querySelector(".remote-children");
+      const willOpen = hasChildren && !block.classList.contains("is-open");
+
+      if (hasChildren) {
+        collapseAll(willOpen ? block : null);
+        setOpen(block, willOpen);
+      } else {
+        collapseAll(null);
+      }
+
+      const page = toggle.dataset.page || null;
+      const label = toggle.childNodes[0]?.textContent?.trim() || toggle.textContent.trim();
+      if (page) {
+        await send({ page }, label);
+      } else {
+        setStatus(willOpen ? `${label} open` : `${label} closed`, "ok");
+      }
+
+      // Maps: also expand the map widget on stage when opening the panel
+      if (willOpen && toggle.dataset.panel === "map") {
+        await send({ page: "page1", action: "map-expand" }, "Expand map");
+      }
+    });
+  });
+
+  // Child action buttons (not accordion toggles, not local-only)
+  document.querySelectorAll(".sub-btn").forEach((btn) => {
+    if (btn.hasAttribute("data-local")) return;
+    btn.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      flash(btn);
       const page = btn.dataset.page || null;
       const action = btn.dataset.action || null;
       const label = btn.textContent.trim();
@@ -92,7 +157,6 @@
   }
 
   async function startPhoneVoice() {
-    // Avoid dual audio: end the projector call first.
     await send({ action: "voice-end" }, "End on stage");
     setStatus("Starting phone mic…");
     let tries = 0;
@@ -114,16 +178,10 @@
     }
   }
 
-  document
-    .getElementById("phoneVoiceStart")
-    ?.addEventListener("click", () => {
-      document.getElementById("phoneVoiceStart")?.classList.add("is-sent");
-      window.setTimeout(
-        () => document.getElementById("phoneVoiceStart")?.classList.remove("is-sent"),
-        160
-      );
-      startPhoneVoice();
-    });
+  document.getElementById("phoneVoiceStart")?.addEventListener("click", () => {
+    flash(document.getElementById("phoneVoiceStart"));
+    startPhoneVoice();
+  });
 
   document.getElementById("phoneVoiceEnd")?.addEventListener("click", () => {
     endPhoneVoice();
@@ -134,6 +192,7 @@
     appLink.href = `${window.location.origin}/?present=1`;
   }
 
-  markActive(lastPage);
-  setStatus("Ready — pages, map, or Aurora voice");
+  // Start fully collapsed
+  collapseAll(null);
+  setStatus("Ready — tap a section to expand");
 })();
