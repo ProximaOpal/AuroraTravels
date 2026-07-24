@@ -9,9 +9,9 @@ Interactive travel + craft marketplace experience for Kenya.
    - **Control:** https://web-production-7e14a.up.railway.app/control.html
    - **QR poster:** https://web-production-7e14a.up.railway.app/remote.html
 3. Tap **Home / Parks / Travel & Stay / Artifacts / Guides / Inclusivity** — the live app switches pages.
-4. Under each page: sub-buttons (e.g. Artifacts **Photo ← / Photo →**, Parks **Park ← / →**, Guides, Travel/Stay, Inclusivity scroll).
-5. Under **Parks → Map**: Expand, Collapse, Fullscreen, Search, Zoom +/−, Pan ↑↓←→, Recenter, Stop ←/→, plus All parks grid.
-6. **ElevenLabs voice** on the remote: Start / End / Open widget on the projector, plus **Stream voice on phone** (phone mic → Aurora).
+4. Tap a section to expand its controls (all start collapsed). **Maps** is its own button; **Voice** is last.
+5. Under **Maps**: Expand, Collapse, Fullscreen, Search, Zoom +/−, Pan ↑↓←→, Recenter, Stop ←/→.
+6. Under **Voice**: Start / End / Open widget on the projector, plus **Stream voice on phone**.
 
 Optional: open the projector with `/?present=1` to skip the home auto-advance.
 

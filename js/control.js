@@ -20,17 +20,15 @@
     if (!page) return;
     lastPage = page;
     document.querySelectorAll(".page-btn[data-page]").forEach((btn) => {
-      const isPage = btn.dataset.page === page && !btn.dataset.panel;
-      const isMap =
-        page === "page1" && btn.dataset.panel === "map" && lastPage === "page1";
-      // Highlight the primary page button; Maps stays highlighted only while its panel is open.
-      btn.classList.toggle(
-        "is-active",
-        btn.dataset.panel === "map"
-          ? btn.closest("[data-accordion]")?.classList.contains("is-open") &&
-              page === "page1"
-          : btn.dataset.page === page && !btn.dataset.panel
-      );
+      if (btn.dataset.panel === "map") {
+        btn.classList.toggle(
+          "is-active",
+          page === "page1" &&
+            btn.closest("[data-accordion]")?.classList.contains("is-open")
+        );
+        return;
+      }
+      btn.classList.toggle("is-active", btn.dataset.page === page);
     });
   }
 
@@ -98,16 +96,16 @@
       }
 
       const page = toggle.dataset.page || null;
-      const label = toggle.childNodes[0]?.textContent?.trim() || toggle.textContent.trim();
-      if (page) {
+      const label =
+        toggle.childNodes[0]?.textContent?.trim() ||
+        toggle.textContent.trim();
+
+      if (willOpen && toggle.dataset.panel === "map") {
+        await send({ page: "page1", action: "map-expand" }, "Maps");
+      } else if (page) {
         await send({ page }, label);
       } else {
         setStatus(willOpen ? `${label} open` : `${label} closed`, "ok");
-      }
-
-      // Maps: also expand the map widget on stage when opening the panel
-      if (willOpen && toggle.dataset.panel === "map") {
-        await send({ page: "page1", action: "map-expand" }, "Expand map");
       }
     });
   });
