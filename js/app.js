@@ -6,6 +6,7 @@
   const { escapeHtml, whenReady } = utils;
 
   let current = 0;
+  let stopIndex = 0;
 
   const heroBg = document.getElementById("heroBg");
   const destTitle = document.getElementById("destTitle");
@@ -75,6 +76,7 @@
     }
 
     mapController.flyMapTo(destination);
+    stopIndex = 0;
   }
 
   heroBg.style.transition = "opacity .35s ease";
@@ -403,7 +405,7 @@
       goToPage(cmd.page, { animate: false });
     }
 
-    // Let page shell paint before stepping galleries.
+    // Let page shell paint before stepping galleries / map.
     window.setTimeout(() => {
       if (cmd.action === "park-next") {
         document.getElementById("nextBtn")?.click();
@@ -429,6 +431,41 @@
         inclusivityPage.scrollBy(-320);
       } else if (cmd.action === "inc-down") {
         inclusivityPage.scrollBy(320);
+      } else if (cmd.action === "map-expand") {
+        mapController.setExpanded(true);
+      } else if (cmd.action === "map-collapse") {
+        mapController.setExpanded(false);
+      } else if (cmd.action === "map-fullscreen") {
+        mapController.toggleFullscreen();
+      } else if (cmd.action === "map-zoom-in") {
+        mapController.zoomIn();
+      } else if (cmd.action === "map-zoom-out") {
+        mapController.zoomOut();
+      } else if (cmd.action === "map-pan-up") {
+        mapController.pan(0, -120);
+      } else if (cmd.action === "map-pan-down") {
+        mapController.pan(0, 120);
+      } else if (cmd.action === "map-pan-left") {
+        mapController.pan(-120, 0);
+      } else if (cmd.action === "map-pan-right") {
+        mapController.pan(120, 0);
+      } else if (cmd.action === "map-recenter") {
+        mapController.flyMapTo(destinations[current]);
+      } else if (cmd.action === "map-search") {
+        mapController.setExpanded(true);
+        mapController.toggleMapSearch(true);
+      } else if (cmd.action === "map-stop-next" || cmd.action === "map-stop-prev") {
+        const stops = destinations[current]?.stops || [];
+        if (!stops.length) return;
+        const delta = cmd.action === "map-stop-next" ? 1 : -1;
+        stopIndex = (stopIndex + delta + stops.length) % stops.length;
+        mapController.jumpToStop(stops[stopIndex]);
+      } else if (cmd.action === "map-overview") {
+        overview.classList.add("open");
+      } else if (cmd.action === "map-overview-close") {
+        overview.classList.remove("open");
+      } else if (cmd.action === "park-search") {
+        document.getElementById("searchBtn")?.click();
       }
     }, cmd.page ? 40 : 0);
   }

@@ -61,6 +61,22 @@ const ALLOWED_ACTIONS = new Set([
   "stay-mode",
   "inc-up",
   "inc-down",
+  "map-expand",
+  "map-collapse",
+  "map-fullscreen",
+  "map-zoom-in",
+  "map-zoom-out",
+  "map-pan-up",
+  "map-pan-down",
+  "map-pan-left",
+  "map-pan-right",
+  "map-recenter",
+  "map-search",
+  "map-stop-next",
+  "map-stop-prev",
+  "map-overview",
+  "map-overview-close",
+  "park-search",
 ]);
 
 function safeJoin(root, requestPath) {

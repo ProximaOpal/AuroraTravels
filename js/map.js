@@ -516,5 +516,20 @@ window.AuroraTravels.createMapController = function createMapController({
     clearSearchMarker,
     invalidate,
     toggleMapSearch,
+    zoomIn() {
+      map.zoomIn();
+    },
+    zoomOut() {
+      map.zoomOut();
+    },
+    pan(dx, dy) {
+      map.panBy([dx, dy], { animate: true, duration: 0.35 });
+    },
+    toggleFullscreen() {
+      requestFullscreen();
+    },
+    isExpanded() {
+      return mapWidget.classList.contains("expanded");
+    },
   };
 };
