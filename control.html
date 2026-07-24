@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#0b0d10">
   <title>Aurora · Stage Remote</title>
-  <link rel="stylesheet" href="css/control.css?v=20260724a">
+  <link rel="stylesheet" href="css/control.css?v=20260724b">
 </head>
 <body>
   <main class="remote" id="remote">
@@ -17,6 +17,21 @@
     </header>
 
     <div class="remote-pages" aria-label="Pages">
+      <section class="remote-block remote-voice">
+        <p class="remote-label">ElevenLabs · Aurora voice</p>
+        <div class="remote-subs" aria-label="Stage voice controls">
+          <button type="button" class="sub-btn" data-action="voice-start">Start on stage</button>
+          <button type="button" class="sub-btn" data-action="voice-end">End on stage</button>
+          <button type="button" class="sub-btn" data-action="voice-expand">Open widget</button>
+        </div>
+        <p class="remote-label">Stream from this phone</p>
+        <div class="remote-subs" aria-label="Phone voice stream">
+          <button type="button" class="sub-btn voice-emphasis" id="phoneVoiceStart" data-local="phone-start">Stream voice on phone</button>
+          <button type="button" class="sub-btn" id="phoneVoiceEnd" data-local="phone-end">End phone call</button>
+        </div>
+        <p class="remote-hint">Uses this phone’s mic + speaker. Allow microphone when Safari/Chrome asks.</p>
+      </section>
+
       <section class="remote-block">
         <button type="button" class="page-btn" data-page="home">Home</button>
       </section>
@@ -84,11 +99,23 @@
     </div>
 
     <footer class="remote-foot">
-      <p>Projector: keep the live Aurora tab open. Map buttons live under Parks.</p>
+      <p>Projector: keep the live Aurora tab open. Voice: stage buttons drive the projector widget; phone stream talks here.</p>
       <a class="remote-link" id="appLink" href="/">Open live app</a>
       <a class="remote-link" href="/remote.html" style="display:block;margin-top:10px;">Show QR for stage</a>
     </footer>
   </main>
-  <script src="js/control.js?v=20260724a"></script>
+
+  <elevenlabs-convai
+    id="phoneConvai"
+    agent-id="agent_7501kxv7jj4gezv8kcqj5f5kbepg"
+    variant="compact"
+    placement="bottom-left"
+    class="remote-convai"
+    start-call-text="Stream voice"
+    end-call-text="End phone call"
+    action-text="Aurora on phone"
+  ></elevenlabs-convai>
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+  <script src="js/control.js?v=20260724b"></script>
 </body>
 </html>

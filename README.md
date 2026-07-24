@@ -11,6 +11,7 @@ Interactive travel + craft marketplace experience for Kenya.
 3. Tap **Home / Parks / Travel & Stay / Artifacts / Guides / Inclusivity** — the live app switches pages.
 4. Under each page: sub-buttons (e.g. Artifacts **Photo ← / Photo →**, Parks **Park ← / →**, Guides, Travel/Stay, Inclusivity scroll).
 5. Under **Parks → Map**: Expand, Collapse, Fullscreen, Search, Zoom +/−, Pan ↑↓←→, Recenter, Stop ←/→, plus All parks grid.
+6. **ElevenLabs voice** on the remote: Start / End / Open widget on the projector, plus **Stream voice on phone** (phone mic → Aurora).
 
 Optional: open the projector with `/?present=1` to skip the home auto-advance.
 

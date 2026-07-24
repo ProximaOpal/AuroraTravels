@@ -466,6 +466,12 @@
         overview.classList.remove("open");
       } else if (cmd.action === "park-search") {
         document.getElementById("searchBtn")?.click();
+      } else if (cmd.action === "voice-start") {
+        window.AuroraTravels.voice?.start();
+      } else if (cmd.action === "voice-end") {
+        window.AuroraTravels.voice?.end();
+      } else if (cmd.action === "voice-expand") {
+        window.AuroraTravels.voice?.expand();
       }
     }, cmd.page ? 40 : 0);
   }
@@ -530,8 +536,15 @@
 
   // ElevenLabs uses its own `placement` attribute for screen position.
   // Keep the attribute correct if the embed rewrites the host.
+  function getConvaiWidget() {
+    return (
+      document.querySelector("elevenlabs-convai.aurora-convai") ||
+      document.querySelector("elevenlabs-convai")
+    );
+  }
+
   function ensureConvaiPlacement() {
-    const el = document.querySelector("elevenlabs-convai");
+    const el = getConvaiWidget();
     if (!el) return;
     if (el.getAttribute("placement") !== "bottom-left") {
       el.setAttribute("placement", "bottom-left");
@@ -541,6 +554,72 @@
     }
     el.classList.add("aurora-convai");
   }
+
+  function callConvai(method) {
+    const el = getConvaiWidget();
+    if (!el) return false;
+    ensureConvaiPlacement();
+    try {
+      if (typeof el[method] === "function") {
+        el[method]();
+        return true;
+      }
+    } catch (err) {
+      console.warn("ElevenLabs widget method failed:", method, err);
+    }
+    // Fallback: click the primary control inside the shadow tree.
+    try {
+      const root = el.shadowRoot;
+      if (!root) return false;
+      const btn =
+        root.querySelector('[part="trigger"]') ||
+        root.querySelector("button");
+      if (btn) {
+        btn.click();
+        return true;
+      }
+    } catch (err) {
+      console.warn("ElevenLabs widget click fallback failed:", err);
+    }
+    return false;
+  }
+
+  function startStageVoice() {
+    if (callConvai("startConversation")) return;
+    // Widget may still be booting — retry briefly.
+    let tries = 0;
+    const timer = window.setInterval(() => {
+      tries += 1;
+      if (callConvai("startConversation") || tries > 8) {
+        window.clearInterval(timer);
+      }
+    }, 250);
+  }
+
+  function endStageVoice() {
+    callConvai("endConversation");
+  }
+
+  function expandStageVoice() {
+    const el = getConvaiWidget();
+    if (!el) return;
+    el.setAttribute("variant", "expanded");
+    el.dispatchEvent(
+      new CustomEvent("elevenlabs-agent:expand", {
+        bubbles: true,
+        composed: true,
+        detail: { expand: true },
+      })
+    );
+    callConvai("startConversation");
+  }
+
+  window.AuroraTravels.voice = {
+    start: startStageVoice,
+    end: endStageVoice,
+    expand: expandStageVoice,
+  };
+
   ensureConvaiPlacement();
   window.setInterval(ensureConvaiPlacement, 2000);
 })();

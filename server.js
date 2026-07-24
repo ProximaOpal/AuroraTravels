@@ -77,6 +77,9 @@ const ALLOWED_ACTIONS = new Set([
   "map-overview",
   "map-overview-close",
   "park-search",
+  "voice-start",
+  "voice-end",
+  "voice-expand",
 ]);
 
 function safeJoin(root, requestPath) {
