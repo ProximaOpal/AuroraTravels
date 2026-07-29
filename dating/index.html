@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PENZI — a minimal matchmaker for the Kenyan ecosystem. Poetry, art, music, and real connection.">
+  <title>PENZI — Kenyan Matchmaker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dating.css">
+</head>
+<body>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- HERO — geometric red / white cutouts -->
+  <header class="hero" id="hero">
+    <div class="hero-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--left"></div>
+      <div class="geo-panel geo-panel--right"></div>
+      <div class="geo-dot geo-dot--1"></div>
+      <div class="geo-dot geo-dot--2"></div>
+    </div>
+
+    <nav class="top-bar" aria-label="Primary">
+      <a class="brand" href="#hero">PENZI</a>
+      <div class="top-actions">
+        <button type="button" class="icon-btn" id="cartBtn" aria-label="Matches">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M6 8h12l-1 11H7L6 8z"/>
+            <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+          </svg>
+          <span class="badge" id="matchBadge">0</span>
+        </button>
+        <button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="hero-body">
+      <div class="hero-copy">
+        <p class="meta-label">KE · 2026</p>
+        <h1 class="hero-title">PENZI</h1>
+        <p class="hero-sub">Matchmaking for the Kenyan ecosystem — quiet, intentional, alive.</p>
+        <div class="hero-cta">
+          <a class="btn-block" href="#match">Start matching</a>
+          <button type="button" class="text-link" id="shareBtn">— Share</button>
+        </div>
+        <div class="hero-pager" aria-hidden="true">
+          <span>01</span><i></i><span>08</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-portrait" id="heroPortrait">
+          <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80&auto=format&fit=crop" alt="Kenyan woman in natural light" width="640" height="800">
+        </div>
+        <div class="hero-thumb" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&auto=format&fit=crop" alt="">
+        </div>
+        <div class="hero-arrows" aria-hidden="true">
+          <span>←</span><span>→</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="side-nav" id="sideNav" aria-label="Sections" hidden>
+    <a href="#match">Match</a>
+    <a href="#personality">Personality</a>
+    <a href="#character">Character</a>
+    <a href="#poetry">Poetry</a>
+    <a href="#art">Art</a>
+    <a href="#music">Music</a>
+  </nav>
+
+  <!-- MATCHMAKING -->
+  <section class="section match-section" id="match">
+    <div class="section-head">
+      <p class="meta-label">01 — Match</p>
+      <h2>Circular bonds</h2>
+      <p class="section-sub">Scroll the constellation. When two circles meet, the bond turns green.</p>
+    </div>
+
+    <div class="match-stage" id="matchStage">
+      <div class="constant-profile" id="constantProfile">
+        <div class="ring ring--idle" id="constantRing"></div>
+        <img id="constantImg" src="" alt="Your profile" class="avatar">
+        <p class="avatar-name" id="constantName">You</p>
+        <p class="avatar-tag" id="constantTag">Nairobi</p>
+      </div>
+
+      <div class="match-connector" id="matchConnector" aria-hidden="true"></div>
+
+      <div class="orbit-rail" id="orbitRail" tabindex="0" aria-label="Scrollable match profiles">
+        <div class="orbit-track" id="orbitTrack"></div>
+      </div>
+    </div>
+
+    <div class="match-status" id="matchStatus" aria-live="polite">
+      <p class="status-idle">Scroll profiles · find your green bond</p>
+    </div>
+
+    <div class="match-actions">
+      <button type="button" class="btn-block btn-block--ghost" id="reshuffleBtn">Reshuffle</button>
+      <button type="button" class="btn-block" id="tryMatchBtn">Try connect</button>
+    </div>
+  </section>
+
+  <!-- PERSONALITY -->
+  <section class="section" id="personality">
+    <div class="section-head">
+      <p class="meta-label">02 — Personality</p>
+      <h2>How you move</h2>
+      <p class="section-sub">Pick the energy that feels most like home. This shapes who you meet.</p>
+    </div>
+    <div class="type-grid" id="personalityGrid" role="listbox" aria-label="Personality types"></div>
+  </section>
+
+  <!-- CHARACTER -->
+  <section class="section section--inverse" id="character">
+    <div class="section-head">
+      <p class="meta-label">03 — Character</p>
+      <h2 class="display-xl" id="characterDisplay">GEN Z</h2>
+      <p class="section-sub">Generation and character lens for the Kenyan dating floor.</p>
+    </div>
+    <div class="char-rail" id="characterRail" role="tablist" aria-label="Character types"></div>
+    <p class="char-blurb" id="characterBlurb"></p>
+  </section>
+
+  <!-- POETRY -->
+  <section class="section" id="poetry">
+    <div class="section-head">
+      <p class="meta-label">04 — Poetry</p>
+      <h2>Lines that land</h2>
+      <p class="section-sub">Minimal verses with feeling. Send one when words are enough.</p>
+    </div>
+    <div class="poetry-list" id="poetryList"></div>
+  </section>
+
+  <!-- ART -->
+  <section class="section section--art" id="art">
+    <div class="section-head">
+      <p class="meta-label">05 — Art</p>
+      <h2>Pencil scenes</h2>
+      <p class="section-sub">Upload a moment. We turn it into pencil art — different scenes, same soul.</p>
+    </div>
+
+    <div class="art-workspace">
+      <div class="art-upload" id="artDrop">
+        <input type="file" id="artInput" accept="image/*" hidden>
+        <p class="meta-label">Drop image</p>
+        <p>or <button type="button" class="text-link" id="artPickBtn">browse</button></p>
+        <p class="art-hint">JPG · PNG · WEBP</p>
+      </div>
+
+      <div class="art-canvases" id="artCanvases" hidden>
+        <figure class="art-pane">
+          <figcaption class="meta-label">Original</figcaption>
+          <canvas id="canvasOriginal"></canvas>
+        </figure>
+        <figure class="art-pane">
+          <figcaption class="meta-label">Pencil</figcaption>
+          <canvas id="canvasPencil"></canvas>
+        </figure>
+      </div>
+
+      <div class="scene-rail" id="sceneRail" hidden>
+        <p class="meta-label">Scenes</p>
+        <div class="scene-btns" id="sceneBtns"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MUSIC -->
+  <section class="section section--music" id="music">
+    <div class="section-head">
+      <p class="meta-label">06 — Music</p>
+      <h2>Favorites only</h2>
+      <p class="section-sub">A quiet stack of songs that say who you are.</p>
+    </div>
+    <ul class="song-list" id="songList"></ul>
+  </section>
+
+  <!-- SUCCESS / ERROR OVERLAYS -->
+  <div class="overlay" id="successOverlay" hidden>
+    <div class="overlay-panel overlay-panel--success">
+      <div class="pulse-ring"></div>
+      <p class="meta-label">Match</p>
+      <p class="overlay-title">It's a bond</p>
+      <p class="overlay-sub" id="successSub">Two circles. One green line.</p>
+      <button type="button" class="btn-block" id="successClose">Continue</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="errorOverlay" hidden>
+    <div class="overlay-panel overlay-panel--error">
+      <p class="meta-label">Miss</p>
+      <p class="overlay-title">Not this circle</p>
+      <p class="overlay-sub">Keep scrolling — the right bond is still moving.</p>
+      <button type="button" class="btn-block btn-block--ghost" id="errorClose">Try again</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p class="brand">PENZI</p>
+    <p class="meta-label">Nairobi · Mombasa · Kisumu · Eldoret</p>
+  </footer>
+
+  <script src="js/dating.js"></script>
+</body>
+</html>

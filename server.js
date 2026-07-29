@@ -192,6 +192,25 @@ const server = http.createServer(async (req, res) => {
   }
 
   fs.stat(filePath, (err, stat) => {
+    // Serve directory index (e.g. /dating → /dating/index.html)
+    if (!err && stat.isDirectory()) {
+      const indexPath = path.join(filePath, "index.html");
+      return fs.stat(indexPath, (indexErr, indexStat) => {
+        if (indexErr || !indexStat.isFile()) {
+          return send(res, 404, "Not found");
+        }
+        return fs.createReadStream(indexPath)
+          .on("open", () => {
+            res.writeHead(200, {
+              "Content-Type": MIME[".html"],
+              "Cache-Control": "no-cache",
+            });
+          })
+          .on("error", () => send(res, 500, "Server error"))
+          .pipe(res);
+      });
+    }
+
     if (err || !stat.isFile()) {
       const fallback = path.join(ROOT, "index.html");
       return fs.readFile(fallback, (readErr, data) => {
