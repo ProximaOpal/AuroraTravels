@@ -95,6 +95,7 @@
   function start() {
     done = false;
     root.hidden = false;
+    root.removeAttribute("aria-hidden");
     root.classList.remove("is-out");
     document.body.classList.add("is-intro");
     document.body.classList.remove("intro-done");
