@@ -47,3 +47,22 @@ STK proxies via this server to **Marvel Network** (`STK_API_BASE_URL`, default `
 
 - Real M-Pesa STK push is the default (`POST /api/stk-push` → upstream).
 - Demo checkout only when `STK_ALLOW_DEMO=1` and upstream is unreachable.
+
+## Docker / Africa's Talking registry
+
+Image: `registry.africastalking.dev/4jd9r/penzi:latest`
+
+Pushes on every commit to `main` via `.github/workflows/docker-build-push.yml`.
+
+Repo secrets required:
+
+| Secret | Example |
+|--------|---------|
+| `REGISTRY_HOST` | `registry.africastalking.dev` |
+| `REGISTRY_USERNAME` | your registry user |
+| `REGISTRY_PASSWORD` | your registry token/password |
+
+```bash
+docker build -t registry.africastalking.dev/4jd9r/penzi:latest .
+docker run --rm -p 8080:8080 registry.africastalking.dev/4jd9r/penzi:latest
+```
