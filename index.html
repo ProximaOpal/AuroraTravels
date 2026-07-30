@@ -3,567 +3,552 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Aurora Travels — discover Kenya's wildlife, highlands, and Swahili coast.">
-  <title>Aurora Travels — Kenya</title>
+  <meta name="description" content="PENZI — a minimal matchmaker for the Kenyan ecosystem. Poetry, art, music, and real connection.">
+  <title>PENZI — Kenyan Matchmaker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112.5,700;125,800&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bebas+Neue&family=Dancing+Script:wght@500;600;700&family=Great+Vibes&family=IBM+Plex+Mono:wght@400;500&family=Italianno&family=Outfit:wght@300;400;500;600;700&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=20260724b">
-  <link rel="stylesheet" href="css/travel.css?v=20260724b">
-  <link rel="stylesheet" href="css/marketplace.css?v=20260724b">
-  <link rel="stylesheet" href="css/guides.css?v=20260724b">
-  <link rel="stylesheet" href="css/inclusivity.css?v=20260724b">
+  <link rel="stylesheet" href="css/dating.css">
+  <link rel="stylesheet" href="css/motion.css">
+  <link rel="stylesheet" href="css/cine.css">
 </head>
-<body>
+<body class="is-intro">
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
-<!-- GLOBAL HEADER — identical on every page -->
-<header class="global-header" id="globalHeader" hidden>
-  <button type="button" class="global-logo" data-page="home" aria-label="Aurora home">AURORA</button>
-  <nav class="global-nav" aria-label="Primary">
-    <button type="button" data-page="home">Home</button>
-    <button type="button" data-page="page1">Parks</button>
-    <button type="button" data-page="page2">Travel &amp; Stay</button>
-    <button type="button" data-page="page3">Artifacts</button>
-    <button type="button" data-page="page4">Guides</button>
-    <button type="button" data-page="page5">Inclusivity</button>
-  </nav>
-</header>
-
-<!-- LANDING -->
-<div class="landing" id="landing">
-  <div class="landing-bg"></div>
-  <div class="landing-content">
-    <div class="landing-icons">
-      <div class="landing-icon" title="Fly">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M10.5 3.5L3 11l4 1.2L9 16l1.6-2.6L14 17l1-1-2.4-3.4 4-4-6.1-5.1z" stroke="#8b5cf6" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 21l3-1 1-3" stroke="#8b5cf6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <!-- CINEMATIC LANDING — same page, 4s then home -->
+  <div class="cine" id="cineIntro" role="dialog" aria-modal="true" aria-label="PENZI landing">
+    <div class="cine-stage" aria-hidden="true">
+      <div class="cine-slide is-on" data-slide="0">
+        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1600&q=80&auto=format&fit=crop" alt="">
       </div>
-      <div class="landing-icon" title="Explore">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8b5cf6" stroke-width="1.6"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z" stroke="#8b5cf6" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      <div class="cine-slide" data-slide="1">
+        <img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=1600&q=80&auto=format&fit=crop" alt="">
       </div>
-      <div class="landing-icon" title="Discover">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#8b5cf6" stroke-width="1.6"/><path d="M21 21l-4.3-4.3" stroke="#8b5cf6" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <div class="cine-slide" data-slide="2">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1600&q=80&auto=format&fit=crop" alt="">
       </div>
-      <div class="landing-icon" title="Stay">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 5.5 7 13 7 13s7-7.5 7-13c0-4-3-7-7-7z" stroke="#8b5cf6" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.2" stroke="#8b5cf6" stroke-width="1.4"/></svg>
+      <div class="cine-slide" data-slide="3">
+        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=1600&q=80&auto=format&fit=crop" alt="">
       </div>
+      <div class="cine-veil"></div>
+      <div class="cine-grain"></div>
+      <div class="cine-frame geo-panel geo-panel--br"></div>
+      <div class="cine-frame cine-frame--tr geo-panel geo-panel--tl"></div>
     </div>
-    <h1 class="landing-hero">Aurora Travels</h1>
-    <p class="landing-sub">Your passport to Kenya and Africa's living heritage</p>
-    <div class="landing-loader"><span></span><span></span><span></span></div>
-    <p class="landing-hint">Press Space / Enter or scroll · Parks</p>
-  </div>
-</div>
 
-<div class="transition-overlay" id="landingOverlay">
-  <div class="wipe"></div>
-  <div class="loader-logo"><span></span><span></span></div>
-</div>
+    <div class="cine-copy">
+      <p class="cine-kicker meta-label">Kenya · a short guide</p>
 
-<!-- MAIN APP -->
-<div id="stage">
-  <div class="app">
+      <div class="cine-carve" id="cineCarve" aria-label="PENZI">
+        <svg class="cine-carve-svg" viewBox="0 0 720 240" role="img" aria-labelledby="cineTitleLabel">
+          <title id="cineTitleLabel">PENZI</title>
+          <defs>
+            <linearGradient id="graphiteInk" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fffaf6"/>
+              <stop offset="55%" stop-color="#f0e0cc"/>
+              <stop offset="100%" stop-color="#cbb89a"/>
+            </linearGradient>
+            <filter id="carveDepth" x="-10%" y="-20%" width="120%" height="140%">
+              <feDropShadow dx="0" dy="3" stdDeviation="1.4" flood-color="#100604" flood-opacity="0.55"/>
+            </filter>
+            <clipPath id="carveClip">
+              <rect id="carveClipRect" x="0" y="0" width="0" height="240"/>
+            </clipPath>
+          </defs>
 
-    <!-- LEFT: HERO -->
-    <section class="hero" aria-label="Destination hero">
-      <div class="hero-bg" id="heroBg" role="img" aria-label="Destination photograph"></div>
+          <path class="carve-groove" d="M36 178 C160 198 340 204 500 182 C580 170 650 152 700 134" fill="none"/>
 
-      <div class="hero-top">
-        <div class="brand"><b>AURORA</b>TRAVELS</div>
-        <div class="weather" aria-live="polite">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="9" cy="9" r="3.4"/>
-            <path d="M9 2.6v1.4M9 15.8v1.2M2.6 9h1.4M15.4 9h1.2M4.6 4.6l1 1M13 12.4l1 1M13.4 4.6l-1 1M5.6 12.4l-1 1"/>
-            <path d="M9.5 16.8a3.7 3.7 0 0 1 .6-7.36 4.7 4.7 0 0 1 9.05 1.66 3.35 3.35 0 0 1-.6 6.7h-9.1z"/>
-          </svg>
-          <span id="tempVal">32°</span>
-        </div>
+          <text class="carve-ghost" x="36" y="168" font-family="Great Vibes, Allura, cursive" font-size="168" fill="rgba(255,247,242,0.14)">PENZI</text>
+
+          <g clip-path="url(#carveClip)" filter="url(#carveDepth)">
+            <text class="carve-word" x="36" y="168" font-family="Great Vibes, Allura, cursive" font-size="168" fill="url(#graphiteInk)">PENZI</text>
+            <text class="carve-word-stroke" x="36" y="168" font-family="Great Vibes, Allura, cursive" font-size="168" fill="none" stroke="rgba(255,250,244,0.35)" stroke-width="1.25">PENZI</text>
+          </g>
+
+          <path id="carvePath" class="carve-path" fill="none" d="
+            M58 150
+            C70 110 78 70 96 58
+            C118 42 142 62 148 98
+            C154 138 140 168 112 172
+            C128 140 138 100 128 72
+            C160 88 188 120 196 150
+            C208 110 236 92 270 98
+            C300 104 308 134 288 154
+            C264 178 228 176 208 154
+            C230 142 268 140 292 156
+            C316 172 320 196 292 208
+            C330 170 348 120 360 82
+            C370 52 396 48 414 74
+            C434 104 442 144 434 178
+            C448 70 490 58 530 78
+            C560 94 568 122 540 136
+            C508 152 476 146 462 164
+            C446 186 470 206 514 206
+            C552 206 590 188 608 164
+            C620 140 628 100 640 72
+            C652 48 678 48 690 72
+            C702 96 704 132 696 166
+            C690 186 674 198 656 188
+          "/>
+
+          <g class="carve-dust" id="carveDust" aria-hidden="true"></g>
+
+          <g class="carve-pencil" id="carvePencil" opacity="0">
+            <g transform="rotate(-42) translate(-12 -96)">
+              <rect x="6" y="12" width="15" height="66" rx="2.5" fill="#c9a56b"/>
+              <rect x="8" y="14" width="4" height="62" fill="#ead7b0" opacity="0.7"/>
+              <path d="M6 78 L13.5 102 L21 78 Z" fill="#6a5240"/>
+              <path d="M9.5 84 L13.5 100 L17.5 84 Z" fill="#2a2420"/>
+              <rect x="6" y="0" width="15" height="14" rx="1.5" fill="#e10600"/>
+              <rect x="6" y="0" width="15" height="5" fill="#141414"/>
+              <circle class="carve-spark" cx="13.5" cy="100" r="2.6" fill="#fff8f0"/>
+            </g>
+          </g>
+        </svg>
+        <p class="cine-carve-caption" id="cineCarveCaption">carved in calligraphy</p>
       </div>
 
-      <div class="hero-mid">
-        <h1 class="hero-title">Kenya</h1>
-        <p class="hero-sub">National parks across Kenya and major parks of Africa — use the arrows to browse</p>
-        <p class="park-counter" id="parkCounter">01 / 15</p>
-      </div>
+      <p class="cine-script" id="cineScript">love, written slowly</p>
+      <p class="cine-line" id="cineLine">Matchmaking for the Kenyan ecosystem.</p>
 
-      <div class="hero-bottom">
-        <div class="nav-arrows">
-          <button class="arrow-btn" id="prevBtn" type="button" aria-label="Previous destination">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
-          </button>
-          <button class="arrow-btn" id="nextBtn" type="button" aria-label="Next destination">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-      </div>
+      <ol class="cine-steps" id="cineSteps" aria-live="polite">
+        <li class="is-on" data-step="0"><span>01</span> Find your bond in the constellation</li>
+        <li data-step="1"><span>02</span> Read stars, traits &amp; true plans</li>
+        <li data-step="2"><span>03</span> Meet on the map — pay, go, belong</li>
+      </ol>
 
-      <div class="map-widget" id="mapWidget">
-        <div class="map-frame">
-          <div id="leafletMap" role="application" aria-label="Interactive map of Kenya"></div>
-        </div>
-
-        <div class="map-controls">
-          <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Search a place in Kenya…" aria-label="Search a place in Kenya">
-          <button class="map-ctrl-btn" id="mapSearchToggle" type="button" title="Search" aria-label="Search the map" aria-expanded="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          </button>
-          <button class="map-ctrl-btn" id="mapExpandBtn" type="button" title="Expand map" aria-label="Expand map" aria-expanded="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H3v-6M3 21l7-7M15 3h6v6M21 3l-7 7"/></svg>
-          </button>
-          <button class="map-ctrl-btn" id="mapFullscreenBtn" type="button" title="Fullscreen" aria-label="Fullscreen map" aria-pressed="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 9V5a1 1 0 0 1 1-1h4"/><path d="M15 4h4a1 1 0 0 1 1 1v4"/>
-              <path d="M20 15v4a1 1 0 0 1-1 1h-4"/><path d="M9 20H5a1 1 0 0 1-1-1v-4"/>
-            </svg>
-          </button>
-          <button class="map-ctrl-btn" id="mapCollapseBtn" type="button" title="Collapse map" aria-label="Collapse map" style="display:none;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-          </button>
-        </div>
-
-        <div class="map-zoom">
-          <button id="zoomIn" type="button" aria-label="Zoom in">+</button>
-          <button id="zoomOut" type="button" aria-label="Zoom out">–</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- RIGHT: DETAIL -->
-    <section class="detail" aria-label="Destination details">
-
-      <div class="detail-top">
-        <button class="back-btn" id="backBtn" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          BACK
+      <div class="cine-actions">
+        <button type="button" class="mx-split" id="cineEnter">
+          <span>Enter PENZI</span><i aria-hidden="true">→</i>
         </button>
-        <div class="top-right">
-          <div class="coord">
-            <span class="coord-pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="#8b5cf6"><path d="M12 2C8 2 5 5 5 9c0 5.5 7 13 7 13s7-7.5 7-13c0-4-3-7-7-7z"/></svg></span>
-            <span id="coordVal">1.5000° S 35.1435° E</span>
-            <span id="distVal">≋ 270 km</span>
-          </div>
-          <button class="icon-btn" id="searchBtn" type="button" aria-label="Search destinations" aria-expanded="false">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          </button>
-          <button class="icon-btn" id="menuBtn" type="button" aria-label="Open page navigation" aria-expanded="false" aria-controls="drawer">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 9V5a1 1 0 0 1 1-1h4"/>
-              <path d="M15 4h4a1 1 0 0 1 1 1v4"/>
-              <path d="M20 15v4a1 1 0 0 1-1 1h-4"/>
-              <path d="M9 20H5a1 1 0 0 1-1-1v-4"/>
-            </svg>
-          </button>
-        </div>
+        <button type="button" class="text-link cine-skip" id="cineSkip">Skip</button>
       </div>
+    </div>
 
-      <div class="search-wrap" id="searchWrap">
-        <input type="text" id="destSearchInput" placeholder="Search destinations, ruins, trails… (press Enter)" autocomplete="off" aria-label="Search destinations">
-        <div class="search-hint" id="searchHint">Try "Amboseli", "Kruger" or "Serengeti"</div>
-      </div>
-
-      <div class="pin-badge">
-        <div class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
-        <span id="regionTag">Narok County, Great Rift Valley</span>
-      </div>
-
-      <div class="title-block">
-        <h1 id="destTitle">Maasai Mara</h1>
-        <p id="destDesc">The Maasai Mara is the beating heart of East Africa's wildlife heritage, an open savanna where the Great Migration carries over a million wildebeest and zebra across the Mara River each year. It shares an unbroken border with Tanzania's Serengeti and takes its name from the Maasai people, whose cattle-herding culture, beadwork and age-old relationship with this land continue alongside the lion, elephant and cheetah that draw travellers from across the world. For those interested in wildlife, conservation and living Maasai tradition.</p>
-      </div>
-
-      <div class="info-row">
-        <div class="ext-tag" id="extTag">Extension: 1,510 km²</div>
-        <div class="loc-block">
-          <strong id="locVal">Location: Great Rift Valley, southwestern Kenya</strong>
-          <a id="mapLink" href="https://www.google.com/maps/search/?api=1&query=Maasai+Mara+National+Reserve" target="_blank" rel="noopener noreferrer">Link: Google maps ↗</a>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <button class="video-bar" id="videoBar" type="button">
-        <p>You can watch the video about Kenya's Great Rift Valley heritage</p>
-        <div class="video-bar-actions">
-          <div class="video-thumbs" aria-hidden="true">
-            <div class="th" style="background-image:url('https://images.unsplash.com/photo-1750232944224-9c7f6fd306a7?w=200&q=70&auto=format&fit=crop')"></div>
-            <div class="th" style="background-image:url('https://images.unsplash.com/photo-1615399144021-822ba908c6f3?w=200&q=70&auto=format&fit=crop')"></div>
-          </div>
-          <div class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div>
-        </div>
-      </button>
-
-      <!-- OVERVIEW / BACK TARGET -->
-      <div class="overview" id="overview" aria-label="Explore Kenya destinations">
-        <div class="overview-head">
-          <h2>National Parks</h2>
-          <button class="icon-btn" id="closeOverview" type="button" aria-label="Close overview">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-          </button>
-        </div>
-        <div class="grid-cards" id="cardGrid"></div>
-      </div>
-    </section>
+    <div class="cine-progress" aria-hidden="true"><i id="cineBar"></i></div>
   </div>
-</div>
 
-<!-- PAGE NAV DRAWER -->
-<div class="scrim" id="scrim"></div>
-<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
-  <button class="close-x" id="closeDrawer" type="button" aria-label="Close menu">×</button>
-  <h3 id="drawerTitle">Navigate</h3>
-  <ul class="page-nav-list" id="drawerList" role="menu">
-    <li role="none">
-      <button type="button" class="page-nav-item" data-page="home" role="menuitem">
-        <span class="page-nav-kicker">Start</span>
-        <span class="page-nav-label">Home</span>
-        <span class="page-nav-desc">Landing intro</span>
-      </button>
-    </li>
-    <li role="none">
-      <button type="button" class="page-nav-item" data-page="page1" role="menuitem">
-        <span class="page-nav-kicker">Parks</span>
-        <span class="page-nav-label">National Parks</span>
-        <span class="page-nav-desc">Kenya + major Africa parks</span>
-      </button>
-    </li>
-    <li role="none">
-      <button type="button" class="page-nav-item" data-page="page2" role="menuitem">
-        <span class="page-nav-kicker">Travel</span>
-        <span class="page-nav-label">Travel &amp; Stay</span>
-        <span class="page-nav-desc">Book transport or accommodation</span>
-      </button>
-    </li>
-    <li role="none">
-      <button type="button" class="page-nav-item" data-page="page3" role="menuitem">
-        <span class="page-nav-kicker">Craft</span>
-        <span class="page-nav-label">Artifacts</span>
-        <span class="page-nav-desc">Craft marketplace &amp; M-Pesa</span>
-      </button>
-    </li>
-    <li role="none">
-      <button type="button" class="page-nav-item" data-page="page4" role="menuitem">
-        <span class="page-nav-kicker">Guides</span>
-        <span class="page-nav-label">Pair up with a Guide</span>
-        <span class="page-nav-desc">Tourist + student guides</span>
-      </button>
-    </li>
-    <li role="none">
-      <button type="button" class="page-nav-item" data-page="page5" role="menuitem">
-        <span class="page-nav-kicker">Access</span>
-        <span class="page-nav-label">Inclusivity</span>
-        <span class="page-nav-desc">Languages, women, youth &amp; disability</span>
-      </button>
-    </li>
-  </ul>
-</div>
+  <!-- HERO — geometric red / white cutouts -->
+  <header class="hero" id="hero">
+    <div class="hero-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--left"></div>
+      <div class="geo-panel geo-panel--right"></div>
+      <div class="geo-dot geo-dot--1"></div>
+      <div class="geo-dot geo-dot--2"></div>
+    </div>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle" aria-hidden="true">
-  <div class="lightbox-inner">
-    <img src="https://images.unsplash.com/photo-1750232944224-9c7f6fd306a7?w=1200&q=80&auto=format&fit=crop" alt="Great Rift Valley heritage">
-    <h4 id="lightboxTitle">The Great Rift Valley &amp; Swahili Coast</h4>
-    <p>A short visual introduction to the Great Migration across the Mara, the highland traditions of Mount Kenya's peoples, and the centuries-old Swahili culture of the Lamu archipelago.</p>
-    <button class="lightbox-close" id="closeLightbox" type="button">Close</button>
-    <a class="yt-link" href="https://www.youtube.com/results?search_query=great+rift+valley+kenya+documentary" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
-  </div>
-</div>
-
-<!-- PAGE 2 — Travel & Stay booking -->
-<div class="page-travel" id="pageTravel" aria-label="Travel and accommodation booking" style="display:none;">
-  <div class="travel-app">
-    <section class="travel-hero">
-      <div class="travel-hero-bg" id="travelHeroBg"></div>
-      <div class="travel-hero-top">
-        <div class="brand"><b>AURORA</b>TRAVELS</div>
-        <div class="weather" aria-live="polite">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
-          <span>Book</span>
-        </div>
+    <nav class="top-bar" aria-label="Primary">
+      <a class="brand" href="#hero">PENZI</a>
+      <div class="top-actions">
+        <button type="button" class="icon-btn" id="cartBtn" aria-label="Matches">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M6 8h12l-1 11H7L6 8z"/>
+            <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+          </svg>
+          <span class="badge" id="matchBadge">0</span>
+        </button>
+        <button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
       </div>
-      <div class="travel-hero-mid">
-        <h1 class="travel-hero-title" id="travelHeroTitle">Domestic Flight</h1>
-        <p class="travel-hero-sub" id="travelHeroSub">Wilson ↔ Mara and coast hops.</p>
-      </div>
-      <div class="travel-hero-bottom">
-        <div class="nav-arrows">
-          <button class="arrow-btn" id="travelPrev" type="button" aria-label="Previous option">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
-          </button>
-          <button class="arrow-btn" id="travelNext" type="button" aria-label="Next option">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-        <span class="travel-mode-pill" id="travelModePill">Air</span>
-      </div>
-    </section>
+    </nav>
 
-    <section class="travel-detail">
-      <div class="travel-detail-top">
-        <div class="travel-toggle" role="tablist" aria-label="Travel or accommodation">
-          <button type="button" id="toggleTravel" class="active">Travel</button>
-          <button type="button" id="toggleStay">Stay</button>
+    <div class="hero-body">
+      <div class="hero-copy">
+        <p class="meta-label">KE · 2026</p>
+        <h1 class="hero-title">PENZI</h1>
+        <p class="love-script hero-love">made for love</p>
+        <p class="hero-sub">Matchmaking for the Kenyan ecosystem — quiet, intentional, alive.</p>
+        <div class="hero-cta">
+          <a class="mx-split" href="#match"><span>Start matching</span><i aria-hidden="true">→</i></a>
+          <button type="button" class="text-link" id="shareBtn">— Share</button>
+          <button type="button" class="text-link" id="replayIntro">— Replay landing</button>
         </div>
-        <div class="top-right">
-          <button class="icon-btn" type="button" data-page="page1" aria-label="National parks">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M12 4v16"/></svg>
-          </button>
-          <button class="icon-btn" type="button" data-page="home" aria-label="Home">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 11l8-7 8 7v9H4v-9z"/></svg>
-          </button>
+        <div class="hero-pager" aria-hidden="true">
+          <span>01</span><i></i><span>05</span>
         </div>
       </div>
 
-      <div class="travel-pin">
-        <div class="dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
-        <span id="travelPinLabel">Kenya &amp; East Africa mobility</span>
-      </div>
-
-      <div class="travel-heading">
-        <h1 id="travelHeadingTitle">Book your journey</h1>
-        <p id="travelHeadingDesc">Plane, train, coach, taxi, bike and ferry — one M-Pesa checkout.</p>
-      </div>
-
-      <div class="travel-cards" id="travelCards"></div>
-
-      <div class="book-overlay" id="bookOverlay">
-        <div class="book-panel" role="dialog" aria-modal="true" aria-labelledby="bookTitle">
-          <h3 id="bookTitle">Domestic Flight</h3>
-          <p class="book-sub" id="bookSub">Reserve with M-Pesa STK push.</p>
-          <div class="book-row"><span>Operator</span><strong id="bookOperator">—</strong></div>
-          <div class="book-row"><span>Timing</span><strong id="bookEta">—</strong></div>
-          <div class="book-row"><span>From</span><strong id="bookPrice">—</strong></div>
-          <div class="book-field">
-            <label for="bookDate">Travel / check-in date</label>
-            <input id="bookDate" type="date">
-          </div>
-          <div class="book-field">
-            <label for="bookPhone">M-Pesa phone</label>
-            <input id="bookPhone" type="tel" placeholder="07XXXXXXXX or 2547XXXXXXXX">
-          </div>
-          <div class="book-field">
-            <label for="bookAmount">Amount (KES)</label>
-            <input id="bookAmount" type="number" min="1" step="1">
-          </div>
-          <div class="book-actions">
-            <button type="button" class="book-cancel" id="bookCancel">Cancel</button>
-            <button type="button" class="book-pay" id="bookPay">Pay · STK Push</button>
-          </div>
-          <div class="book-status" id="bookStatus">Ready for M-Pesa STK</div>
+      <div class="hero-visual">
+        <div class="hero-portrait" id="heroPortrait">
+          <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80&auto=format&fit=crop" alt="Kenyan woman in natural light" width="640" height="800">
+        </div>
+        <div class="hero-thumb" aria-hidden="true">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&auto=format&fit=crop" alt="">
+        </div>
+        <div class="hero-arrows" aria-hidden="true">
+          <span>←</span><span>→</span>
         </div>
       </div>
-    </section>
-  </div>
-</div>
-
-<!-- PAGE 3 — Expanding pill gallery -->
-<div class="page-marketplace" id="pageMarketplace" aria-label="Kenyan artifacts gallery" style="display:none;">
-  <header class="gal-top">
-    <div class="gal-logo">Artifacts</div>
-    <span aria-hidden="true" style="width:64px"></span>
-  </header>
-
-  <div class="gal-stage">
-    <div class="gal-track" id="galTrack" role="list" aria-label="Artifact cards"></div>
-  </div>
-</div>
-
-<!-- M-Pesa STK modal -->
-<div class="pay-modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle" aria-hidden="true">
-  <div class="pay-card">
-    <h3 id="payTitle">Complete purchase</h3>
-    <p class="pay-sub">An M-Pesa STK push will be sent to your phone. Enter your PIN to pay.</p>
-    <div class="pay-item">
-      <span class="name" id="payItemName">Artifact</span>
-      <span class="price" id="payItemPrice">KES 0</span>
-    </div>
-    <div class="pay-field">
-      <label for="payPhone">M-Pesa phone</label>
-      <input id="payPhone" type="tel" inputmode="tel" placeholder="07XXXXXXXX or 2547XXXXXXXX" autocomplete="tel">
-    </div>
-    <div class="pay-field">
-      <label for="payAmount">Amount (KES)</label>
-      <input id="payAmount" type="number" min="1" step="1">
-    </div>
-    <div class="pay-actions">
-      <button type="button" class="pay-cancel" id="payCancel">Cancel</button>
-      <button type="button" class="pay-confirm" id="payConfirm">Buy · STK Push</button>
-    </div>
-    <div class="pay-status">
-      <span class="pay-status-dot" id="payStatusDot"></span>
-      <span id="payStatusText">Ready for M-Pesa STK</span>
-    </div>
-  </div>
-</div>
-
-<!-- PAGE 5 — Inclusivity -->
-<div class="page-inclusivity" id="pageInclusivity" aria-label="Inclusivity" style="display:none;">
-  <div class="inc-wrap">
-    <p class="inc-kicker">Page 5 · Aurora Access</p>
-    <h1 class="inc-title">Travel that leaves no one behind.</h1>
-    <p class="inc-lead">
-      Aurora Travels is built for every traveler and every host community —
-      women and children, Kenyan youth, people with disabilities, and guests
-      who speak African or global languages. One journey: parks, stays, crafts, guides, M-Pesa.
-    </p>
-
-    <div class="inc-lang-grid" aria-label="ElevenLabs language support">
-      <article class="inc-lang-card">
-        <strong>74</strong>
-        <span>Global languages</span>
-        <p>
-          ElevenLabs Eleven v3 powers Aurora’s voice companion across
-          <b>74 named languages</b> worldwide — so travelers can ask about
-          parks, crafts, guides, and M-Pesa in the language they trust.
-        </p>
-      </article>
-      <article class="inc-lang-card african">
-        <strong>6</strong>
-        <span>African languages on ElevenLabs</span>
-        <p>
-          African language support on ElevenLabs v3 includes the voices
-          travelers and hosts across the continent actually use:
-        </p>
-        <div class="inc-lang-list" aria-label="African languages">
-          <em>Swahili</em>
-          <em>Hausa</em>
-          <em>Somali</em>
-          <em>Afrikaans</em>
-          <em>Chichewa</em>
-          <em>Lingala</em>
-        </div>
-      </article>
-    </div>
-
-    <h2 class="inc-section-title">Who we design for</h2>
-    <p class="inc-section-sub">
-      Inclusion is a product surface — not a charity footnote. These four pillars
-      shape parks, stays, artifacts, guides, and checkout.
-    </p>
-
-    <div class="inc-pillars">
-      <article class="inc-pillar">
-        <h3>Women &amp; children</h3>
-        <p>
-          Family-safe stay tags, women-led artisan shops (e.g. Kazuri Beads),
-          and guide pairing that prioritizes trusted student hosts for mothers
-          traveling with children.
-        </p>
-      </article>
-      <article class="inc-pillar">
-        <h3>Youth</h3>
-        <p>
-          University student guides from 12 Kenyan campuses earn directly —
-          turning local knowledge into paid work in a country where FKE cites
-          67% of ages 15–34 without adequate employment.
-        </p>
-      </article>
-      <article class="inc-pillar">
-        <h3>People with disabilities</h3>
-        <p>
-          Accessible park &amp; lodge filters, access-trained student guides,
-          tactile craft descriptions, captions on heritage video, and a calm
-          reduced-motion mode for maps and animations.
-        </p>
-      </article>
-      <article class="inc-pillar">
-        <h3>Language belonging</h3>
-        <p>
-          Voice + text with ElevenLabs across 74 global languages and 6 African
-          languages — plus Swahili/English checkout copy for M-Pesa so payment
-          never depends on card English alone.
-        </p>
-      </article>
-    </div>
-
-    <h2 class="inc-section-title">What we’re building into the product</h2>
-    <p class="inc-section-sub">Concrete Aurora Access commitments across every page.</p>
-    <ul class="inc-commit">
-      <li><span><b>Digital access</b> — keyboard &amp; screen-reader paths for Parks, Artifacts, Guides, and M-Pesa STK status; high-contrast and larger text; reduced motion.</span></li>
-      <li><span><b>Accessible travel data</b> — wheelchair / vehicle-safari / step-free lodge fields and an “Accessible stays &amp; parks” filter on Travel &amp; Stay.</span></li>
-      <li><span><b>Accessible crafts</b> — audio &amp; text descriptions of materials and making; shops tagged for seated or hotel-delivery shopping.</span></li>
-      <li><span><b>Access companions</b> — student guides badged for mobility, low-vision, or sign-language support; pairing preference in Guides.</span></li>
-      <li><span><b>Women-led &amp; family journeys</b> — highlight women-run cooperatives and child-friendly itineraries without separating them from the main marketplace.</span></li>
-      <li><span><b>Youth livelihoods</b> — guide fees stay with Kenyan students; artisan network growth creates county-level craft work.</span></li>
-    </ul>
-
-    <div class="inc-cta">
-      <h3>Ask Aurora — in your language</h3>
-      <p>
-        Open the ElevenLabs companion (bottom-left) to hear craft descriptions,
-        park tips, and access options in any of the 74 supported languages —
-        including Swahili, Hausa, Somali, Afrikaans, Chichewa, and Lingala.
-      </p>
-    </div>
-
-    <p class="inc-source">
-      Language counts: ElevenLabs Eleven v3 official language list (74 global;
-      African subset: Afrikaans, Chichewa, Hausa, Lingala, Somali, Swahili).
-      Youth employment figure: Federation of Kenya Employers.
-    </p>
-  </div>
-</div>
-
-<!-- PAGE 4 — Pair up with a Guide (edge-to-edge cast gallery) -->
-<div class="page-guides" id="pageGuides" aria-label="Pair up with a Guide" style="display:none;">
-  <div class="gd-hero" id="gdHero"></div>
-  <div class="gd-hero-next" id="gdHeroNext"></div>
-  <div class="gd-veil" aria-hidden="true"></div>
-
-  <header class="gd-top">
-    <div>
-      <div class="gd-brand">Pair up with a Guide</div>
-    </div>
-    <div class="gd-cast-label"><span>Guides</span></div>
-    <div class="gd-tools">
-      <button type="button" aria-label="Search" tabindex="-1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.2-4.2"/></svg>
-      </button>
-      <button type="button" aria-label="Profile" tabindex="-1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.2"/><path d="M5 19c1.5-3.2 4-5 7-5s5.5 1.8 7 5"/></svg>
-      </button>
     </div>
   </header>
 
-  <div class="gd-copy" id="gdCopy">
-    <p class="gd-kicker" id="gdKicker">Nairobi City Guide</p>
-    <h1 class="gd-title">Pair up with a Guide.</h1>
-    <p class="gd-name" id="gdName">Amina Wanjiku</p>
-    <p class="gd-school" id="gdSchool">University of Nairobi</p>
+  <nav class="side-nav" id="sideNav" aria-label="Sections" hidden>
+    <a href="#match">Match</a>
+    <a href="#personality">Personality</a>
+    <a href="#character">Character</a>
+    <a href="#music">Music</a>
+    <a href="#places">Places</a>
+  </nav>
+
+  <!-- MATCHMAKING -->
+  <section class="section section--field" id="match">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--br"></div>
+      <div class="geo-panel geo-panel--tl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--a"></div>
+    </div>
+    <div class="geo-shell geo-shell--br">
+      <div class="section-head">
+        <p class="meta-label">01 — Match</p>
+        <p class="love-script love-eyebrow">find your bond</p>
+        <h2>Circular bonds</h2>
+        <p class="section-sub">Scroll the constellation. When two circles meet, the bond turns green.</p>
+      </div>
+
+      <div class="pref-card intent-card geo-tile geo-tile--tr mx-card" id="prefCard" hidden>
+        <p class="meta-label">On arrival</p>
+        <p class="love-script love-eyebrow">Who do you want to Match with?</p>
+        <p class="section-sub">Pick a lane. PENZI will weight the constellation — Sugar Mummy stays last.</p>
+        <div class="intent-grid" id="intentGrid" role="listbox" aria-label="Match intent">
+          <!-- filled by JS -->
+        </div>
+        <div class="pref-actions">
+          <button type="button" class="btn-block" id="intentContinue" disabled>Continue</button>
+          <button type="button" class="btn-block btn-block--ghost" id="prefSkip">Skip for now</button>
+        </div>
+        <p class="pref-saved meta-label" id="prefSaved" hidden></p>
+      </div>
+
+      <form class="match-search" id="matchSearchForm" autocomplete="off">
+        <label class="match-search__label meta-label" for="matchSearch">Semantic ask</label>
+        <div class="match-search__row">
+          <input
+            type="search"
+            id="matchSearch"
+            name="q"
+            placeholder="match me with an engineer · background check on Amina"
+            enterkeyhint="search"
+          >
+          <button type="submit" class="btn-block match-search__go">Ask</button>
+        </div>
+        <p class="match-search__hint meta-label" id="matchSearchHint">Try a career match or a background check</p>
+      </form>
+
+      <div class="match-stage" id="matchStage">
+        <div class="constant-profile" id="constantProfile" role="button" tabindex="0" aria-label="Open your profile">
+          <div class="ring ring--idle" id="constantRing"></div>
+          <img id="constantImg" src="" alt="Your profile" class="avatar">
+          <p class="avatar-name" id="constantName">You</p>
+          <p class="avatar-tag" id="constantTag">Nairobi</p>
+          <div class="rating-chip" id="constantRating"></div>
+        </div>
+
+        <div class="match-connector" id="matchConnector" aria-hidden="true"></div>
+
+        <div class="match-seat geo-tile geo-tile--br" id="matchSeat" hidden>
+          <p class="meta-label">Match seat</p>
+          <div class="match-seat__frame" id="matchSeatFrame"></div>
+          <p class="love-script love-overlay" id="matchSeatLabel">match found</p>
+        </div>
+
+        <div class="orbit-rail" id="orbitRail" tabindex="0" aria-label="Scrollable match profiles">
+          <div class="orbit-track" id="orbitTrack"></div>
+        </div>
+      </div>
+
+      <div class="match-status" id="matchStatus" aria-live="polite">
+        <p class="status-idle">Tap a profile for details · Try connect to spin the bond</p>
+      </div>
+
+      <div class="match-actions">
+        <button type="button" class="btn-block btn-block--ghost" id="reshuffleBtn">Reshuffle</button>
+        <button type="button" class="btn-block" id="tryMatchBtn">Try connect</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONALITY -->
+  <section class="section section--field section--field-alt" id="personality">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--tr"></div>
+      <div class="geo-panel geo-panel--bl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--b"></div>
+    </div>
+    <div class="geo-shell geo-shell--tr">
+      <div class="section-head">
+        <p class="meta-label">02 — Personality</p>
+        <p class="love-script love-eyebrow">stars &amp; psyche</p>
+        <h2>Traits &amp; zodiac</h2>
+        <p class="section-sub">Psychology traits paired with zodiac signs — people cartoons for every avatar.</p>
+      </div>
+
+      <div class="psych-row" id="psychTraits" aria-label="Psychology traits"></div>
+
+      <div class="zodiac-grid mx-stagger" id="zodiacGrid" role="listbox" aria-label="Zodiac signs"></div>
+    </div>
+  </section>
+
+  <!-- CHARACTER -->
+  <section class="section section--field" id="character">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--bl"></div>
+      <div class="geo-panel geo-panel--tr geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--a"></div>
+    </div>
+    <div class="geo-shell geo-shell--bl geo-shell--ink">
+      <div class="section-head">
+        <p class="meta-label">03 — Character</p>
+        <p class="love-script love-eyebrow love-script--on-ink">date night map</p>
+        <h2 class="display-xl" id="characterDisplay">GEN Z</h2>
+        <p class="section-sub">Pick a generation, tap a calendar day, and unlock real-world activities on the map.</p>
+      </div>
+      <div class="char-rail" id="characterRail" role="tablist" aria-label="Generations"></div>
+      <p class="char-blurb" id="characterBlurb"></p>
+
+      <div class="cal-wrap">
+        <div class="cal-head">
+          <button type="button" class="mx-ring mx-ring--on-ink" id="calPrev" aria-label="Previous month">
+            <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+          <p class="cal-title" id="calTitle">July 2026</p>
+          <button type="button" class="mx-ring mx-ring--on-ink is-active" id="calNext" aria-label="Next month">
+            <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </div>
+        <div class="cal-weekdays" aria-hidden="true">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="cal-grid" id="calGrid" role="grid" aria-label="Activity calendar"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="overlay" id="activityOverlay" hidden>
+    <div class="overlay-panel activity-panel geo-tile geo-tile--br" id="activityPanel">
+      <button type="button" class="profile-close" id="activityClose" aria-label="Close activities">✕</button>
+      <p class="meta-label" id="activityMeta">Activities</p>
+      <p class="love-script" id="activityLove">plans</p>
+      <h3 class="profile-name" id="activityTitle">Gen Z night</h3>
+      <p class="section-sub" id="activitySub">Pick a place — we’ll drop a blue radius on the map.</p>
+      <div class="activity-list" id="activityList"></div>
+    </div>
   </div>
 
-  <div class="gd-counter" id="gdCounter">01 / 12</div>
+  <!-- 04 — MUSIC (poetry + art + songs, music look) -->
+  <section class="section section--field section--field-alt" id="music">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--tr"></div>
+      <div class="geo-panel geo-panel--bl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--b"></div>
+    </div>
+    <div class="geo-shell geo-shell--tr geo-shell--ink">
+      <div class="section-head">
+        <p class="meta-label">04 — Music</p>
+        <p class="love-script love-eyebrow love-script--on-ink">songs · lines · sketches</p>
+        <h2>Favorites only</h2>
+        <p class="section-sub">Poetry, pencil art, and the quiet stack of songs that say who you are — one stage.</p>
+      </div>
 
-  <div class="gd-rail-shell">
-    <button class="gd-nav-btn" id="gdPrev" type="button" aria-label="Previous guide">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5l-7 7 7 7"/></svg>
-    </button>
-    <div class="gd-rail" id="gdRail" role="listbox" aria-label="Student guides"></div>
-    <button class="gd-nav-btn" id="gdNext" type="button" aria-label="Next guide">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5l7 7-7 7"/></svg>
-    </button>
+      <div class="express-tabs" id="expressTabs" role="tablist" aria-label="Music stage">
+        <button type="button" class="express-tab" role="tab" aria-selected="false" data-panel="poetry">Poetry</button>
+        <button type="button" class="express-tab" role="tab" aria-selected="false" data-panel="art">Art</button>
+        <button type="button" class="express-tab is-on" role="tab" aria-selected="true" data-panel="songs">Music</button>
+      </div>
+
+      <div class="express-panel" id="panelPoetry" role="tabpanel" hidden>
+        <div class="poetry-list mx-stagger" id="poetryList"></div>
+      </div>
+
+      <div class="express-panel" id="panelArt" role="tabpanel" hidden>
+        <div class="art-workspace art-workspace--ink">
+          <div class="art-upload geo-tile geo-tile--br" id="artDrop">
+            <input type="file" id="artInput" accept="image/*" hidden>
+            <p class="meta-label">Drop image</p>
+            <p>or <button type="button" class="text-link" id="artPickBtn">browse</button></p>
+            <p class="art-hint">JPG · PNG · WEBP</p>
+          </div>
+
+          <div class="art-canvases" id="artCanvases" hidden>
+            <figure class="art-pane geo-tile geo-tile--tr">
+              <figcaption class="meta-label">Original</figcaption>
+              <canvas id="canvasOriginal"></canvas>
+            </figure>
+            <figure class="art-pane geo-tile geo-tile--bl">
+              <figcaption class="meta-label">Pencil</figcaption>
+              <canvas id="canvasPencil"></canvas>
+            </figure>
+          </div>
+
+          <div class="scene-rail" id="sceneRail" hidden>
+            <p class="meta-label">Scenes</p>
+            <div class="scene-btns" id="sceneBtns"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="express-panel" id="panelSongs" role="tabpanel">
+        <ul class="song-list mx-stagger" id="songList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLACES — satellite map + malls + STK -->
+  <section class="section section--field" id="places">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--br"></div>
+      <div class="geo-panel geo-panel--tl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--a"></div>
+    </div>
+    <div class="geo-shell geo-shell--br geo-shell--places">
+      <div class="section-head">
+        <p class="meta-label">05 — Places</p>
+        <p class="love-script love-eyebrow">meet in the city</p>
+        <h2>Nairobi centres</h2>
+        <p class="section-sub">Satellite map of real shopping centres. Pay for transport or shopping — GPS locks the amenity.</p>
+      </div>
+
+      <div class="map-frame">
+        <div class="map-edge map-edge--tl" aria-hidden="true"></div>
+        <div class="map-edge map-edge--br" aria-hidden="true"></div>
+        <div class="map-edge map-edge--tr" aria-hidden="true"></div>
+        <div id="placesMap" class="places-map" role="application" aria-label="Nairobi satellite map of shopping centres"></div>
+        <div class="map-hud">
+          <button type="button" class="btn-block btn-block--blue" id="gpsLocateBtn">Use GPS</button>
+          <p class="meta-label" id="gpsStatus">Location idle</p>
+        </div>
+      </div>
+
+      <div class="mall-rail mx-stagger" id="mallRail" aria-label="Nairobi shopping centres"></div>
+
+      <div class="pay-row mx-stagger">
+        <button type="button" class="pay-card pay-card--shop geo-tile geo-tile--br is-active mx-card mx-card--green" id="payTypeShop" data-type="shopping">
+          <span class="meta-label">Pay</span>
+          <span class="pay-card-title">Shopping</span>
+          <span class="pay-card-sub">At the selected centre</span>
+        </button>
+        <button type="button" class="pay-card pay-card--ride geo-tile geo-tile--tl mx-card mx-card--blue" id="payTypeRide" data-type="transport">
+          <span class="meta-label">Pay</span>
+          <span class="pay-card-title">Transport</span>
+          <span class="pay-card-sub">Ride to the centre</span>
+        </button>
+      </div>
+
+      <form class="stk-form geo-tile geo-tile--tr" id="stkForm">
+        <div class="stk-head">
+          <p class="meta-label">M-Pesa STK</p>
+          <span class="status-dot" id="payStatusDot" aria-hidden="true"></span>
+        </div>
+        <p class="stk-target" id="stkTarget">Select a shopping centre</p>
+        <label class="stk-field">
+          <span class="meta-label">Phone</span>
+          <input type="tel" id="payPhone" name="phone" inputmode="tel" placeholder="07XXXXXXXX" autocomplete="tel" required>
+        </label>
+        <label class="stk-field">
+          <span class="meta-label">Amount (KES)</span>
+          <input type="number" id="payAmount" name="amount" min="1" step="1" value="50" required>
+        </label>
+        <button type="submit" class="btn-block btn-block--green" id="payBtn">Confirm &amp; pay</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SUCCESS / ERROR OVERLAYS -->
+  <div class="overlay" id="successOverlay" hidden>
+    <div class="overlay-panel overlay-panel--success geo-tile geo-tile--br">
+      <div class="pulse-ring"></div>
+      <p class="meta-label">Match</p>
+      <p class="love-script love-overlay">it's love</p>
+      <p class="overlay-title">It's a bond</p>
+      <p class="overlay-sub" id="successSub">Two circles. One green line.</p>
+      <button type="button" class="btn-block" id="successClose">Continue</button>
+    </div>
   </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="js/utils.js?v=20260724b"></script>
-<script src="js/destinations.js?v=20260724b"></script>
-<script src="js/travel-data.js?v=20260724b"></script>
-<script src="js/artifacts.js?v=20260724b"></script>
-<script src="js/payment.js?v=20260724b"></script>
-<script src="js/map.js?v=20260724b"></script>
-<script src="js/marketplace.js?v=20260724b"></script>
-<script src="js/travel.js?v=20260724b"></script>
-<script src="js/guides.js?v=20260724b"></script>
-<script src="js/inclusivity.js?v=20260724b"></script>
-<script src="js/app.js?v=20260724b"></script>
+  <div class="overlay" id="errorOverlay" hidden>
+    <div class="overlay-panel overlay-panel--error geo-tile geo-tile--tl">
+      <p class="meta-label">Miss</p>
+      <p class="love-script love-overlay love-overlay--miss">not yet</p>
+      <p class="overlay-title">Not this circle</p>
+      <p class="overlay-sub">Keep scrolling — the right bond is still moving.</p>
+      <button type="button" class="btn-block btn-block--ghost" id="errorClose">Try again</button>
+    </div>
+  </div>
 
-<elevenlabs-convai
-  agent-id="agent_7501kxv7jj4gezv8kcqj5f5kbepg"
-  placement="bottom-left"
-  variant="compact"
-  class="aurora-convai"
-></elevenlabs-convai>
-<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+  <div class="overlay" id="profileOverlay" hidden>
+    <div class="overlay-panel profile-panel geo-tile geo-tile--br" id="profilePanel">
+      <button type="button" class="profile-close" id="profileClose" aria-label="Close profile">✕</button>
+      <div class="profile-hero">
+        <img id="profilePhoto" class="profile-photo" src="" alt="">
+        <div class="profile-hero-copy">
+          <p class="meta-label" id="profileMeta">Profile</p>
+          <p class="love-script" id="profileLove">hello</p>
+          <h3 class="profile-name" id="profileName"></h3>
+          <p class="profile-role" id="profileRole"></p>
+        </div>
+      </div>
+      <div class="profile-ratings" id="profileRatings"></div>
+      <dl class="profile-grid" id="profileGrid"></dl>
+      <div class="profile-tags" id="profileTags"></div>
+      <div class="profile-actions">
+        <button type="button" class="btn-block btn-block--blue" id="profileLocate">Show on map</button>
+        <button type="button" class="btn-block btn-block--ghost" id="profileBgCheck">Background check</button>
+        <button type="button" class="btn-block btn-block--green" id="profileConnect">Try connect</button>
+      </div>
+    </div>
+  </div>
 
+  <div class="overlay" id="bgCheckOverlay" hidden>
+    <div class="overlay-panel bg-panel geo-tile geo-tile--br" id="bgPanel" role="dialog" aria-modal="true" aria-labelledby="bgTitle">
+      <p class="meta-label">Background check</p>
+      <p class="love-script love-overlay" id="bgLove">verifying</p>
+      <h3 class="overlay-title" id="bgTitle">Running checks</h3>
+      <p class="overlay-sub" id="bgSub">Scanning public signals for this profile…</p>
+      <div class="bg-face" id="bgFace"></div>
+      <ul class="bg-steps" id="bgSteps" aria-live="polite"></ul>
+      <div class="bg-result" id="bgResult" hidden>
+        <div class="bg-stamp" id="bgStamp" aria-hidden="true"></div>
+        <p class="bg-result-title" id="bgResultTitle"></p>
+        <p class="bg-result-sub" id="bgResultSub"></p>
+      </div>
+      <button type="button" class="btn-block" id="bgClose" hidden>Close</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="payErrorOverlay" hidden>
+    <div class="overlay-panel overlay-panel--error geo-tile geo-tile--tl">
+      <p class="meta-label">Payment</p>
+      <p class="love-script love-overlay love-overlay--miss">hold on</p>
+      <p class="overlay-title">STK not sent</p>
+      <p class="overlay-sub" id="payErrorSub">Check phone format or try again in a moment.</p>
+      <button type="button" class="btn-block btn-block--ghost" id="payErrorClose">Try again</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="paySuccessOverlay" hidden>
+    <div class="overlay-panel overlay-panel--pay geo-tile geo-tile--br">
+      <div class="pulse-ring pulse-ring--pay"></div>
+      <p class="meta-label">Payment</p>
+      <p class="love-script love-overlay love-overlay--pay">confirmed</p>
+      <p class="overlay-title">Payment verified</p>
+      <p class="overlay-sub" id="paySuccessSub">M-Pesa receipt locked to place.</p>
+      <button type="button" class="btn-block btn-block--green" id="paySuccessClose">Continue</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--tl footer-panel"></div>
+    </div>
+    <p class="brand">PENZI</p>
+    <p class="meta-label">Nairobi · Mombasa · Kisumu · Eldoret</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/dating.js"></script>
+  <script src="js/places.js"></script>
+  <script src="js/motion.js"></script>
 </body>
 </html>

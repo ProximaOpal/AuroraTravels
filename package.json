@@ -1,11 +1,10 @@
 {
-  "name": "auroratravels",
+  "name": "penzi",
   "version": "1.0.0",
-  "description": "Interactive travel + craft marketplace experience for Kenya. Includes PENZI matchmaker.",
+  "description": "PENZI — Kenyan dating matchmaker.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build:deck": "python3 pitch/fill_afrihealth_template.py",
     "test": "node --check server.js"
   },
   "engines": {
@@ -15,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/ProximaOpal/AuroraTravels.git"
   },
-  "keywords": ["kenya", "travel", "mpesa", "penzi", "dating", "render"],
+  "keywords": ["kenya", "penzi", "dating", "matchmaker", "mpesa", "render"],
   "author": "ProximaOpal",
   "license": "ISC",
   "bugs": {

@@ -1,8 +1,8 @@
-# Render Blueprint — Aurora Travels + PENZI
+# Render Blueprint — PENZI
 # https://render.com/docs/blueprint-spec
 services:
   - type: web
-    name: auroratravels-penzi
+    name: penzi
     runtime: node
     plan: free
     region: oregon
