@@ -2,7 +2,7 @@
 
 (() => {
   const CONFIG = Object.freeze({
-    // Same-origin proxy (falls back to demo if Marvel gateway is down)
+    // Same-origin proxy → Marvel Network STK (real push; demo only if server allows)
     API_BASE_URL: "",
     POLL_INTERVAL_MS: 2500,
     POLL_MAX_ATTEMPTS: 16,
@@ -586,11 +586,12 @@
       pollPayment(checkoutId, mall, Math.floor(amount), type);
     } else {
       const msg =
+        (typeof data?.detail === "string" ? data.detail : null) ||
         data?.message ||
         data?.error ||
         (status === 503
           ? "Payment gateway is temporarily unavailable."
-          : "Gateway rejection. Check connection.");
+          : "Gateway rejection. Check number and try again.");
       showPayError(msg);
       resetPayBtn();
     }
