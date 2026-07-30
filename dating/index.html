@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bebas+Neue&family=Dancing+Script:wght@500;600;700&family=Great+Vibes&family=IBM+Plex+Mono:wght@400;500&family=Italianno&family=Outfit:wght@300;400;500;600;700&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="css/dating.css">
 </head>
 <body>
@@ -74,6 +75,7 @@
     <a href="#poetry">Poetry</a>
     <a href="#art">Art</a>
     <a href="#music">Music</a>
+    <a href="#places">Places</a>
   </nav>
 
   <!-- MATCHMAKING -->
@@ -232,6 +234,66 @@
     </div>
   </section>
 
+  <!-- PLACES — satellite map + malls + STK -->
+  <section class="section section--field" id="places">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--br"></div>
+      <div class="geo-panel geo-panel--tl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--a"></div>
+    </div>
+    <div class="geo-shell geo-shell--br geo-shell--places">
+      <div class="section-head">
+        <p class="meta-label">07 — Places</p>
+        <p class="love-script love-eyebrow">meet in the city</p>
+        <h2>Nairobi centres</h2>
+        <p class="section-sub">Satellite map of real shopping centres. Pay for transport or shopping — GPS locks the amenity.</p>
+      </div>
+
+      <div class="map-frame">
+        <div class="map-edge map-edge--tl" aria-hidden="true"></div>
+        <div class="map-edge map-edge--br" aria-hidden="true"></div>
+        <div class="map-edge map-edge--tr" aria-hidden="true"></div>
+        <div id="placesMap" class="places-map" role="application" aria-label="Nairobi satellite map of shopping centres"></div>
+        <div class="map-hud">
+          <button type="button" class="btn-block btn-block--blue" id="gpsLocateBtn">Use GPS</button>
+          <p class="meta-label" id="gpsStatus">Location idle</p>
+        </div>
+      </div>
+
+      <div class="mall-rail" id="mallRail" aria-label="Nairobi shopping centres"></div>
+
+      <div class="pay-row">
+        <button type="button" class="pay-card pay-card--shop geo-tile geo-tile--br is-active" id="payTypeShop" data-type="shopping">
+          <span class="meta-label">Pay</span>
+          <span class="pay-card-title">Shopping</span>
+          <span class="pay-card-sub">At the selected centre</span>
+        </button>
+        <button type="button" class="pay-card pay-card--ride geo-tile geo-tile--tl" id="payTypeRide" data-type="transport">
+          <span class="meta-label">Pay</span>
+          <span class="pay-card-title">Transport</span>
+          <span class="pay-card-sub">Ride to the centre</span>
+        </button>
+      </div>
+
+      <form class="stk-form geo-tile geo-tile--tr" id="stkForm">
+        <div class="stk-head">
+          <p class="meta-label">M-Pesa STK</p>
+          <span class="status-dot" id="payStatusDot" aria-hidden="true"></span>
+        </div>
+        <p class="stk-target" id="stkTarget">Select a shopping centre</p>
+        <label class="stk-field">
+          <span class="meta-label">Phone</span>
+          <input type="tel" id="payPhone" name="phone" inputmode="tel" placeholder="07XXXXXXXX" autocomplete="tel" required>
+        </label>
+        <label class="stk-field">
+          <span class="meta-label">Amount (KES)</span>
+          <input type="number" id="payAmount" name="amount" min="1" step="1" value="50" required>
+        </label>
+        <button type="submit" class="btn-block btn-block--green" id="payBtn">Confirm &amp; pay</button>
+      </form>
+    </div>
+  </section>
+
   <!-- SUCCESS / ERROR OVERLAYS -->
   <div class="overlay" id="successOverlay" hidden>
     <div class="overlay-panel overlay-panel--success geo-tile geo-tile--br">
@@ -254,6 +316,17 @@
     </div>
   </div>
 
+  <div class="overlay" id="paySuccessOverlay" hidden>
+    <div class="overlay-panel overlay-panel--pay geo-tile geo-tile--br">
+      <div class="pulse-ring pulse-ring--pay"></div>
+      <p class="meta-label">Payment</p>
+      <p class="love-script love-overlay love-overlay--pay">confirmed</p>
+      <p class="overlay-title">Payment verified</p>
+      <p class="overlay-sub" id="paySuccessSub">M-Pesa receipt locked to place.</p>
+      <button type="button" class="btn-block btn-block--green" id="paySuccessClose">Continue</button>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="footer-geo" aria-hidden="true">
       <div class="geo-panel geo-panel--tl footer-panel"></div>
@@ -262,6 +335,8 @@
     <p class="meta-label">Nairobi · Mombasa · Kisumu · Eldoret</p>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="js/dating.js"></script>
+  <script src="js/places.js"></script>
 </body>
 </html>
