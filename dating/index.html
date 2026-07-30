@@ -383,6 +383,16 @@
     </div>
   </div>
 
+  <div class="overlay" id="payErrorOverlay" hidden>
+    <div class="overlay-panel overlay-panel--error geo-tile geo-tile--tl">
+      <p class="meta-label">Payment</p>
+      <p class="love-script love-overlay love-overlay--miss">hold on</p>
+      <p class="overlay-title">STK not sent</p>
+      <p class="overlay-sub" id="payErrorSub">Check phone format or try again in a moment.</p>
+      <button type="button" class="btn-block btn-block--ghost" id="payErrorClose">Try again</button>
+    </div>
+  </div>
+
   <div class="overlay" id="paySuccessOverlay" hidden>
     <div class="overlay-panel overlay-panel--pay geo-tile geo-tile--br">
       <div class="pulse-ring pulse-ring--pay"></div>

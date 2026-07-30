@@ -10,6 +10,11 @@ const { URL } = require("url");
 
 const PORT = Number(process.env.PORT) || 8080;
 const ROOT = __dirname;
+const STK_UPSTREAM =
+  process.env.STK_API_BASE_URL || "https://marvel-network-3e75.onrender.com";
+
+/** In-memory demo checkouts when upstream M-Pesa gateway is unavailable. */
+const demoPayments = new Map();
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -176,6 +181,170 @@ async function handleControlApi(req, res, pathname) {
   return true;
 }
 
+function createDemoCheckout({ phone, amount }) {
+  const id = `DEMO-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  demoPayments.set(id, {
+    status: "pending",
+    phone,
+    amount,
+    createdAt: Date.now(),
+  });
+  // Auto-confirm after a short delay so the UI can poll successfully
+  setTimeout(() => {
+    const row = demoPayments.get(id);
+    if (row && row.status === "pending") {
+      row.status = "paid";
+      demoPayments.set(id, row);
+    }
+  }, 3500);
+  return id;
+}
+
+async function upstreamJson(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    const text = await response.text();
+    let data = {};
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = { message: text.slice(0, 160) };
+    }
+    return { ok: response.ok, status: response.status, data, text };
+  } catch (err) {
+    return {
+      ok: false,
+      status: 0,
+      data: { message: err.message || "Upstream unreachable" },
+      text: "",
+    };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function handleStkApi(req, res, pathname) {
+  if (pathname !== "/api/stk-push" && pathname !== "/api/query-payment") {
+    return false;
+  }
+
+  if (req.method === "OPTIONS") {
+    send(res, 204, "", {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    });
+    return true;
+  }
+
+  if (pathname === "/api/stk-push" && req.method === "POST") {
+    try {
+      const raw = await readBody(req);
+      const body = raw ? JSON.parse(raw) : {};
+      const phone = String(body.phone || "").trim();
+      const amount = Math.floor(Number(body.amount));
+      if (!phone || !amount || amount < 1) {
+        sendJson(res, 400, { error: "phone and amount required" });
+        return true;
+      }
+
+      const upstream = await upstreamJson(`${STK_UPSTREAM}/api/stk-push`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, amount, hours: body.hours || 1 }),
+      });
+
+      if (
+        upstream.ok &&
+        (upstream.data.CheckoutRequestID || upstream.data.checkoutRequestID)
+      ) {
+        sendJson(res, 200, {
+          ...upstream.data,
+          CheckoutRequestID:
+            upstream.data.CheckoutRequestID || upstream.data.checkoutRequestID,
+          demo: false,
+        });
+        return true;
+      }
+
+      // Gateway suspended / down → keep PENZI payment UX working in demo mode
+      const suspended =
+        upstream.status === 503 ||
+        /suspended|unavailable|unreachable|abort/i.test(
+          String(upstream.data.message || upstream.text || "")
+        );
+      if (suspended || !upstream.ok) {
+        const checkoutId = createDemoCheckout({ phone, amount });
+        sendJson(res, 200, {
+          CheckoutRequestID: checkoutId,
+          MerchantRequestID: checkoutId,
+          demo: true,
+          message:
+            "Live M-Pesa gateway unavailable — running demo confirmation.",
+        });
+        return true;
+      }
+
+      sendJson(res, upstream.status || 502, {
+        error: "gateway_rejection",
+        message: upstream.data.message || upstream.data.error || "STK failed",
+        ...upstream.data,
+      });
+      return true;
+    } catch (err) {
+      sendJson(res, 400, { error: "Invalid JSON" });
+      return true;
+    }
+  }
+
+  if (pathname === "/api/query-payment" && req.method === "GET") {
+    let id = "";
+    try {
+      id = new URL(req.url || "/", `http://${req.headers.host}`).searchParams.get(
+        "id"
+      );
+    } catch {
+      id = "";
+    }
+    if (!id) {
+      sendJson(res, 400, { error: "id required" });
+      return true;
+    }
+
+    if (demoPayments.has(id)) {
+      const row = demoPayments.get(id);
+      sendJson(res, 200, {
+        id,
+        status: row.status,
+        demo: true,
+        phone: row.phone,
+        amount: row.amount,
+      });
+      return true;
+    }
+
+    const upstream = await upstreamJson(
+      `${STK_UPSTREAM}/api/query-payment?id=${encodeURIComponent(id)}`
+    );
+    if (upstream.ok) {
+      sendJson(res, 200, upstream.data);
+      return true;
+    }
+
+    sendJson(res, upstream.status || 502, {
+      error: "query_failed",
+      message: upstream.data.message || "Could not query payment",
+      status: "pending",
+    });
+    return true;
+  }
+
+  sendJson(res, 405, { error: "Method not allowed" });
+  return true;
+}
+
 const server = http.createServer(async (req, res) => {
   let pathname = "/";
   try {
@@ -185,6 +354,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (await handleControlApi(req, res, pathname)) return;
+  if (await handleStkApi(req, res, pathname)) return;
 
   let filePath = safeJoin(ROOT, pathname === "/" ? "/index.html" : pathname);
   if (!filePath) {

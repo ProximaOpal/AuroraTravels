@@ -2,9 +2,10 @@
 
 (() => {
   const CONFIG = Object.freeze({
-    API_BASE_URL: "https://marvel-network-3e75.onrender.com",
-    POLL_INTERVAL_MS: 5000,
-    POLL_MAX_ATTEMPTS: 12,
+    // Same-origin proxy (falls back to demo if Marvel gateway is down)
+    API_BASE_URL: "",
+    POLL_INTERVAL_MS: 2500,
+    POLL_MAX_ATTEMPTS: 16,
     GPS_ZOOM: 16,
     AUTH_RADIUS_M: 420,
   });
@@ -42,10 +43,16 @@
     const request = async (url, options = {}) => {
       try {
         const response = await fetch(url, options);
-        const data = await response.json().catch(() => ({}));
+        const text = await response.text();
+        let data = {};
+        try {
+          data = text ? JSON.parse(text) : {};
+        } catch {
+          data = { message: text.slice(0, 120) || "Invalid gateway response" };
+        }
         return { ok: response.ok, status: response.status, data };
       } catch (err) {
-        return { ok: false, error: err.message };
+        return { ok: false, error: err.message, data: { message: err.message } };
       }
     };
     return {
@@ -63,6 +70,14 @@
         request(`${BASE}/api/query-payment?id=${encodeURIComponent(id)}`),
     };
   })();
+
+  function showPayError(message) {
+    const sub = $("#payErrorSub");
+    if (sub) sub.textContent = message || "Payment could not be started.";
+    const overlay = $("#payErrorOverlay");
+    if (overlay) overlay.hidden = false;
+    toast(message || "Payment error", "err");
+  }
 
   const PHONE = {
     isValid: (raw) => /^(07|01|254|\+254)\d{8}$/.test(String(raw).trim()),
@@ -420,13 +435,12 @@
       } else if (ok && (data.status === "failed" || data.status === "cancelled")) {
         clearPoll();
         setPayDot("err");
-        toast("Transaction failed", "err");
-        $("#errorOverlay").hidden = false;
+        showPayError("Transaction failed or cancelled on the phone.");
         resetPayBtn();
       } else if (attempts >= CONFIG.POLL_MAX_ATTEMPTS) {
         clearPoll();
         setPayDot("err");
-        toast("Poll timeout", "err");
+        showPayError("No M-Pesa response yet. Try again shortly.");
         resetPayBtn();
       }
     }, CONFIG.POLL_INTERVAL_MS);
@@ -438,18 +452,18 @@
 
     const mall = MALLS.find((m) => m.id === state.selectedId);
     if (!mall) {
-      toast("Select a shopping centre", "err");
+      showPayError("Select a shopping centre first.");
       return;
     }
 
     const phoneRaw = $("#payPhone").value;
     const amount = Number($("#payAmount").value);
     if (!PHONE.isValid(phoneRaw)) {
-      toast("Invalid M-Pesa format", "err");
+      showPayError("Invalid M-Pesa format. Use 07… / 01… / 254…");
       return;
     }
     if (!amount || amount < 1) {
-      toast("Invalid amount", "err");
+      showPayError("Enter a valid amount (KES 1+).");
       return;
     }
 
@@ -464,14 +478,21 @@
 
     btn.textContent = "Sending STK…";
     const phone = PHONE.normalise(phoneRaw);
-    const { ok, data } = await API.stkPush(phone, amount);
+    const { ok, data, status } = await API.stkPush(phone, amount);
 
-    if (ok && data.CheckoutRequestID) {
-      toast("STK sent · enter PIN", "ok");
-      pollPayment(data.CheckoutRequestID, mall, Math.floor(amount), type);
+    if (ok && (data.CheckoutRequestID || data.checkoutRequestID)) {
+      const checkoutId = data.CheckoutRequestID || data.checkoutRequestID;
+      const demo = !!data.demo;
+      toast(demo ? "Demo STK · confirming…" : "STK sent · enter PIN", "ok");
+      pollPayment(checkoutId, mall, Math.floor(amount), type);
     } else {
-      toast(data?.message || "Gateway rejection", "err");
-      $("#errorOverlay").hidden = false;
+      const msg =
+        data?.message ||
+        data?.error ||
+        (status === 503
+          ? "Payment gateway is temporarily unavailable."
+          : "Gateway rejection. Check connection.");
+      showPayError(msg);
       resetPayBtn();
     }
   }
@@ -499,6 +520,14 @@
 
     $("#paySuccessClose")?.addEventListener("click", () => {
       $("#paySuccessOverlay").hidden = true;
+    });
+
+    $("#payErrorClose")?.addEventListener("click", () => {
+      $("#payErrorOverlay").hidden = true;
+    });
+
+    $("#payErrorOverlay")?.addEventListener("click", (e) => {
+      if (e.target.id === "payErrorOverlay") $("#payErrorOverlay").hidden = true;
     });
   }
 
