@@ -2166,6 +2166,13 @@ button {
   object-fit: cover;
   outline: 2px solid var(--paper);
   box-shadow: 0 0 0 2px rgba(225, 6, 0, 0.25);
+  background: #f7f5f2;
+}
+
+.zodiac-photo--cartoon {
+  object-fit: contain;
+  padding: 2px;
+  background: #f7f5f2;
 }
 
 .zodiac-emoji {

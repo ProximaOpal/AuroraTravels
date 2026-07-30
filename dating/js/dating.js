@@ -529,7 +529,7 @@ const ZODIAC = [
     end: [4, 19],
     traits: ["extraversion", "openness"],
     blurb: "Bold starters. Direct, warm, and allergic to waiting.",
-    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop",
+    cartoon: "aries-ram",
   },
   {
     id: "taurus",
@@ -541,7 +541,7 @@ const ZODIAC = [
     end: [5, 20],
     traits: ["conscientious", "stability"],
     blurb: "Sensual steadiness. Loyalty with good taste.",
-    photo: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80&auto=format&fit=crop",
+    cartoon: "taurus-earth",
   },
   {
     id: "gemini",
@@ -553,7 +553,7 @@ const ZODIAC = [
     end: [6, 20],
     traits: ["openness", "extraversion"],
     blurb: "Quick wit, dual moods, forever curious.",
-    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&auto=format&fit=crop",
+    cartoon: "gemini-twins",
   },
   {
     id: "cancer",
@@ -565,7 +565,7 @@ const ZODIAC = [
     end: [7, 22],
     traits: ["agreeableness", "stability"],
     blurb: "Home-builders. Soft shells, deep care.",
-    photo: "https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=400&q=80&auto=format&fit=crop",
+    cartoon: "cancer-shell",
   },
   {
     id: "leo",
@@ -577,7 +577,7 @@ const ZODIAC = [
     end: [8, 22],
     traits: ["extraversion", "agreeableness"],
     blurb: "Warm spotlight energy — generous and proud.",
-    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
+    cartoon: "leo-sun",
   },
   {
     id: "virgo",
@@ -589,7 +589,7 @@ const ZODIAC = [
     end: [9, 22],
     traits: ["conscientious", "openness"],
     blurb: "Detail lovers who show care through precision.",
-    photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80&auto=format&fit=crop",
+    cartoon: "virgo-grain",
   },
   {
     id: "libra",
@@ -601,7 +601,7 @@ const ZODIAC = [
     end: [10, 22],
     traits: ["agreeableness", "extraversion"],
     blurb: "Harmony seekers — beauty, balance, fair talk.",
-    photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80&auto=format&fit=crop",
+    cartoon: "libra-scale",
   },
   {
     id: "scorpio",
@@ -613,7 +613,7 @@ const ZODIAC = [
     end: [11, 21],
     traits: ["stability", "openness"],
     blurb: "Intense loyalty. Depth over small talk.",
-    photo: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400&q=80&auto=format&fit=crop",
+    cartoon: "scorpio-depth",
   },
   {
     id: "sagittarius",
@@ -625,7 +625,7 @@ const ZODIAC = [
     end: [12, 21],
     traits: ["openness", "extraversion"],
     blurb: "Road-trip souls — honest, funny, unbound.",
-    photo: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&q=80&auto=format&fit=crop",
+    cartoon: "sagittarius-bow",
   },
   {
     id: "capricorn",
@@ -637,7 +637,7 @@ const ZODIAC = [
     end: [1, 19],
     traits: ["conscientious", "stability"],
     blurb: "Quiet ambition. Builds empires and trust.",
-    photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80&auto=format&fit=crop",
+    cartoon: "capricorn-peak",
   },
   {
     id: "aquarius",
@@ -649,7 +649,7 @@ const ZODIAC = [
     end: [2, 18],
     traits: ["openness", "agreeableness"],
     blurb: "Future-minded rebels with soft ideals.",
-    photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80&auto=format&fit=crop",
+    cartoon: "aquarius-wave",
   },
   {
     id: "pisces",
@@ -661,9 +661,15 @@ const ZODIAC = [
     end: [3, 20],
     traits: ["agreeableness", "openness"],
     blurb: "Dreamers who feel the room before speaking.",
-    photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80&auto=format&fit=crop",
+    cartoon: "pisces-dream",
   },
 ];
+
+/** Illustrated cartoon face for Personality zodiac cards (not real photos). */
+function cartoonAvatar(seed) {
+  const s = encodeURIComponent(String(seed || "penzi").toLowerCase());
+  return `https://api.dicebear.com/9.x/lorelei/svg?seed=${s}&backgroundColor=f7f5f2&radius=50`;
+}
 
 const GENERATIONS = [
   {
@@ -1425,7 +1431,8 @@ function renderPersonalities() {
   grid.innerHTML = "";
   ZODIAC.forEach((z) => {
     const matches = peopleForZodiac(z);
-    const photo = matches[0]?.photo || z.photo;
+    // Personality avatars are cartoons — never real profile photos
+    const photo = cartoonAvatar(matches[0]?.name || z.cartoon || z.id);
     const names = matches.map((p) => p.name.split(" ")[0]).slice(0, 3).join(", ");
     const traitNames = z.traits
       .map((id) => PSYCH_TRAITS.find((t) => t.id === id)?.name)
@@ -1439,7 +1446,7 @@ function renderPersonalities() {
     btn.dataset.traits = z.traits.join(",");
     btn.innerHTML = `
       <div class="zodiac-top">
-        <img class="zodiac-photo" src="${photo}" alt="${z.name}" loading="lazy">
+        <img class="zodiac-photo zodiac-photo--cartoon" src="${photo}" alt="${z.name} cartoon avatar" width="72" height="72" loading="lazy">
         <span class="zodiac-emoji" aria-hidden="true">${z.emoji}</span>
       </div>
       <p class="zodiac-symbol">${z.symbol} ${z.name}</p>
