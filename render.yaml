@@ -14,4 +14,6 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: STK_API_BASE_URL
-        sync: false
+        value: "https://marvel-network-dx6q.onrender.com"
+      - key: STK_ALLOW_DEMO
+        value: "0"

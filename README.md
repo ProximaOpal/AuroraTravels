@@ -19,7 +19,7 @@ npm start
 
 1. Connect this repo in Render → **New → Blueprint**
 2. Uses `render.yaml` (`penzi` web service)
-3. Optional env: `STK_API_BASE_URL`
+3. Optional env: `STK_API_BASE_URL` (default `https://marvel-network-dx6q.onrender.com`), `STK_ALLOW_DEMO=1` for offline demos only
 
 ### Option B — Manual
 
@@ -43,4 +43,7 @@ Legacy `/dating/` URLs redirect to `/`.
 
 ## Payments
 
-STK proxies via this server. If upstream is down, demo checkout still confirms for Places demos.
+STK proxies via this server to **Marvel Network** (`STK_API_BASE_URL`, default `https://marvel-network-dx6q.onrender.com`).
+
+- Real M-Pesa STK push is the default (`POST /api/stk-push` → upstream).
+- Demo checkout only when `STK_ALLOW_DEMO=1` and upstream is unreachable.
