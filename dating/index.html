@@ -76,116 +76,158 @@
   </nav>
 
   <!-- MATCHMAKING -->
-  <section class="section match-section" id="match">
-    <div class="section-head">
-      <p class="meta-label">01 — Match</p>
-      <h2>Circular bonds</h2>
-      <p class="section-sub">Scroll the constellation. When two circles meet, the bond turns green.</p>
+  <section class="section section--field" id="match">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--br"></div>
+      <div class="geo-panel geo-panel--tl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--a"></div>
     </div>
-
-    <div class="match-stage" id="matchStage">
-      <div class="constant-profile" id="constantProfile">
-        <div class="ring ring--idle" id="constantRing"></div>
-        <img id="constantImg" src="" alt="Your profile" class="avatar">
-        <p class="avatar-name" id="constantName">You</p>
-        <p class="avatar-tag" id="constantTag">Nairobi</p>
+    <div class="geo-shell geo-shell--br">
+      <div class="section-head">
+        <p class="meta-label">01 — Match</p>
+        <h2>Circular bonds</h2>
+        <p class="section-sub">Scroll the constellation. When two circles meet, the bond turns green.</p>
       </div>
 
-      <div class="match-connector" id="matchConnector" aria-hidden="true"></div>
+      <div class="match-stage" id="matchStage">
+        <div class="constant-profile" id="constantProfile">
+          <div class="ring ring--idle" id="constantRing"></div>
+          <img id="constantImg" src="" alt="Your profile" class="avatar">
+          <p class="avatar-name" id="constantName">You</p>
+          <p class="avatar-tag" id="constantTag">Nairobi</p>
+        </div>
 
-      <div class="orbit-rail" id="orbitRail" tabindex="0" aria-label="Scrollable match profiles">
-        <div class="orbit-track" id="orbitTrack"></div>
+        <div class="match-connector" id="matchConnector" aria-hidden="true"></div>
+
+        <div class="orbit-rail" id="orbitRail" tabindex="0" aria-label="Scrollable match profiles">
+          <div class="orbit-track" id="orbitTrack"></div>
+        </div>
       </div>
-    </div>
 
-    <div class="match-status" id="matchStatus" aria-live="polite">
-      <p class="status-idle">Scroll profiles · find your green bond</p>
-    </div>
+      <div class="match-status" id="matchStatus" aria-live="polite">
+        <p class="status-idle">Scroll profiles · find your green bond</p>
+      </div>
 
-    <div class="match-actions">
-      <button type="button" class="btn-block btn-block--ghost" id="reshuffleBtn">Reshuffle</button>
-      <button type="button" class="btn-block" id="tryMatchBtn">Try connect</button>
+      <div class="match-actions">
+        <button type="button" class="btn-block btn-block--ghost" id="reshuffleBtn">Reshuffle</button>
+        <button type="button" class="btn-block" id="tryMatchBtn">Try connect</button>
+      </div>
     </div>
   </section>
 
   <!-- PERSONALITY -->
-  <section class="section" id="personality">
-    <div class="section-head">
-      <p class="meta-label">02 — Personality</p>
-      <h2>How you move</h2>
-      <p class="section-sub">Pick the energy that feels most like home. This shapes who you meet.</p>
+  <section class="section section--field section--field-alt" id="personality">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--tr"></div>
+      <div class="geo-panel geo-panel--bl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--b"></div>
     </div>
-    <div class="type-grid" id="personalityGrid" role="listbox" aria-label="Personality types"></div>
+    <div class="geo-shell geo-shell--tr">
+      <div class="section-head">
+        <p class="meta-label">02 — Personality</p>
+        <h2>How you move</h2>
+        <p class="section-sub">Pick the energy that feels most like home. This shapes who you meet.</p>
+      </div>
+      <div class="type-grid" id="personalityGrid" role="listbox" aria-label="Personality types"></div>
+    </div>
   </section>
 
   <!-- CHARACTER -->
-  <section class="section section--inverse" id="character">
-    <div class="section-head">
-      <p class="meta-label">03 — Character</p>
-      <h2 class="display-xl" id="characterDisplay">GEN Z</h2>
-      <p class="section-sub">Generation and character lens for the Kenyan dating floor.</p>
+  <section class="section section--field" id="character">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--bl"></div>
+      <div class="geo-panel geo-panel--tr geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--a"></div>
     </div>
-    <div class="char-rail" id="characterRail" role="tablist" aria-label="Character types"></div>
-    <p class="char-blurb" id="characterBlurb"></p>
+    <div class="geo-shell geo-shell--bl geo-shell--ink">
+      <div class="section-head">
+        <p class="meta-label">03 — Character</p>
+        <h2 class="display-xl" id="characterDisplay">GEN Z</h2>
+        <p class="section-sub">Generation and character lens for the Kenyan dating floor.</p>
+      </div>
+      <div class="char-rail" id="characterRail" role="tablist" aria-label="Character types"></div>
+      <p class="char-blurb" id="characterBlurb"></p>
+    </div>
   </section>
 
   <!-- POETRY -->
-  <section class="section" id="poetry">
-    <div class="section-head">
-      <p class="meta-label">04 — Poetry</p>
-      <h2>Lines that land</h2>
-      <p class="section-sub">Minimal verses with feeling. Send one when words are enough.</p>
+  <section class="section section--field section--field-alt" id="poetry">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--tl"></div>
+      <div class="geo-panel geo-panel--br geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--b"></div>
     </div>
-    <div class="poetry-list" id="poetryList"></div>
+    <div class="geo-shell geo-shell--tl">
+      <div class="section-head">
+        <p class="meta-label">04 — Poetry</p>
+        <h2>Lines that land</h2>
+        <p class="section-sub">Minimal verses with feeling. Send one when words are enough.</p>
+      </div>
+      <div class="poetry-list" id="poetryList"></div>
+    </div>
   </section>
 
   <!-- ART -->
-  <section class="section section--art" id="art">
-    <div class="section-head">
-      <p class="meta-label">05 — Art</p>
-      <h2>Pencil scenes</h2>
-      <p class="section-sub">Upload a moment. We turn it into pencil art — different scenes, same soul.</p>
+  <section class="section section--field" id="art">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--br"></div>
+      <div class="geo-panel geo-panel--tl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--a"></div>
     </div>
-
-    <div class="art-workspace">
-      <div class="art-upload" id="artDrop">
-        <input type="file" id="artInput" accept="image/*" hidden>
-        <p class="meta-label">Drop image</p>
-        <p>or <button type="button" class="text-link" id="artPickBtn">browse</button></p>
-        <p class="art-hint">JPG · PNG · WEBP</p>
+    <div class="geo-shell geo-shell--br">
+      <div class="section-head">
+        <p class="meta-label">05 — Art</p>
+        <h2>Pencil scenes</h2>
+        <p class="section-sub">Upload a moment. We turn it into pencil art — different scenes, same soul.</p>
       </div>
 
-      <div class="art-canvases" id="artCanvases" hidden>
-        <figure class="art-pane">
-          <figcaption class="meta-label">Original</figcaption>
-          <canvas id="canvasOriginal"></canvas>
-        </figure>
-        <figure class="art-pane">
-          <figcaption class="meta-label">Pencil</figcaption>
-          <canvas id="canvasPencil"></canvas>
-        </figure>
-      </div>
+      <div class="art-workspace">
+        <div class="art-upload geo-tile geo-tile--br" id="artDrop">
+          <input type="file" id="artInput" accept="image/*" hidden>
+          <p class="meta-label">Drop image</p>
+          <p>or <button type="button" class="text-link" id="artPickBtn">browse</button></p>
+          <p class="art-hint">JPG · PNG · WEBP</p>
+        </div>
 
-      <div class="scene-rail" id="sceneRail" hidden>
-        <p class="meta-label">Scenes</p>
-        <div class="scene-btns" id="sceneBtns"></div>
+        <div class="art-canvases" id="artCanvases" hidden>
+          <figure class="art-pane geo-tile geo-tile--tr">
+            <figcaption class="meta-label">Original</figcaption>
+            <canvas id="canvasOriginal"></canvas>
+          </figure>
+          <figure class="art-pane geo-tile geo-tile--bl">
+            <figcaption class="meta-label">Pencil</figcaption>
+            <canvas id="canvasPencil"></canvas>
+          </figure>
+        </div>
+
+        <div class="scene-rail" id="sceneRail" hidden>
+          <p class="meta-label">Scenes</p>
+          <div class="scene-btns" id="sceneBtns"></div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- MUSIC -->
-  <section class="section section--music" id="music">
-    <div class="section-head">
-      <p class="meta-label">06 — Music</p>
-      <h2>Favorites only</h2>
-      <p class="section-sub">A quiet stack of songs that say who you are.</p>
+  <section class="section section--field section--field-alt" id="music">
+    <div class="section-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--tr"></div>
+      <div class="geo-panel geo-panel--bl geo-panel--accent"></div>
+      <div class="geo-dot geo-dot--b"></div>
     </div>
-    <ul class="song-list" id="songList"></ul>
+    <div class="geo-shell geo-shell--tr geo-shell--ink">
+      <div class="section-head">
+        <p class="meta-label">06 — Music</p>
+        <h2>Favorites only</h2>
+        <p class="section-sub">A quiet stack of songs that say who you are.</p>
+      </div>
+      <ul class="song-list" id="songList"></ul>
+    </div>
   </section>
 
   <!-- SUCCESS / ERROR OVERLAYS -->
   <div class="overlay" id="successOverlay" hidden>
-    <div class="overlay-panel overlay-panel--success">
+    <div class="overlay-panel overlay-panel--success geo-tile geo-tile--br">
       <div class="pulse-ring"></div>
       <p class="meta-label">Match</p>
       <p class="overlay-title">It's a bond</p>
@@ -195,7 +237,7 @@
   </div>
 
   <div class="overlay" id="errorOverlay" hidden>
-    <div class="overlay-panel overlay-panel--error">
+    <div class="overlay-panel overlay-panel--error geo-tile geo-tile--tl">
       <p class="meta-label">Miss</p>
       <p class="overlay-title">Not this circle</p>
       <p class="overlay-sub">Keep scrolling — the right bond is still moving.</p>
@@ -204,6 +246,9 @@
   </div>
 
   <footer class="footer">
+    <div class="footer-geo" aria-hidden="true">
+      <div class="geo-panel geo-panel--tl footer-panel"></div>
+    </div>
     <p class="brand">PENZI</p>
     <p class="meta-label">Nairobi · Mombasa · Kisumu · Eldoret</p>
   </footer>
