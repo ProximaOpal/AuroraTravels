@@ -1869,6 +1869,7 @@ function clamp(n) {
 /* ——— music ——— */
 function renderSongs() {
   const list = $("#songList");
+  if (!list) return;
   list.innerHTML = "";
   SONGS.forEach((s, i) => {
     const li = document.createElement("li");
