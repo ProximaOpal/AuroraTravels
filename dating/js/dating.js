@@ -1420,6 +1420,7 @@ function showPrefPrompt() {
   card.hidden = false;
   renderIntentGrid();
 }
+window.showPrefPrompt = showPrefPrompt;
 
 function renderIntentGrid() {
   const grid = $("#intentGrid");
@@ -1481,6 +1482,7 @@ function wirePrefs() {
   if (location.hash === "#match" || !location.hash) {
     setTimeout(showPrefPrompt, 200);
   }
+  document.addEventListener("penzi:intro-done", () => showPrefPrompt());
 
   $("#intentContinue")?.addEventListener("click", () => {
     if (!state.intent) return;
