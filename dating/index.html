@@ -94,15 +94,59 @@
         <p class="section-sub">Scroll the constellation. When two circles meet, the bond turns green.</p>
       </div>
 
+      <div class="pref-card geo-tile geo-tile--tr mx-card" id="prefCard" hidden>
+        <p class="meta-label">Before you scroll</p>
+        <p class="love-script love-eyebrow">who are you looking for?</p>
+        <p class="section-sub">Tell PENZI the best info about a partner you want — we’ll weight the constellation.</p>
+        <form class="pref-form" id="prefForm">
+          <label class="stk-field">
+            <span class="meta-label">Ideal vibe</span>
+            <input type="text" id="prefVibe" placeholder="Warm, curious, loves chai &amp; late walks" required>
+          </label>
+          <label class="stk-field">
+            <span class="meta-label">Must-have</span>
+            <input type="text" id="prefMust" placeholder="Kindness, ambition, faith…" required>
+          </label>
+          <label class="stk-field">
+            <span class="meta-label">Deal-breaker</span>
+            <input type="text" id="prefDeal" placeholder="Ghosting, no ambition…">
+          </label>
+          <label class="stk-field">
+            <span class="meta-label">Preferred area</span>
+            <select id="prefArea">
+              <option value="">Anywhere in Kenya</option>
+              <option>Nairobi</option>
+              <option>Mombasa</option>
+              <option>Kisumu</option>
+              <option>Nakuru</option>
+              <option>Eldoret</option>
+              <option>Lamu</option>
+            </select>
+          </label>
+          <div class="pref-actions">
+            <button type="submit" class="btn-block">Save preferences</button>
+            <button type="button" class="btn-block btn-block--ghost" id="prefSkip">Skip for now</button>
+          </div>
+        </form>
+        <p class="pref-saved meta-label" id="prefSaved" hidden></p>
+      </div>
+
       <div class="match-stage" id="matchStage">
-        <div class="constant-profile" id="constantProfile">
+        <div class="constant-profile" id="constantProfile" role="button" tabindex="0" aria-label="Open your profile">
           <div class="ring ring--idle" id="constantRing"></div>
           <img id="constantImg" src="" alt="Your profile" class="avatar">
           <p class="avatar-name" id="constantName">You</p>
           <p class="avatar-tag" id="constantTag">Nairobi</p>
+          <div class="rating-chip" id="constantRating"></div>
         </div>
 
         <div class="match-connector" id="matchConnector" aria-hidden="true"></div>
+
+        <div class="match-seat geo-tile geo-tile--br" id="matchSeat" hidden>
+          <p class="meta-label">Match seat</p>
+          <div class="match-seat__frame" id="matchSeatFrame"></div>
+          <p class="love-script love-overlay" id="matchSeatLabel">match found</p>
+        </div>
 
         <div class="orbit-rail" id="orbitRail" tabindex="0" aria-label="Scrollable match profiles">
           <div class="orbit-track" id="orbitTrack"></div>
@@ -110,7 +154,7 @@
       </div>
 
       <div class="match-status" id="matchStatus" aria-live="polite">
-        <p class="status-idle">Scroll profiles · find your green bond</p>
+        <p class="status-idle">Tap a profile for details · Try connect to spin the bond</p>
       </div>
 
       <div class="match-actions">
@@ -314,6 +358,28 @@
       <p class="overlay-title">Not this circle</p>
       <p class="overlay-sub">Keep scrolling — the right bond is still moving.</p>
       <button type="button" class="btn-block btn-block--ghost" id="errorClose">Try again</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="profileOverlay" hidden>
+    <div class="overlay-panel profile-panel geo-tile geo-tile--br" id="profilePanel">
+      <button type="button" class="profile-close" id="profileClose" aria-label="Close profile">✕</button>
+      <div class="profile-hero">
+        <img id="profilePhoto" class="profile-photo" src="" alt="">
+        <div class="profile-hero-copy">
+          <p class="meta-label" id="profileMeta">Profile</p>
+          <p class="love-script" id="profileLove">hello</p>
+          <h3 class="profile-name" id="profileName"></h3>
+          <p class="profile-role" id="profileRole"></p>
+        </div>
+      </div>
+      <div class="profile-ratings" id="profileRatings"></div>
+      <dl class="profile-grid" id="profileGrid"></dl>
+      <div class="profile-tags" id="profileTags"></div>
+      <div class="profile-actions">
+        <button type="button" class="btn-block btn-block--blue" id="profileLocate">Show on map</button>
+        <button type="button" class="btn-block btn-block--green" id="profileConnect">Try connect</button>
+      </div>
     </div>
   </div>
 

@@ -506,6 +506,37 @@
     renderMallCards();
     initMap();
     wireUI();
+
+    window.PenziPlaces = {
+      focusLocation({ lat, lng, label = "Location", mallId = null } = {}) {
+        if (!state.map) return;
+        if (mallId) {
+          const exists = MALLS.some((m) => m.id === mallId);
+          if (exists) {
+            selectMall(mallId);
+            $("#gpsStatus").textContent = label;
+            return;
+          }
+        }
+        if (typeof lat !== "number" || typeof lng !== "number") return;
+        if (state.amenityCircle) {
+          state.map.removeLayer(state.amenityCircle);
+          state.amenityCircle = null;
+        }
+        placeBlueRadial(lat, lng, { label });
+        state.amenityCircle = L.circle([lat, lng], {
+          radius: CONFIG.AUTH_RADIUS_M,
+          color: "#2f6fed",
+          weight: 2,
+          fillColor: "#2f6fed",
+          fillOpacity: 0.16,
+          className: "gps-radial gps-radial--pulse",
+        }).addTo(state.map);
+        state.map.flyTo([lat, lng], CONFIG.GPS_ZOOM, { duration: 1.1 });
+        $("#gpsStatus").textContent = label;
+        $("#stkTarget").textContent = label;
+      },
+    };
   }
 
   if (document.readyState === "loading") {
