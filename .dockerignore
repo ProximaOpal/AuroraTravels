@@ -1,0 +1,12 @@
+.git
+.github
+.gitignore
+node_modules
+*.md
+.env
+.env.*
+.DS_Store
+.cursor
+tmp
+temp
+*.log
