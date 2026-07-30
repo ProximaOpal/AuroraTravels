@@ -69,21 +69,47 @@ function normalisePhone(raw) {
   return p;
 }
 
-function upstreamMessage(data) {
-  if (!data || typeof data !== "object") return "Upstream error";
-  const detail = data.detail;
-  if (typeof detail === "string") return detail;
-  if (Array.isArray(detail)) {
-    return detail
-      .map((d) => (typeof d === "string" ? d : d.msg || JSON.stringify(d)))
-      .join("; ");
-  }
-  return data.message || data.error || data.ResponseDescription || "Upstream error";
+function looksLikeHtml(text) {
+  const t = String(text || "").trim().toLowerCase();
+  return t.startsWith("<!doctype") || t.startsWith("<html") || t.includes("<title>");
 }
 
-async function upstreamJson(url, options = {}) {
+function friendlyUpstreamStatus(status, raw) {
+  if (status === 429) return "M-Pesa gateway busy — wait a few seconds and try again.";
+  if (status === 502 || status === 503 || status === 504) {
+    return "Payment gateway waking up — tap Try again in a moment.";
+  }
+  if (looksLikeHtml(raw)) {
+    return "Payment gateway temporarily unavailable — try again shortly.";
+  }
+  return null;
+}
+
+function upstreamMessage(data, status = 0) {
+  if (!data || typeof data !== "object") {
+    return friendlyUpstreamStatus(status, "") || "Upstream error";
+  }
+  const detail = data.detail;
+  let raw =
+    (typeof detail === "string" && detail) ||
+    (Array.isArray(detail)
+      ? detail.map((d) => (typeof d === "string" ? d : d.msg || "")).join("; ")
+      : "") ||
+    data.message ||
+    data.error ||
+    data.ResponseDescription ||
+    "";
+  const friendly = friendlyUpstreamStatus(status, raw);
+  if (friendly) return friendly;
+  if (looksLikeHtml(raw)) {
+    return "Payment gateway temporarily unavailable — try again shortly.";
+  }
+  return String(raw || "Upstream error").trim().slice(0, 180);
+}
+
+async function upstreamJson(url, options = {}, timeoutMs = 45000) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 12000);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, { ...options, signal: controller.signal });
     const text = await response.text();
@@ -91,18 +117,59 @@ async function upstreamJson(url, options = {}) {
     try {
       data = text ? JSON.parse(text) : {};
     } catch {
-      data = { message: text.slice(0, 160) || "Invalid upstream response" };
+      data = { message: text.slice(0, 200) || "Invalid upstream response" };
     }
-    return { ok: response.ok, status: response.status, data };
+    return { ok: response.ok, status: response.status, data, raw: text };
   } catch (err) {
     return {
       ok: false,
       status: 503,
-      data: { message: err.name === "AbortError" ? "Upstream timeout" : err.message },
+      data: {
+        message:
+          err.name === "AbortError"
+            ? "Payment gateway timed out — try again shortly."
+            : err.message,
+      },
+      raw: "",
     };
   } finally {
     clearTimeout(timer);
   }
+}
+
+/** Free-tier Marvel sleeps; ping health then retry STK once on 502/HTML. */
+async function wakeUpstream() {
+  await upstreamJson(`${STK_UPSTREAM}/health`, {}, 20000);
+}
+
+function shouldRetryStk(upstream) {
+  if (!upstream) return true;
+  if (upstream.ok) return false;
+  if ([429, 502, 503, 504].includes(upstream.status)) return true;
+  return looksLikeHtml(upstream.raw || upstream.data?.message || "");
+}
+
+async function pushStkUpstream(forward) {
+  await wakeUpstream();
+  let upstream = await upstreamJson(`${STK_UPSTREAM}/api/stk-push`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(forward),
+  });
+
+  if (
+    shouldRetryStk(upstream) &&
+    !(upstream.ok && (upstream.data.CheckoutRequestID || upstream.data.checkoutRequestID))
+  ) {
+    await new Promise((r) => setTimeout(r, 1500));
+    await wakeUpstream();
+    upstream = await upstreamJson(`${STK_UPSTREAM}/api/stk-push`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(forward),
+    });
+  }
+  return upstream;
 }
 
 function demoStk(res, payload, reason) {
@@ -174,11 +241,7 @@ async function handleStkApi(req, res, pathname) {
       transactionDesc: payload.transactionDesc || "PENZI Places",
     };
 
-    const upstream = await upstreamJson(`${STK_UPSTREAM}/api/stk-push`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(forward),
-    });
+    const upstream = await pushStkUpstream(forward);
 
     if (upstream.ok && (upstream.data.CheckoutRequestID || upstream.data.checkoutRequestID)) {
       sendJson(res, 200, { ...upstream.data, demo: false });
@@ -186,14 +249,16 @@ async function handleStkApi(req, res, pathname) {
     }
 
     if (STK_ALLOW_DEMO && (upstream.status >= 500 || upstream.status === 0)) {
-      demoStk(res, forward, upstreamMessage(upstream.data));
+      demoStk(res, forward, upstreamMessage(upstream.data, upstream.status));
       return true;
     }
 
+    const message = upstreamMessage(upstream.data, upstream.status);
     sendJson(res, upstream.status || 502, {
-      message: upstreamMessage(upstream.data),
-      detail: upstream.data?.detail,
-      upstream: upstream.data,
+      message,
+      detail: typeof upstream.data?.detail === "string" && !looksLikeHtml(upstream.data.detail)
+        ? upstream.data.detail
+        : message,
     });
     return true;
   }

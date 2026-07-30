@@ -71,6 +71,29 @@
     };
   })();
 
+  function friendlyPayError(raw, status) {
+    const text = String(raw || "").trim();
+    const lower = text.toLowerCase();
+    if (
+      status === 502 ||
+      status === 503 ||
+      status === 504 ||
+      lower.includes("<!doctype") ||
+      lower.includes("<html") ||
+      lower.includes("<title>502") ||
+      lower.includes("<title>503")
+    ) {
+      return "Payment gateway waking up — tap Try again in a moment.";
+    }
+    if (status === 429 || lower.includes("too many requests")) {
+      return "M-Pesa gateway busy — wait a few seconds and try again.";
+    }
+    if (lower.includes("<") && lower.includes(">")) {
+      return "Payment gateway temporarily unavailable — try again shortly.";
+    }
+    return text.slice(0, 160) || "Payment could not be started.";
+  }
+
   function showPayError(message) {
     const sub = $("#payErrorSub");
     if (sub) sub.textContent = message || "Payment could not be started.";
@@ -585,14 +608,17 @@
       toast(demo ? "Demo STK · confirming…" : "STK sent · enter PIN", "ok");
       pollPayment(checkoutId, mall, Math.floor(amount), type);
     } else {
-      const msg =
+      const raw =
         (typeof data?.detail === "string" ? data.detail : null) ||
         data?.message ||
         data?.error ||
-        (status === 503
-          ? "Payment gateway is temporarily unavailable."
-          : "Gateway rejection. Check number and try again.");
-      showPayError(msg);
+        "";
+      showPayError(
+        friendlyPayError(
+          raw,
+          status
+        ) || "Gateway rejection. Check number and try again."
+      );
       resetPayBtn();
     }
   }
