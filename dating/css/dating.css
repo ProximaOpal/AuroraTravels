@@ -784,7 +784,14 @@ button {
   -webkit-overflow-scrolling: touch;
   padding: 1.5rem 0.5rem 2rem;
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  scrollbar-width: thin;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legacy */
+}
+
+.orbit-rail::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+  width: 0;
+  height: 0;
 }
 
 .orbit-track {
@@ -2076,6 +2083,275 @@ button {
   bottom: 0;
   padding-top: 0.75rem;
   background: linear-gradient(to top, var(--paper) 75%, transparent);
+}
+
+/* ——— PSYCH + ZODIAC ——— */
+.psych-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.psych-chip {
+  text-align: left;
+  padding: 1rem 0.95rem;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.psych-chip.is-active {
+  background: var(--black);
+  color: var(--paper);
+  box-shadow: inset 0 0 0 2px var(--red);
+}
+
+.psych-emoji {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.psych-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.35rem;
+}
+
+.psych-desc {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 300;
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+.zodiac-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.85rem;
+}
+
+.zodiac-card {
+  text-align: left;
+  padding: 1rem 0.95rem 1.15rem;
+  background: var(--white);
+  color: var(--ink);
+  transition: opacity 0.35s ease, transform 0.35s var(--spring, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.zodiac-card.is-dim {
+  opacity: 0.38;
+}
+
+.zodiac-card.is-hot,
+.zodiac-card.is-active {
+  box-shadow: inset 0 0 0 2px var(--red);
+  transform: translateY(-3px);
+}
+
+.zodiac-top {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 0.75rem;
+}
+
+.zodiac-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  outline: 2px solid var(--paper);
+  box-shadow: 0 0 0 2px rgba(225, 6, 0, 0.25);
+}
+
+.zodiac-emoji {
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: var(--black);
+  color: var(--paper);
+  border-radius: 50%;
+  font-size: 0.85rem;
+}
+
+.zodiac-symbol {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.zodiac-blurb {
+  margin: 0.45rem 0 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--mute);
+}
+
+.zodiac-traits {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.zodiac-matches {
+  margin: 0;
+}
+
+/* ——— CALENDAR + ACTIVITIES ——— */
+.cal-wrap {
+  margin-top: 1.5rem;
+  padding: 1.1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--geo-br-sm);
+}
+
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.cal-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+}
+
+.mx-ring--on-ink {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: var(--paper);
+}
+
+.mx-ring--on-ink:hover,
+.mx-ring--on-ink.is-active {
+  border-color: var(--paper);
+  color: var(--red);
+  background: var(--paper);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12);
+}
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.35rem;
+}
+
+.cal-day {
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  border-radius: var(--geo-tl-sm);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.cal-day.is-pad {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cal-day.is-weekend {
+  background: rgba(225, 6, 0, 0.22);
+}
+
+.cal-day.is-today {
+  box-shadow: inset 0 0 0 2px var(--paper);
+}
+
+.cal-day:hover {
+  background: var(--paper);
+  color: var(--red);
+  transform: translateY(-2px);
+}
+
+.activity-panel {
+  width: min(100%, 560px);
+  max-height: min(90vh, 820px);
+  overflow: auto;
+  text-align: left;
+  padding: 1.35rem 1.25rem 1.5rem;
+}
+
+.activity-list {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.activity-card {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0.85rem;
+  padding: 0.65rem;
+  background: var(--white);
+  text-align: left;
+}
+
+.activity-img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: var(--geo-br-sm);
+  background: var(--line);
+}
+
+.activity-emoji {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.activity-blurb {
+  margin: 0.35rem 0 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--mute);
+}
+
+.activity-map-btn {
+  min-height: 40px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .activity-card {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 900px) {

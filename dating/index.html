@@ -174,11 +174,14 @@
     <div class="geo-shell geo-shell--tr">
       <div class="section-head">
         <p class="meta-label">02 — Personality</p>
-        <p class="love-script love-eyebrow">how the heart moves</p>
-        <h2>How you move</h2>
-        <p class="section-sub">Pick the energy that feels most like home. This shapes who you meet.</p>
+        <p class="love-script love-eyebrow">stars &amp; psyche</p>
+        <h2>Traits &amp; zodiac</h2>
+        <p class="section-sub">Real psychology traits paired with zodiac signs from birthdays in the constellation.</p>
       </div>
-      <div class="type-grid" id="personalityGrid" role="listbox" aria-label="Personality types"></div>
+
+      <div class="psych-row" id="psychTraits" aria-label="Psychology traits"></div>
+
+      <div class="zodiac-grid mx-stagger" id="zodiacGrid" role="listbox" aria-label="Zodiac signs"></div>
     </div>
   </section>
 
@@ -192,14 +195,41 @@
     <div class="geo-shell geo-shell--bl geo-shell--ink">
       <div class="section-head">
         <p class="meta-label">03 — Character</p>
-        <p class="love-script love-eyebrow love-script--on-ink">your chapter</p>
+        <p class="love-script love-eyebrow love-script--on-ink">date night map</p>
         <h2 class="display-xl" id="characterDisplay">GEN Z</h2>
-        <p class="section-sub">Generation and character lens for the Kenyan dating floor.</p>
+        <p class="section-sub">Pick a generation, tap a calendar day, and unlock real-world activities on the map.</p>
       </div>
-      <div class="char-rail" id="characterRail" role="tablist" aria-label="Character types"></div>
+      <div class="char-rail" id="characterRail" role="tablist" aria-label="Generations"></div>
       <p class="char-blurb" id="characterBlurb"></p>
+
+      <div class="cal-wrap">
+        <div class="cal-head">
+          <button type="button" class="mx-ring mx-ring--on-ink" id="calPrev" aria-label="Previous month">
+            <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+          <p class="cal-title" id="calTitle">July 2026</p>
+          <button type="button" class="mx-ring mx-ring--on-ink is-active" id="calNext" aria-label="Next month">
+            <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+        </div>
+        <div class="cal-weekdays" aria-hidden="true">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="cal-grid" id="calGrid" role="grid" aria-label="Activity calendar"></div>
+      </div>
     </div>
   </section>
+
+  <div class="overlay" id="activityOverlay" hidden>
+    <div class="overlay-panel activity-panel geo-tile geo-tile--br" id="activityPanel">
+      <button type="button" class="profile-close" id="activityClose" aria-label="Close activities">✕</button>
+      <p class="meta-label" id="activityMeta">Activities</p>
+      <p class="love-script" id="activityLove">plans</p>
+      <h3 class="profile-name" id="activityTitle">Gen Z night</h3>
+      <p class="section-sub" id="activitySub">Pick a place — we’ll drop a blue radius on the map.</p>
+      <div class="activity-list" id="activityList"></div>
+    </div>
+  </div>
 
   <!-- POETRY -->
   <section class="section section--field section--field-alt" id="poetry">

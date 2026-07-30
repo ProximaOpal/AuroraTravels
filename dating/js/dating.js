@@ -480,30 +480,206 @@ const YOU = {
   isYou: true,
 };
 
-const PERSONALITIES = [
-  { code: "P-01", name: "SAVANNA", desc: "Warm, steady, open sky energy." },
-  { code: "P-02", name: "COAST", desc: "Soft humor, salt air, late walks." },
-  { code: "P-03", name: "HIGHLAND", desc: "Quiet depth, coffee, long talks." },
-  { code: "P-04", name: "CITY", desc: "Fast wit, night markets, drive." },
-  { code: "P-05", name: "RIVER", desc: "Flowing, curious, always learning." },
-  { code: "P-06", name: "EARTH", desc: "Grounded, loyal, family-first." },
+const PSYCH_TRAITS = [
+  {
+    id: "openness",
+    name: "Openness",
+    emoji: "🧠",
+    icon: "✦",
+    desc: "Curious minds that chase new art, ideas, and places.",
+  },
+  {
+    id: "conscientious",
+    name: "Conscientiousness",
+    emoji: "📋",
+    icon: "▣",
+    desc: "Plans, follow-through, and respect for other people’s time.",
+  },
+  {
+    id: "extraversion",
+    name: "Extraversion",
+    emoji: "🔊",
+    icon: "◎",
+    desc: "Energy from people — rooms light up when they walk in.",
+  },
+  {
+    id: "agreeableness",
+    name: "Agreeableness",
+    emoji: "🤝",
+    icon: "♡",
+    desc: "Warmth, empathy, and low-drama conflict repair.",
+  },
+  {
+    id: "stability",
+    name: "Emotional Stability",
+    emoji: "🌊",
+    icon: "◯",
+    desc: "Steady under pressure — safe harbor energy.",
+  },
 ];
 
-const CHARACTERS = [
+const ZODIAC = [
+  {
+    id: "aries",
+    name: "Aries",
+    emoji: "♈",
+    symbol: "🐏",
+    range: "Mar 21 – Apr 19",
+    start: [3, 21],
+    end: [4, 19],
+    traits: ["extraversion", "openness"],
+    blurb: "Bold starters. Direct, warm, and allergic to waiting.",
+    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "taurus",
+    name: "Taurus",
+    emoji: "♉",
+    symbol: "🐂",
+    range: "Apr 20 – May 20",
+    start: [4, 20],
+    end: [5, 20],
+    traits: ["conscientious", "stability"],
+    blurb: "Sensual steadiness. Loyalty with good taste.",
+    photo: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "gemini",
+    name: "Gemini",
+    emoji: "♊",
+    symbol: "👯",
+    range: "May 21 – Jun 20",
+    start: [5, 21],
+    end: [6, 20],
+    traits: ["openness", "extraversion"],
+    blurb: "Quick wit, dual moods, forever curious.",
+    photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "cancer",
+    name: "Cancer",
+    emoji: "♋",
+    symbol: "🦀",
+    range: "Jun 21 – Jul 22",
+    start: [6, 21],
+    end: [7, 22],
+    traits: ["agreeableness", "stability"],
+    blurb: "Home-builders. Soft shells, deep care.",
+    photo: "https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "leo",
+    name: "Leo",
+    emoji: "♌",
+    symbol: "🦁",
+    range: "Jul 23 – Aug 22",
+    start: [7, 23],
+    end: [8, 22],
+    traits: ["extraversion", "agreeableness"],
+    blurb: "Warm spotlight energy — generous and proud.",
+    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "virgo",
+    name: "Virgo",
+    emoji: "♍",
+    symbol: "🌾",
+    range: "Aug 23 – Sep 22",
+    start: [8, 23],
+    end: [9, 22],
+    traits: ["conscientious", "openness"],
+    blurb: "Detail lovers who show care through precision.",
+    photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "libra",
+    name: "Libra",
+    emoji: "♎",
+    symbol: "⚖️",
+    range: "Sep 23 – Oct 22",
+    start: [9, 23],
+    end: [10, 22],
+    traits: ["agreeableness", "extraversion"],
+    blurb: "Harmony seekers — beauty, balance, fair talk.",
+    photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "scorpio",
+    name: "Scorpio",
+    emoji: "♏",
+    symbol: "🦂",
+    range: "Oct 23 – Nov 21",
+    start: [10, 23],
+    end: [11, 21],
+    traits: ["stability", "openness"],
+    blurb: "Intense loyalty. Depth over small talk.",
+    photo: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "sagittarius",
+    name: "Sagittarius",
+    emoji: "♐",
+    symbol: "🏹",
+    range: "Nov 22 – Dec 21",
+    start: [11, 22],
+    end: [12, 21],
+    traits: ["openness", "extraversion"],
+    blurb: "Road-trip souls — honest, funny, unbound.",
+    photo: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "capricorn",
+    name: "Capricorn",
+    emoji: "♑",
+    symbol: "🐐",
+    range: "Dec 22 – Jan 19",
+    start: [12, 22],
+    end: [1, 19],
+    traits: ["conscientious", "stability"],
+    blurb: "Quiet ambition. Builds empires and trust.",
+    photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "aquarius",
+    name: "Aquarius",
+    emoji: "♒",
+    symbol: "💧",
+    range: "Jan 20 – Feb 18",
+    start: [1, 20],
+    end: [2, 18],
+    traits: ["openness", "agreeableness"],
+    blurb: "Future-minded rebels with soft ideals.",
+    photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&q=80&auto=format&fit=crop",
+  },
+  {
+    id: "pisces",
+    name: "Pisces",
+    emoji: "♓",
+    symbol: "🐟",
+    range: "Feb 19 – Mar 20",
+    start: [2, 19],
+    end: [3, 20],
+    traits: ["agreeableness", "openness"],
+    blurb: "Dreamers who feel the room before speaking.",
+    photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&q=80&auto=format&fit=crop",
+  },
+];
+
+const GENERATIONS = [
   {
     id: "genz",
     label: "GEN Z",
-    blurb: "Memes, late-night voice notes, and honesty before polish. You want chemistry that feels current — but rooted in Kenya.",
+    blurb: "Memes, late-night voice notes, and honesty before polish — rooted in Kenya.",
   },
   {
     id: "millennial",
     label: "MILLENNIAL",
-    blurb: "Career chapters, intentional dating, and playlists that still slap. You build slowly and mean it.",
+    blurb: "Career chapters, intentional dating, and playlists that still slap.",
   },
   {
     id: "traditional",
     label: "TRADITIONAL",
-    blurb: "Respect, family circles, and clear intentions. Culture is not a costume — it is how you love.",
+    blurb: "Respect, family circles, and clear intentions. Culture is how you love.",
   },
   {
     id: "creative",
@@ -521,6 +697,265 @@ const CHARACTERS = [
     blurb: "Low drama, high care. You curate peace and invite someone into it.",
   },
 ];
+
+/** Generation activities with Nairobi GPS + real imagery */
+const GEN_ACTIVITIES = {
+  genz: [
+    {
+      emoji: "🎬",
+      title: "Movies",
+      place: "Westgate Cinema",
+      blurb: "Late screening + post-credit snacks.",
+      image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=640&q=80&auto=format&fit=crop",
+      lat: -1.25695,
+      lng: 36.80515,
+      mallId: "westgate",
+    },
+    {
+      emoji: "🪩",
+      title: "Clubbing",
+      place: "Westlands nightlife",
+      blurb: "Afrobeats floor, soft launches, group energy.",
+      image: "https://images.unsplash.com/photo-1571266028247-d9b850220196?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2670,
+      lng: 36.8100,
+      mallId: "sarit",
+    },
+    {
+      emoji: "⚽",
+      title: "Sports",
+      place: "Nyayo Stadium belt",
+      blurb: "Pick-up football or courtside vibes.",
+      image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=640&q=80&auto=format&fit=crop",
+      lat: -1.3045,
+      lng: 36.8245,
+      mallId: null,
+    },
+    {
+      emoji: "🎧",
+      title: "Live sets",
+      place: "The Alchemist · Westlands",
+      blurb: "DJ nights and outdoor hangouts.",
+      image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2685,
+      lng: 36.8065,
+      mallId: "oasis",
+    },
+  ],
+  millennial: [
+    {
+      emoji: "☕",
+      title: "Brunch",
+      place: "Karen / The Hub",
+      blurb: "Slow plates, deep talk, no rush.",
+      image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=640&q=80&auto=format&fit=crop",
+      lat: -1.31925,
+      lng: 36.71515,
+      mallId: "hub",
+    },
+    {
+      emoji: "🖼️",
+      title: "Gallery walk",
+      place: "Nairobi Gallery circuit",
+      blurb: "Contemporary Kenyan art + wine.",
+      image: "https://images.unsplash.com/photo-1518998053901-5348d3961b3e?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2921,
+      lng: 36.8219,
+      mallId: "yaya",
+    },
+    {
+      emoji: "🧘",
+      title: "Yoga class",
+      place: "Kilimani studios",
+      blurb: "Breathwork then iced matcha.",
+      image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=640&q=80&auto=format&fit=crop",
+      lat: -1.29185,
+      lng: 36.78795,
+      mallId: "yaya",
+    },
+    {
+      emoji: "🍷",
+      title: "Wine tasting",
+      place: "Two Rivers",
+      blurb: "Local pours and soft playlists.",
+      image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=640&q=80&auto=format&fit=crop",
+      lat: -1.21085,
+      lng: 36.79515,
+      mallId: "tworivers",
+    },
+  ],
+  traditional: [
+    {
+      emoji: "⛪",
+      title: "Sunday service",
+      place: "Community church",
+      blurb: "Faith first, lunch with family after.",
+      image: "https://images.unsplash.com/photo-1438032005730-c779502df39b?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2833,
+      lng: 36.8167,
+      mallId: null,
+    },
+    {
+      emoji: "🍲",
+      title: "Family lunch",
+      place: "Home / Garden City",
+      blurb: "Nyama choma energy, introductions matter.",
+      image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=640&q=80&auto=format&fit=crop",
+      lat: -1.23195,
+      lng: 36.87825,
+      mallId: "gardencity",
+    },
+    {
+      emoji: "💍",
+      title: "Introduction visit",
+      place: "Family home",
+      blurb: "Respect protocols, bring something thoughtful.",
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2700,
+      lng: 36.8050,
+      mallId: "sarit",
+    },
+    {
+      emoji: "🧺",
+      title: "Market morning",
+      place: "City Market",
+      blurb: "Fresh produce and long walks home.",
+      image: "https://images.unsplash.com/photo-1488459716781-31f4e259b147?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2841,
+      lng: 36.8255,
+      mallId: null,
+    },
+  ],
+  creative: [
+    {
+      emoji: "🎨",
+      title: "Studio night",
+      place: "GoDown Arts Centre",
+      blurb: "Paint, collab, leave with paint on your sleeve.",
+      image: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=640&q=80&auto=format&fit=crop",
+      lat: -1.3120,
+      lng: 36.7900,
+      mallId: "junction",
+    },
+    {
+      emoji: "📸",
+      title: "Photo walk",
+      place: "CBD textures",
+      blurb: "Golden hour frames around town.",
+      image: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=640&q=80&auto=format&fit=crop",
+      lat: -1.286389,
+      lng: 36.817223,
+      mallId: null,
+    },
+    {
+      emoji: "✍️",
+      title: "Poetry open mic",
+      place: "Alliance Française",
+      blurb: "Lines that land — and people who listen.",
+      image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2980,
+      lng: 36.7900,
+      mallId: "yaya",
+    },
+    {
+      emoji: "🎶",
+      title: "Live band",
+      place: "Nairobi live rooms",
+      blurb: "Guitar, brass, and slow dancing in place.",
+      image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2680,
+      lng: 36.8070,
+      mallId: "westgate",
+    },
+  ],
+  adventurer: [
+    {
+      emoji: "🥾",
+      title: "Ngong Hills hike",
+      place: "Ngong Hills",
+      blurb: "Wind, ridge views, picnic at the top.",
+      image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=640&q=80&auto=format&fit=crop",
+      lat: -1.4000,
+      lng: 36.6400,
+      mallId: null,
+    },
+    {
+      emoji: "🦓",
+      title: "Day safari",
+      place: "Nairobi National Park",
+      blurb: "City skyline behind wildlife.",
+      image: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=640&q=80&auto=format&fit=crop",
+      lat: -1.3733,
+      lng: 36.8583,
+      mallId: "galleria",
+    },
+    {
+      emoji: "🚴",
+      title: "Karura ride",
+      place: "Karura Forest",
+      blurb: "Trails, waterfall, coffee after.",
+      image: "https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2390,
+      lng: 36.8300,
+      mallId: "rosslyn",
+    },
+    {
+      emoji: "🏕️",
+      title: "Camping weekend",
+      place: "Hell’s Gate / Naivasha",
+      blurb: "Stars, bikes, and early mist.",
+      image: "https://images.unsplash.com/photo-1504851149312-7a075b496cc7?w=640&q=80&auto=format&fit=crop",
+      lat: -0.8500,
+      lng: 36.3500,
+      mallId: null,
+    },
+  ],
+  soft: [
+    {
+      emoji: "Spa",
+      title: "Spa afternoon",
+      place: "Waterfront Karen",
+      blurb: "Massage, silence, slow tea.",
+      image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=640&q=80&auto=format&fit=crop",
+      lat: -1.32955,
+      lng: 36.71195,
+      mallId: "waterfront",
+    },
+    {
+      emoji: "📖",
+      title: "Bookstore date",
+      place: "Bookstop / Junction",
+      blurb: "Paperbacks and quiet corners.",
+      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=640&q=80&auto=format&fit=crop",
+      lat: -1.29855,
+      lng: 36.76205,
+      mallId: "junction",
+    },
+    {
+      emoji: "🌅",
+      title: "Sunset picnic",
+      place: "Uhuru Gardens",
+      blurb: "Blankets, fruit, soft playlists.",
+      image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=640&q=80&auto=format&fit=crop",
+      lat: -1.3200,
+      lng: 36.7600,
+      mallId: "galleria",
+    },
+    {
+      emoji: "🪴",
+      title: "Plant market",
+      place: "City / roadside nurseries",
+      blurb: "Pick a plant together — long-term energy.",
+      image: "https://images.unsplash.com/photo-1466692476866-aef1dfb1e735?w=640&q=80&auto=format&fit=crop",
+      lat: -1.2920,
+      lng: 36.8000,
+      mallId: "prestige",
+    },
+  ],
+};
+
+// Fix soft spa emoji
+GEN_ACTIVITIES.soft[0].emoji = "💆";
 
 const POEMS = [
   {
@@ -919,27 +1354,106 @@ function wirePrefs() {
   }
 }
 
-/* ——— personality / character ——— */
+/* ——— personality / zodiac / character calendar ——— */
+function parseBirthdate(str) {
+  // e.g. "12 Mar 1999"
+  const m = String(str || "").trim().match(/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$/);
+  if (!m) return null;
+  const months = {
+    Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+    Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12,
+  };
+  const month = months[m[2]];
+  if (!month) return null;
+  return { day: Number(m[1]), month, year: Number(m[3]) };
+}
+
+function zodiacForDate(month, day) {
+  for (const z of ZODIAC) {
+    const [sm, sd] = z.start;
+    const [em, ed] = z.end;
+    if (sm <= em) {
+      if ((month === sm && day >= sd) || (month === em && day <= ed) || (month > sm && month < em)) {
+        return z;
+      }
+    } else {
+      // Capricorn wraps year
+      if ((month === sm && day >= sd) || (month === em && day <= ed) || month > sm || month < em) {
+        return z;
+      }
+    }
+  }
+  return ZODIAC[0];
+}
+
+function peopleForZodiac(z) {
+  return [YOU, ...PROFILES].filter((p) => {
+    const bd = parseBirthdate(p.birthdate);
+    if (!bd) return false;
+    return zodiacForDate(bd.month, bd.day).id === z.id;
+  });
+}
+
 function renderPersonalities() {
-  const grid = $("#personalityGrid");
-  if (!grid) return;
+  const traitWrap = $("#psychTraits");
+  const grid = $("#zodiacGrid");
+  if (!traitWrap || !grid) return;
+
+  traitWrap.innerHTML = "";
+  PSYCH_TRAITS.forEach((t) => {
+    const el = document.createElement("button");
+    el.type = "button";
+    el.className = "psych-chip geo-tile geo-tile--br mx-card";
+    el.innerHTML = `
+      <span class="psych-emoji">${t.emoji}</span>
+      <span class="psych-name">${t.icon} ${t.name}</span>
+      <span class="psych-desc">${t.desc}</span>
+    `;
+    el.addEventListener("click", () => {
+      $all(".psych-chip").forEach((c) => c.classList.remove("is-active"));
+      el.classList.add("is-active");
+      $all(".zodiac-card").forEach((card) => {
+        const ids = (card.dataset.traits || "").split(",");
+        card.classList.toggle("is-dim", !ids.includes(t.id));
+        card.classList.toggle("is-hot", ids.includes(t.id));
+      });
+      showToast(`Trait · ${t.name}`, "ok");
+    });
+    traitWrap.appendChild(el);
+  });
+
   grid.innerHTML = "";
-  PERSONALITIES.forEach((p) => {
+  ZODIAC.forEach((z) => {
+    const matches = peopleForZodiac(z);
+    const photo = matches[0]?.photo || z.photo;
+    const names = matches.map((p) => p.name.split(" ")[0]).slice(0, 3).join(", ");
+    const traitNames = z.traits
+      .map((id) => PSYCH_TRAITS.find((t) => t.id === id)?.name)
+      .filter(Boolean)
+      .join(" · ");
+
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "type-item";
+    btn.className = "zodiac-card geo-tile geo-tile--tl mx-card";
     btn.setAttribute("role", "option");
-    btn.setAttribute("aria-selected", "false");
+    btn.dataset.traits = z.traits.join(",");
     btn.innerHTML = `
-      <span class="type-code">${p.code}</span>
-      <span class="type-name">${p.name}</span>
-      <span class="type-desc">${p.desc}</span>
+      <div class="zodiac-top">
+        <img class="zodiac-photo" src="${photo}" alt="${z.name}" loading="lazy">
+        <span class="zodiac-emoji" aria-hidden="true">${z.emoji}</span>
+      </div>
+      <p class="zodiac-symbol">${z.symbol} ${z.name}</p>
+      <p class="meta-label">${z.range}</p>
+      <p class="zodiac-blurb">${z.blurb}</p>
+      <p class="zodiac-traits">${traitNames}</p>
+      <p class="zodiac-matches meta-label">${matches.length ? `In PENZI · ${names}` : "No birthdays yet"}</p>
     `;
     btn.addEventListener("click", () => {
-      $all(".type-item").forEach((el) => el.setAttribute("aria-selected", "false"));
-      btn.setAttribute("aria-selected", "true");
-      state.selectedPersonality = p.name;
-      showToast(`Personality · ${p.name}`, "ok");
+      $all(".zodiac-card").forEach((c) => c.classList.remove("is-active"));
+      btn.classList.add("is-active");
+      state.selectedPersonality = z.name;
+      showToast(`${z.emoji} ${z.name}`, "ok");
+      if (matches[0] && !matches[0].isYou) openProfile(matches[0]);
     });
     grid.appendChild(btn);
   });
@@ -947,8 +1461,9 @@ function renderPersonalities() {
 
 function renderCharacters() {
   const rail = $("#characterRail");
+  if (!rail) return;
   rail.innerHTML = "";
-  CHARACTERS.forEach((c) => {
+  GENERATIONS.forEach((c) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "char-chip";
@@ -959,17 +1474,160 @@ function renderCharacters() {
     rail.appendChild(btn);
   });
   selectCharacter(state.selectedCharacter, false);
+  renderCalendar();
+  wireCalendar();
 }
 
-function selectCharacter(id, toast = true) {
-  const c = CHARACTERS.find((x) => x.id === id) || CHARACTERS[0];
+function selectCharacter(id, toastOn = true) {
+  const c = GENERATIONS.find((x) => x.id === id) || GENERATIONS[0];
   state.selectedCharacter = c.id;
   $("#characterDisplay").textContent = c.label;
   $("#characterBlurb").textContent = c.blurb;
   $all(".char-chip").forEach((el) => {
     el.setAttribute("aria-selected", el.textContent === c.label ? "true" : "false");
   });
-  if (toast) showToast(`Character · ${c.label}`);
+  if (toastOn) showToast(`Generation · ${c.label}`);
+}
+
+const calState = {
+  year: 2026,
+  month: 6, // July (0-index)
+  wired: false,
+};
+
+function renderCalendar() {
+  const grid = $("#calGrid");
+  const title = $("#calTitle");
+  if (!grid || !title) return;
+
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  title.textContent = `${monthNames[calState.month]} ${calState.year}`;
+
+  const first = new Date(calState.year, calState.month, 1);
+  const startPad = first.getDay();
+  const daysInMonth = new Date(calState.year, calState.month + 1, 0).getDate();
+  const today = new Date();
+
+  grid.innerHTML = "";
+  for (let i = 0; i < startPad; i++) {
+    const pad = document.createElement("span");
+    pad.className = "cal-day is-pad";
+    grid.appendChild(pad);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "cal-day";
+    btn.textContent = String(d);
+    btn.setAttribute("aria-label", `${monthNames[calState.month]} ${d}`);
+    if (
+      today.getFullYear() === calState.year &&
+      today.getMonth() === calState.month &&
+      today.getDate() === d
+    ) {
+      btn.classList.add("is-today");
+    }
+    // Weekend accent
+    const dow = new Date(calState.year, calState.month, d).getDay();
+    if (dow === 0 || dow === 6) btn.classList.add("is-weekend");
+    btn.addEventListener("click", () => openActivitiesForDay(d));
+    grid.appendChild(btn);
+  }
+}
+
+function wireCalendar() {
+  if (calState.wired) return;
+  calState.wired = true;
+  $("#calPrev")?.addEventListener("click", () => {
+    calState.month -= 1;
+    if (calState.month < 0) {
+      calState.month = 11;
+      calState.year -= 1;
+    }
+    renderCalendar();
+  });
+  $("#calNext")?.addEventListener("click", () => {
+    calState.month += 1;
+    if (calState.month > 11) {
+      calState.month = 0;
+      calState.year += 1;
+    }
+    renderCalendar();
+  });
+  $("#activityClose")?.addEventListener("click", () => {
+    $("#activityOverlay").hidden = true;
+  });
+  $("#activityOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "activityOverlay") $("#activityOverlay").hidden = true;
+  });
+}
+
+function openActivitiesForDay(day) {
+  const gen = GENERATIONS.find((g) => g.id === state.selectedCharacter) || GENERATIONS[0];
+  const list = GEN_ACTIVITIES[gen.id] || GEN_ACTIVITIES.genz;
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+  $("#activityMeta").textContent = `${gen.label} · ${monthNames[calState.month]} ${day}`;
+  $("#activityLove").textContent = "make plans";
+  $("#activityTitle").textContent = `${gen.label} activities`;
+  $("#activitySub").textContent = "Emoji-tagged plans with real Nairobi places — open any on the map.";
+
+  const wrap = $("#activityList");
+  wrap.innerHTML = "";
+  list.forEach((a) => {
+    const card = document.createElement("article");
+    card.className = "activity-card geo-tile geo-tile--br mx-card";
+    card.innerHTML = `
+      <img class="activity-img" src="${a.image}" alt="${a.title}" loading="lazy">
+      <div class="activity-copy">
+        <p class="activity-emoji">${a.emoji} ${a.title}</p>
+        <p class="meta-label">${a.place}</p>
+        <p class="activity-blurb">${a.blurb}</p>
+        <button type="button" class="btn-block btn-block--blue activity-map-btn">Show on map</button>
+      </div>
+    `;
+    card.querySelector(".activity-map-btn").addEventListener("click", () => {
+      $("#activityOverlay").hidden = true;
+      const places = document.getElementById("places");
+      places?.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        if (window.PenziPlaces?.focusLocation) {
+          window.PenziPlaces.focusLocation({
+            lat: a.lat,
+            lng: a.lng,
+            label: `${a.emoji} ${a.title} · ${a.place}`,
+            mallId: a.mallId,
+          });
+          // Prefer live GPS when available
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                window.PenziPlaces.focusLocation({
+                  lat: a.lat,
+                  lng: a.lng,
+                  label: `${a.emoji} ${a.title} · near you`,
+                  mallId: a.mallId,
+                });
+                // Still mark user GPS with blue radial via places API if exposed
+                showToast(`Map · ${a.title}`, "ok");
+              },
+              () => showToast(`Map · ${a.title}`, "ok"),
+              { enableHighAccuracy: true, timeout: 8000 }
+            );
+          } else {
+            showToast(`Map · ${a.title}`, "ok");
+          }
+        }
+      }, 450);
+    });
+    wrap.appendChild(card);
+  });
+  $("#activityOverlay").hidden = false;
 }
 
 /* ——— poetry ——— */
