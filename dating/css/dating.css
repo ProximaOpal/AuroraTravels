@@ -1133,6 +1133,106 @@ button {
   cursor: not-allowed;
 }
 
+/* ——— MUSIC STAGE (poetry + art + songs) ——— */
+.express-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0 0 1.35rem;
+  max-width: 40rem;
+}
+
+.express-tab {
+  min-height: 42px;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: var(--geo-br-sm);
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.express-tab:nth-child(2) {
+  border-radius: var(--geo-tl-sm);
+}
+
+.express-tab:nth-child(3) {
+  border-radius: var(--geo-tr-sm);
+}
+
+.express-tab:hover,
+.express-tab.is-on {
+  background: rgba(225, 6, 0, 0.95);
+  border-color: transparent;
+  color: var(--paper);
+}
+
+.express-panel[hidden] {
+  display: none !important;
+}
+
+.poetry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 40rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.poetry-song .poetry-line {
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.poetry-song .poetry-send {
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+}
+
+.poetry-song.is-sent .poetry-send,
+.poetry-song:hover .poetry-send {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.art-workspace--ink .art-upload {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--paper);
+  border: 1px dashed rgba(255, 255, 255, 0.28);
+}
+
+.art-workspace--ink .art-upload .meta-label,
+.art-workspace--ink .art-hint {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.art-workspace--ink .text-link {
+  color: #ffd7d0;
+}
+
+.art-workspace--ink .scene-rail .meta-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.geo-shell--ink .scene-btn {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--paper);
+  border-color: transparent;
+}
+
+.geo-shell--ink .scene-btn[aria-pressed="true"] {
+  background: var(--red);
+}
+
 /* ——— MUSIC ——— */
 .song-list {
   list-style: none;

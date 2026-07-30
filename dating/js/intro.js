@@ -1,4 +1,4 @@
-/* PENZI landing page — pencil-carved calligraphy + short tutorial → home */
+/* PENZI landing page — slow pencil carve (~4s) → home page 01 */
 
 (() => {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -14,7 +14,6 @@
       sessionStorage.removeItem("penzi-intro-seen");
     } catch (e) {}
   } else if (sessionStorage.getItem("penzi-intro-seen") === "1") {
-    // Already welcomed — go straight to home
     location.replace(HOME);
     return;
   }
@@ -30,37 +29,21 @@
   const clipRect = document.getElementById("carveClipRect");
   const dustLayer = document.getElementById("carveDust");
 
-  const BEATS = [
-    {
-      script: "love, written slowly",
-      line: "Matchmaking for the Kenyan ecosystem.",
-      slide: 0,
-    },
-    {
-      script: "find your bond",
-      line: "Scroll the constellation. Ratings. Real people.",
-      slide: 1,
-    },
-    {
-      script: "stars & plans",
-      line: "Zodiac, traits, and a calendar of places to meet.",
-      slide: 2,
-    },
-    {
-      script: "on the map",
-      line: "GPS, shopping centres, and quiet M-Pesa moments.",
-      slide: 3,
-    },
-  ];
+  // One quiet beat — landing is short and slow
+  const BEAT = {
+    script: "love, written slowly",
+    line: "Matchmaking for the Kenyan ecosystem.",
+    slide: 0,
+  };
 
   const CARVE_MS = 3400;
+  const LANDING_MS = 4000;
   const VIEW_W = 720;
 
-  let beat = 0;
-  let timer = null;
   let done = false;
   let carveRaf = 0;
   let carveToken = 0;
+  let finishTimer = null;
 
   function easeInOut(t) {
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -71,7 +54,7 @@
   }
 
   function sprinkle(x, y) {
-    if (!dustLayer || Math.random() > 0.45) return;
+    if (!dustLayer || Math.random() > 0.4) return;
     const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     const r = 0.8 + Math.random() * 1.8;
     c.setAttribute("cx", String(x + (Math.random() - 0.5) * 10));
@@ -132,17 +115,19 @@
         const e = easeInOut(t);
         placePencil(e);
         setClip(e);
+        if (bar) bar.style.width = `${Math.max(8, e * 100)}%`;
         if (t < 1) {
           carveRaf = requestAnimationFrame(tick);
         } else {
           setClip(1);
+          if (bar) bar.style.width = "100%";
           if (pencil) {
             pencil.animate([{ opacity: 1 }, { opacity: 0 }], {
-              duration: 450,
+              duration: 320,
               fill: "forwards",
               easing: "ease",
             });
-            setTimeout(() => pencil.setAttribute("opacity", "0"), 450);
+            setTimeout(() => pencil.setAttribute("opacity", "0"), 320);
           }
           carve.classList.remove("is-carving");
           carve.classList.add("is-carved");
@@ -153,49 +138,36 @@
     });
   }
 
-  function setBeat(i) {
-    beat = Math.max(0, Math.min(BEATS.length - 1, i));
-    const b = BEATS[beat];
-
-    slides.forEach((s, idx) => s.classList.toggle("is-on", idx === b.slide));
-    const activeStep = Math.min(beat, 2);
+  function showCopy() {
+    slides.forEach((s, idx) => s.classList.toggle("is-on", idx === BEAT.slide));
     steps.forEach((s, idx) => {
-      const on = idx === activeStep;
-      const complete = idx < activeStep || beat === BEATS.length - 1;
-      s.classList.toggle("is-on", on);
-      s.classList.toggle("is-done", complete && !on);
+      s.classList.toggle("is-on", idx === 0);
+      s.classList.toggle("is-done", false);
     });
-
     if (scriptEl) {
-      scriptEl.classList.remove("is-in");
-      void scriptEl.offsetWidth;
-      scriptEl.textContent = b.script;
+      scriptEl.textContent = BEAT.script;
       scriptEl.classList.add("is-in");
     }
     if (lineEl) {
-      lineEl.classList.remove("is-in");
-      void lineEl.offsetWidth;
-      lineEl.textContent = b.line;
+      lineEl.textContent = BEAT.line;
       lineEl.classList.add("is-in");
     }
-
-    if (bar) {
-      bar.style.width = `${((beat + 1) / BEATS.length) * 100}%`;
-    }
+    if (bar) bar.style.width = "0%";
   }
 
   function goHome() {
     try {
       sessionStorage.setItem("penzi-intro-seen", "1");
     } catch (e) {}
-    location.href = HOME + "?home=1";
+    // Home page 01 — Match
+    location.href = HOME + "?home=1#match";
   }
 
   function finish() {
     if (done) return;
     done = true;
     carveToken = -1;
-    clearInterval(timer);
+    clearTimeout(finishTimer);
     cancelAnimationFrame(carveRaf);
     setClip(1);
     if (carve) {
@@ -203,9 +175,9 @@
       carve.classList.remove("is-carving");
     }
     if (pencil) pencil.setAttribute("opacity", "0");
+    if (bar) bar.style.width = "100%";
     root.classList.add("is-out");
-    // Brief exit motion, then open the separate home page
-    setTimeout(goHome, reduced ? 120 : 780);
+    setTimeout(goHome, reduced ? 80 : 420);
   }
 
   function start() {
@@ -214,23 +186,17 @@
     root.removeAttribute("aria-hidden");
     root.classList.remove("is-out");
     document.body.classList.add("is-intro");
-    clearInterval(timer);
+    clearTimeout(finishTimer);
     cancelAnimationFrame(carveRaf);
     carveToken += 1;
     const token = carveToken;
 
-    setBeat(0);
+    showCopy();
     carveWord(token);
 
-    if (reduced) return;
-
-    timer = setInterval(() => {
-      if (beat >= BEATS.length - 1) {
-        clearInterval(timer);
-        return;
-      }
-      setBeat(beat + 1);
-    }, 2500);
+    finishTimer = setTimeout(() => {
+      if (!done) finish();
+    }, reduced ? 400 : LANDING_MS);
   }
 
   document.getElementById("cineEnter")?.addEventListener("click", finish);
@@ -245,9 +211,6 @@
   });
 
   start();
-  setTimeout(() => {
-    if (!done) finish();
-  }, reduced ? 500 : 11800);
 
   window.PenziIntro = { finish, start, goHome };
 })();

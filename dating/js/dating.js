@@ -1640,30 +1640,58 @@ function openActivitiesForDay(day) {
 /* ——— poetry ——— */
 function renderPoetry() {
   const list = $("#poetryList");
+  if (!list) return;
   list.innerHTML = "";
-  POEMS.forEach((poem) => {
+  POEMS.forEach((poem, i) => {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "poetry-card";
+    btn.className = "song-item poetry-song";
     btn.innerHTML = `
-      <p class="poetry-text">${poem.text}</p>
-      <div class="poetry-meta">
-        <span class="meta-label">${poem.author}</span>
-        <span class="poetry-send">Send →</span>
+      <span class="song-num">${String(i + 1).padStart(2, "0")}</span>
+      <div>
+        <p class="song-title poetry-line">${poem.text}</p>
+        <p class="song-artist">${poem.author}</p>
       </div>
+      <span class="poetry-send meta-label">Send →</span>
     `;
     btn.addEventListener("click", () => {
-      btn.classList.add("is-sent");
-      btn.querySelector(".poetry-send").textContent = "Sent ✓";
+      btn.classList.add("is-playing", "is-sent");
+      const send = btn.querySelector(".poetry-send");
+      if (send) send.textContent = "Sent ✓";
       showToast("Poem sent", "ok");
     });
     list.appendChild(btn);
   });
 }
 
+function wireExpressTabs() {
+  const tabs = $all(".express-tab");
+  if (!tabs.length) return;
+  const panels = {
+    poetry: $("#panelPoetry"),
+    art: $("#panelArt"),
+    songs: $("#panelSongs"),
+  };
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      const id = tab.dataset.panel;
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.classList.toggle("is-on", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      Object.entries(panels).forEach(([key, el]) => {
+        if (!el) return;
+        el.hidden = key !== id;
+      });
+    });
+  });
+}
+
 /* ——— art / pencil ——— */
 function renderScenes() {
   const wrap = $("#sceneBtns");
+  if (!wrap) return;
   wrap.innerHTML = "";
   SCENES.forEach((s) => {
     const btn = document.createElement("button");
@@ -2014,6 +2042,7 @@ function init() {
   renderPoetry();
   renderScenes();
   renderSongs();
+  wireExpressTabs();
   wireUI();
 }
 

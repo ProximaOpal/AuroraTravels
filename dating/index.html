@@ -69,7 +69,7 @@
           <a class="text-link" id="replayIntro" href="landing.html?replay=1">— Replay landing</a>
         </div>
         <div class="hero-pager" aria-hidden="true">
-          <span>01</span><i></i><span>09</span>
+          <span>01</span><i></i><span>05</span>
         </div>
       </div>
 
@@ -91,8 +91,6 @@
     <a href="#match">Match</a>
     <a href="#personality">Personality</a>
     <a href="#character">Character</a>
-    <a href="#poetry">Poetry</a>
-    <a href="#art">Art</a>
     <a href="#music">Music</a>
     <a href="#places">Places</a>
   </nav>
@@ -249,67 +247,7 @@
     </div>
   </div>
 
-  <!-- POETRY -->
-  <section class="section section--field section--field-alt" id="poetry">
-    <div class="section-geo" aria-hidden="true">
-      <div class="geo-panel geo-panel--tl"></div>
-      <div class="geo-panel geo-panel--br geo-panel--accent"></div>
-      <div class="geo-dot geo-dot--b"></div>
-    </div>
-    <div class="geo-shell geo-shell--tl">
-      <div class="section-head">
-        <p class="meta-label">04 — Poetry</p>
-        <p class="love-script love-eyebrow">lines from the heart</p>
-        <h2>Lines that land</h2>
-        <p class="section-sub">Minimal verses with feeling. Send one when words are enough.</p>
-      </div>
-      <div class="poetry-list mx-stagger" id="poetryList"></div>
-    </div>
-  </section>
-
-  <!-- ART -->
-  <section class="section section--field" id="art">
-    <div class="section-geo" aria-hidden="true">
-      <div class="geo-panel geo-panel--br"></div>
-      <div class="geo-panel geo-panel--tl geo-panel--accent"></div>
-      <div class="geo-dot geo-dot--a"></div>
-    </div>
-    <div class="geo-shell geo-shell--br">
-      <div class="section-head">
-        <p class="meta-label">05 — Art</p>
-        <p class="love-script love-eyebrow">drawn with care</p>
-        <h2>Pencil scenes</h2>
-        <p class="section-sub">Upload a moment. We turn it into pencil art — different scenes, same soul.</p>
-      </div>
-
-      <div class="art-workspace">
-        <div class="art-upload geo-tile geo-tile--br" id="artDrop">
-          <input type="file" id="artInput" accept="image/*" hidden>
-          <p class="meta-label">Drop image</p>
-          <p>or <button type="button" class="text-link" id="artPickBtn">browse</button></p>
-          <p class="art-hint">JPG · PNG · WEBP</p>
-        </div>
-
-        <div class="art-canvases" id="artCanvases" hidden>
-          <figure class="art-pane geo-tile geo-tile--tr">
-            <figcaption class="meta-label">Original</figcaption>
-            <canvas id="canvasOriginal"></canvas>
-          </figure>
-          <figure class="art-pane geo-tile geo-tile--bl">
-            <figcaption class="meta-label">Pencil</figcaption>
-            <canvas id="canvasPencil"></canvas>
-          </figure>
-        </div>
-
-        <div class="scene-rail" id="sceneRail" hidden>
-          <p class="meta-label">Scenes</p>
-          <div class="scene-btns" id="sceneBtns"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- MUSIC -->
+  <!-- 04 — MUSIC (poetry + art + songs, music look) -->
   <section class="section section--field section--field-alt" id="music">
     <div class="section-geo" aria-hidden="true">
       <div class="geo-panel geo-panel--tr"></div>
@@ -318,12 +256,52 @@
     </div>
     <div class="geo-shell geo-shell--tr geo-shell--ink">
       <div class="section-head">
-        <p class="meta-label">06 — Music</p>
-        <p class="love-script love-eyebrow love-script--on-ink">songs we keep</p>
+        <p class="meta-label">04 — Music</p>
+        <p class="love-script love-eyebrow love-script--on-ink">songs · lines · sketches</p>
         <h2>Favorites only</h2>
-        <p class="section-sub">A quiet stack of songs that say who you are.</p>
+        <p class="section-sub">Poetry, pencil art, and the quiet stack of songs that say who you are — one stage.</p>
       </div>
-      <ul class="song-list mx-stagger" id="songList"></ul>
+
+      <div class="express-tabs" id="expressTabs" role="tablist" aria-label="Music stage">
+        <button type="button" class="express-tab" role="tab" aria-selected="false" data-panel="poetry">Poetry</button>
+        <button type="button" class="express-tab" role="tab" aria-selected="false" data-panel="art">Art</button>
+        <button type="button" class="express-tab is-on" role="tab" aria-selected="true" data-panel="songs">Music</button>
+      </div>
+
+      <div class="express-panel" id="panelPoetry" role="tabpanel" hidden>
+        <div class="poetry-list mx-stagger" id="poetryList"></div>
+      </div>
+
+      <div class="express-panel" id="panelArt" role="tabpanel" hidden>
+        <div class="art-workspace art-workspace--ink">
+          <div class="art-upload geo-tile geo-tile--br" id="artDrop">
+            <input type="file" id="artInput" accept="image/*" hidden>
+            <p class="meta-label">Drop image</p>
+            <p>or <button type="button" class="text-link" id="artPickBtn">browse</button></p>
+            <p class="art-hint">JPG · PNG · WEBP</p>
+          </div>
+
+          <div class="art-canvases" id="artCanvases" hidden>
+            <figure class="art-pane geo-tile geo-tile--tr">
+              <figcaption class="meta-label">Original</figcaption>
+              <canvas id="canvasOriginal"></canvas>
+            </figure>
+            <figure class="art-pane geo-tile geo-tile--bl">
+              <figcaption class="meta-label">Pencil</figcaption>
+              <canvas id="canvasPencil"></canvas>
+            </figure>
+          </div>
+
+          <div class="scene-rail" id="sceneRail" hidden>
+            <p class="meta-label">Scenes</p>
+            <div class="scene-btns" id="sceneBtns"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="express-panel" id="panelSongs" role="tabpanel">
+        <ul class="song-list mx-stagger" id="songList"></ul>
+      </div>
     </div>
   </section>
 
@@ -336,7 +314,7 @@
     </div>
     <div class="geo-shell geo-shell--br geo-shell--places">
       <div class="section-head">
-        <p class="meta-label">07 — Places</p>
+        <p class="meta-label">05 — Places</p>
         <p class="love-script love-eyebrow">meet in the city</p>
         <h2>Nairobi centres</h2>
         <p class="section-sub">Satellite map of real shopping centres. Pay for transport or shopping — GPS locks the amenity.</p>
