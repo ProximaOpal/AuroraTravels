@@ -1,0 +1,17 @@
+# Render Blueprint — Aurora Travels + PENZI
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: auroratravels-penzi
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: STK_API_BASE_URL
+        sync: false

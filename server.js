@@ -356,6 +356,23 @@ const server = http.createServer(async (req, res) => {
   if (await handleControlApi(req, res, pathname)) return;
   if (await handleStkApi(req, res, pathname)) return;
 
+  // Render / uptime health check
+  if (pathname === "/healthz" || pathname === "/health") {
+    res.writeHead(200, {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+    });
+    res.end(
+      JSON.stringify({
+        ok: true,
+        service: "auroratravels",
+        penzi: "/dating/",
+        ts: Date.now(),
+      })
+    );
+    return;
+  }
+
   let filePath = safeJoin(ROOT, pathname === "/" ? "/index.html" : pathname);
   if (!filePath) {
     return send(res, 403, "Forbidden");

@@ -1,7 +1,7 @@
 {
   "name": "auroratravels",
   "version": "1.0.0",
-  "description": "Interactive travel + craft marketplace experience for Kenya.",
+  "description": "Interactive travel + craft marketplace experience for Kenya. Includes PENZI matchmaker.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -13,13 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/proximaopal/auroratravels.git"
+    "url": "git+https://github.com/ProximaOpal/AuroraTravels.git"
   },
-  "keywords": ["kenya", "travel", "mpesa"],
+  "keywords": ["kenya", "travel", "mpesa", "penzi", "dating", "render"],
   "author": "ProximaOpal",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/proximaopal/auroratravels/issues"
+    "url": "https://github.com/ProximaOpal/AuroraTravels/issues"
   },
-  "homepage": "https://github.com/proximaopal/auroratravels#readme"
+  "homepage": "https://github.com/ProximaOpal/AuroraTravels#readme"
 }
