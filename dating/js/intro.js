@@ -32,7 +32,6 @@
   };
 
   const CARVE_MS = 3400;
-  const LANDING_MS = 4000;
   const VIEW_W = 720;
 
   let done = false;
@@ -212,9 +211,7 @@
     const kick = () => {
       showCopy();
       carveWord(token);
-      finishTimer = setTimeout(() => {
-        if (!done) finish();
-      }, reduced ? 400 : LANDING_MS);
+      // Stay on landing until Enter / Skip — no auto-advance
     };
 
     if (document.fonts && document.fonts.ready) {
