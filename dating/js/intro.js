@@ -1,11 +1,10 @@
-/* PENZI landing page — slow pencil carve (~4s) → home page 01 */
+/* PENZI landing — same page: 4s pencil carve, then reveal home */
 
 (() => {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = document.getElementById("cineIntro");
   if (!root) return;
 
-  const HOME = "index.html";
   const params = new URLSearchParams(location.search);
   const forceReplay = params.get("replay") === "1";
 
@@ -14,7 +13,6 @@
       sessionStorage.removeItem("penzi-intro-seen");
     } catch (e) {}
   }
-  // Always play landing when this page is opened (do not bounce away).
 
   const slides = [...root.querySelectorAll(".cine-slide")];
   const steps = [...root.querySelectorAll(".cine-steps li")];
@@ -27,7 +25,6 @@
   const clipRect = document.getElementById("carveClipRect");
   const dustLayer = document.getElementById("carveDust");
 
-  // One quiet beat — landing is short and slow
   const BEAT = {
     script: "love, written slowly",
     line: "Matchmaking for the Kenyan ecosystem.",
@@ -153,14 +150,33 @@
     if (bar) bar.style.width = "0%";
   }
 
-  function goHome() {
+  /** Same-page handoff — no navigation to another file. */
+  function revealHome() {
     try {
       sessionStorage.setItem("penzi-intro-seen", "1");
       sessionStorage.setItem("penzi-show-intent", "1");
     } catch (e) {}
-    // Absolute dating home so landing → home always resolves
-    const base = location.pathname.replace(/landing\.html$/i, "");
-    location.href = `${base}index.html?home=1#match`;
+
+    document.body.classList.remove("is-intro", "landing-page");
+    document.body.classList.add("intro-done");
+    root.hidden = true;
+    root.setAttribute("aria-hidden", "true");
+
+    // Soft-land on Match (page 01) in the same document
+    const match = document.getElementById("match");
+    if (match) {
+      history.replaceState(null, "", "#match");
+      match.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    }
+
+    // Re-open arrival intent prompt if dating.js already wired
+    if (typeof window.showPrefPrompt === "function") {
+      window.showPrefPrompt();
+    } else {
+      const card = document.getElementById("prefCard");
+      if (card) card.hidden = false;
+      document.dispatchEvent(new CustomEvent("penzi:intro-done"));
+    }
   }
 
   function finish() {
@@ -177,7 +193,7 @@
     if (pencil) pencil.setAttribute("opacity", "0");
     if (bar) bar.style.width = "100%";
     root.classList.add("is-out");
-    setTimeout(goHome, reduced ? 80 : 420);
+    setTimeout(revealHome, reduced ? 80 : 450);
   }
 
   function start() {
@@ -185,7 +201,9 @@
     root.hidden = false;
     root.removeAttribute("aria-hidden");
     root.classList.remove("is-out");
-    document.body.classList.add("is-intro", "landing-page");
+    document.body.classList.add("is-intro");
+    document.body.classList.remove("intro-done");
+    window.scrollTo({ top: 0, behavior: "auto" });
     clearTimeout(finishTimer);
     cancelAnimationFrame(carveRaf);
     carveToken += 1;
@@ -199,7 +217,6 @@
       }, reduced ? 400 : LANDING_MS);
     };
 
-    // Wait for calligraphy fonts so the pencil carve is visible
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(kick).catch(kick);
     } else {
@@ -207,8 +224,16 @@
     }
   }
 
+  function replay() {
+    try {
+      sessionStorage.removeItem("penzi-intro-seen");
+    } catch (e) {}
+    start();
+  }
+
   document.getElementById("cineEnter")?.addEventListener("click", finish);
   document.getElementById("cineSkip")?.addEventListener("click", finish);
+  document.getElementById("replayIntro")?.addEventListener("click", replay);
 
   root.addEventListener("keydown", (e) => {
     if (e.key === "Escape") finish();
@@ -218,7 +243,16 @@
     }
   });
 
-  start();
+  // First visit / replay: play landing. Already seen this session: skip straight to home.
+  const seen = !forceReplay && sessionStorage.getItem("penzi-intro-seen") === "1";
+  if (seen) {
+    root.hidden = true;
+    root.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("is-intro");
+    document.body.classList.add("intro-done");
+  } else {
+    start();
+  }
 
-  window.PenziIntro = { finish, start, goHome };
+  window.PenziIntro = { finish, start, replay, revealHome };
 })();
