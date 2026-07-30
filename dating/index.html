@@ -5,62 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="PENZI — a minimal matchmaker for the Kenyan ecosystem. Poetry, art, music, and real connection.">
   <title>PENZI — Kenyan Matchmaker</title>
+  <script>
+    // Home is separate from landing — first visit opens the landing page.
+    (function () {
+      try {
+        var params = new URLSearchParams(location.search);
+        if (params.get("home") === "1") {
+          sessionStorage.setItem("penzi-intro-seen", "1");
+          return;
+        }
+        var seen = sessionStorage.getItem("penzi-intro-seen") === "1";
+        var deep = location.hash && location.hash.length > 1;
+        if (!seen && !deep) {
+          location.replace("landing.html");
+        }
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bebas+Neue&family=Dancing+Script:wght@500;600;700&family=Great+Vibes&family=IBM+Plex+Mono:wght@400;500&family=Italianno&family=Outfit:wght@300;400;500;600;700&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="css/dating.css">
   <link rel="stylesheet" href="css/motion.css">
-  <link rel="stylesheet" href="css/cine.css">
 </head>
-<body class="is-intro">
+<body>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-
-  <!-- CINEMATIC LANDING INTRO -->
-  <div class="cine" id="cineIntro" role="dialog" aria-modal="true" aria-label="PENZI introduction">
-    <div class="cine-stage" aria-hidden="true">
-      <div class="cine-slide is-on" data-slide="0">
-        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1600&q=80&auto=format&fit=crop" alt="">
-      </div>
-      <div class="cine-slide" data-slide="1">
-        <img src="https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=1600&q=80&auto=format&fit=crop" alt="">
-      </div>
-      <div class="cine-slide" data-slide="2">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1600&q=80&auto=format&fit=crop" alt="">
-      </div>
-      <div class="cine-slide" data-slide="3">
-        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=1600&q=80&auto=format&fit=crop" alt="">
-      </div>
-      <div class="cine-veil"></div>
-      <div class="cine-grain"></div>
-      <div class="cine-frame geo-panel geo-panel--br"></div>
-      <div class="cine-frame cine-frame--tr geo-panel geo-panel--tl"></div>
-    </div>
-
-    <div class="cine-copy">
-      <p class="cine-kicker meta-label">Kenya · a short guide</p>
-      <h1 class="cine-title" id="cineTitle" aria-label="PENZI">
-        <span>P</span><span>E</span><span>N</span><span>Z</span><span>I</span>
-      </h1>
-      <p class="cine-script" id="cineScript">love, written slowly</p>
-      <p class="cine-line" id="cineLine">Matchmaking for the Kenyan ecosystem.</p>
-
-      <ol class="cine-steps" id="cineSteps" aria-live="polite">
-        <li class="is-on" data-step="0"><span>01</span> Find your bond in the constellation</li>
-        <li data-step="1"><span>02</span> Read stars, traits &amp; true plans</li>
-        <li data-step="2"><span>03</span> Meet on the map — pay, go, belong</li>
-      </ol>
-
-      <div class="cine-actions">
-        <button type="button" class="mx-split" id="cineEnter">
-          <span>Enter PENZI</span><i aria-hidden="true">→</i>
-        </button>
-        <button type="button" class="text-link cine-skip" id="cineSkip">Skip</button>
-      </div>
-    </div>
-
-    <div class="cine-progress" aria-hidden="true"><i id="cineBar"></i></div>
-  </div>
 
   <!-- HERO — geometric red / white cutouts -->
   <header class="hero" id="hero">
@@ -90,15 +60,13 @@
     <div class="hero-body">
       <div class="hero-copy">
         <p class="meta-label">KE · 2026</p>
-        <h1 class="hero-title hero-title--cine" aria-label="PENZI">
-          <span>P</span><span>E</span><span>N</span><span>Z</span><span>I</span>
-        </h1>
+        <h1 class="hero-title">PENZI</h1>
         <p class="love-script hero-love">made for love</p>
         <p class="hero-sub">Matchmaking for the Kenyan ecosystem — quiet, intentional, alive.</p>
         <div class="hero-cta">
           <a class="mx-split" href="#match"><span>Start matching</span><i aria-hidden="true">→</i></a>
           <button type="button" class="text-link" id="shareBtn">— Share</button>
-          <button type="button" class="text-link" id="replayIntro">— Replay intro</button>
+          <a class="text-link" id="replayIntro" href="landing.html?replay=1">— Replay landing</a>
         </div>
         <div class="hero-pager" aria-hidden="true">
           <span>01</span><i></i><span>09</span>
@@ -493,7 +461,6 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="js/intro.js"></script>
   <script src="js/dating.js"></script>
   <script src="js/places.js"></script>
   <script src="js/motion.js"></script>

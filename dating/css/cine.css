@@ -133,46 +133,75 @@ body.is-intro .cine {
   animation: cineRise 0.8s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.cine-title {
-  margin: 0;
-  display: flex;
-  gap: 0.02em;
-  font-family: "Great Vibes", "Allura", cursive;
-  font-weight: 400;
-  font-size: clamp(5rem, 18vw, 10rem);
-  line-height: 0.85;
-  letter-spacing: 0.04em;
-  color: #fff7f2;
-  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+/* Pencil-carved calligraphy wordmark */
+.cine-carve {
+  position: relative;
+  margin: 0 0 0.35rem;
+  width: min(100%, 680px);
 }
 
-.cine-title span {
-  display: inline-block;
+.cine-carve-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.3));
+}
+
+.carve-groove {
+  stroke: rgba(255, 247, 242, 0.11);
+  stroke-width: 22;
+  stroke-linecap: round;
+}
+
+.carve-path {
   opacity: 0;
-  transform: translateY(28px) rotate(-4deg);
-  filter: blur(6px);
+  pointer-events: none;
 }
 
-.cine-title.is-write span {
-  animation: letterWrite 0.7s cubic-bezier(0.22, 1.15, 0.36, 1) forwards;
+.carve-ghost {
+  pointer-events: none;
 }
 
-.cine-title.is-write span:nth-child(1) { animation-delay: 0.05s; }
-.cine-title.is-write span:nth-child(2) { animation-delay: 0.14s; }
-.cine-title.is-write span:nth-child(3) { animation-delay: 0.23s; }
-.cine-title.is-write span:nth-child(4) { animation-delay: 0.32s; }
-.cine-title.is-write span:nth-child(5) { animation-delay: 0.41s; }
+.carve-word {
+  letter-spacing: 0.02em;
+}
 
-@keyframes letterWrite {
-  to {
-    opacity: 1;
-    transform: none;
-    filter: blur(0);
-  }
+.carve-pencil {
+  pointer-events: none;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+}
+
+.cine-carve.is-carving .carve-spark {
+  animation: sparkPulse 0.32s ease-in-out infinite alternate;
+}
+
+@keyframes sparkPulse {
+  from { opacity: 0.25; }
+  to { opacity: 1; }
+}
+
+.carve-dust circle {
+  fill: #f3e6d4;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.cine-carve-caption {
+  margin: -0.35rem 0 0.85rem;
+  font-family: "Parisienne", "Allura", cursive;
+  font-size: clamp(1.15rem, 2.6vw, 1.55rem);
+  color: #ffd7d0;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.cine-carve.is-carved .cine-carve-caption {
+  animation: cineRise 0.7s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .cine-script {
-  margin: 0.35rem 0 0.85rem;
+  margin: 0.15rem 0 0.85rem;
   font-family: "Parisienne", "Allura", cursive;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   color: #ffd7d0;
@@ -296,58 +325,28 @@ body.is-intro .cine {
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Hero calligraphy after intro */
-.hero-title--cine {
-  display: flex;
-  gap: 0.01em;
-  font-family: "Great Vibes", "Allura", cursive;
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  line-height: 0.9;
-}
-
-.hero-title--cine span {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(18px);
-}
-
-body.intro-done .hero-title--cine span {
-  animation: letterWrite 0.65s cubic-bezier(0.22, 1.15, 0.36, 1) forwards;
-}
-
-body.intro-done .hero-title--cine span:nth-child(1) { animation-delay: 0.05s; }
-body.intro-done .hero-title--cine span:nth-child(2) { animation-delay: 0.12s; }
-body.intro-done .hero-title--cine span:nth-child(3) { animation-delay: 0.19s; }
-body.intro-done .hero-title--cine span:nth-child(4) { animation-delay: 0.26s; }
-body.intro-done .hero-title--cine span:nth-child(5) { animation-delay: 0.33s; }
-
-body.intro-done .hero-love {
-  animation: cineRise 0.7s 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
 @media (max-width: 700px) {
   .cine-copy {
     align-self: end;
     padding-bottom: 3.5rem;
   }
-
-  .cine-title {
-    font-size: clamp(4.2rem, 22vw, 6.5rem);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cine-slide,
-  .cine-title span,
   .cine-script,
   .cine-line,
   .cine-grain,
-  .hero-title--cine span {
+  .cine-carve-caption {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+
+  .carve-pencil,
+  .carve-dust {
+    display: none !important;
   }
 }
