@@ -1071,7 +1071,9 @@ const state = {
   matchLocked: false,
   activeProfile: null,
   prefs: null,
+  intent: null,
   spinning: false,
+  filteredIds: null,
 };
 
 /* ——— helpers ——— */
@@ -1304,9 +1306,17 @@ function spinConnect() {
   const preferred = state.prefs?.area
     ? binaryProfiles().filter((p) => canBond(p) && p.city === state.prefs.area)
     : [];
-  const matchPool = preferred.length
+  let matchPool = preferred.length
     ? preferred
     : binaryProfiles().filter((p) => canBond(p));
+  if (state.intent) {
+    const intentPool = matchPool.filter((p) => intentMatches(state.intent, p));
+    if (intentPool.length) matchPool = intentPool;
+  }
+  if (state.filteredIds?.length) {
+    const filtered = matchPool.filter((p) => state.filteredIds.includes(p.id));
+    if (filtered.length) matchPool = filtered;
+  }
   const winner =
     matchPool[Math.floor(Math.random() * matchPool.length)] ||
     binaryProfiles().find((p) => canBond(p)) ||
@@ -1354,15 +1364,103 @@ function spinConnect() {
   requestAnimationFrame(frame);
 }
 
-/* ——— preference prompt ——— */
+/* ——— preference / intent prompt ——— */
+const MATCH_INTENTS = [
+  { id: "genz", label: "Gen Z babe", blurb: "Memes, honesty, soft launches", col: 1 },
+  { id: "ons", label: "One Night Stand", blurb: "Tonight only · no leftovers", col: 2 },
+  { id: "ltr", label: "Long term Relationship", blurb: "Build something that lasts", col: 1 },
+  { id: "corporate", label: "Corporate Lady", blurb: "Boardrooms, ambition, polish", col: 2 },
+  { id: "soft", label: "Soft life partner", blurb: "Peace, care, curated calm", col: 1 },
+  { id: "adventure", label: "Adventurous explorer", blurb: "Road trips & new cities", col: 2 },
+  { id: "traditional", label: "Traditional partner", blurb: "Family, faith, clear intent", col: 1 },
+  { id: "sugar_daddy", label: "Sugar Daddy", blurb: "Provision with presence", col: 2 },
+  { id: "sugar_mummy", label: "Sugar Mummy", blurb: "Power, warmth, last on the list", col: 1, last: true },
+];
+
+function intentMatches(intentId, p) {
+  if (!intentId || !p) return true;
+  const hay = `${p.career} ${p.company} ${p.looking} ${p.bio} ${(p.interests || []).join(" ")}`.toLowerCase();
+  switch (intentId) {
+    case "genz":
+      return p.age <= 28;
+    case "ons":
+      return /dating|clarity|soft|tonight|play/i.test(p.looking + p.bio) || p.age <= 30;
+    case "ltr":
+      return /long-term|partnership|intentional|grounded|roots/i.test(p.looking + p.bio);
+    case "corporate":
+      return /engineer|product|design|fintech|strategist|civil|agronomist|biologist|heritage/i.test(hay);
+    case "soft":
+      return /soft|peace|care|poetry|tea|jazz/i.test(hay) || p.gender === "female";
+    case "adventure":
+      return /hik|cycl|trip|map|lake|sport|snorkel/i.test(hay);
+    case "traditional":
+      return /faith|family|muslim|christian|tradition|respect/i.test(hay + (p.faith || ""));
+    case "sugar_daddy":
+      return p.gender === "male" && p.age >= 29;
+    case "sugar_mummy":
+      return p.gender === "female" && p.age >= 28;
+    default:
+      return true;
+  }
+}
+
 function showPrefPrompt() {
   const card = $("#prefCard");
   if (!card) return;
-  if (state.prefs || sessionStorage.getItem("penzi-prefs-skip") === "1") {
+  const force = sessionStorage.getItem("penzi-show-intent") === "1";
+  if (!force && (state.intent || state.prefs || sessionStorage.getItem("penzi-prefs-skip") === "1")) {
     card.hidden = true;
     return;
   }
+  try {
+    sessionStorage.removeItem("penzi-show-intent");
+  } catch {
+    /* ignore */
+  }
   card.hidden = false;
+  renderIntentGrid();
+}
+
+function renderIntentGrid() {
+  const grid = $("#intentGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  // Sugar Mummy always last; two-column visual order otherwise
+  const ordered = [
+    ...MATCH_INTENTS.filter((i) => !i.last),
+    ...MATCH_INTENTS.filter((i) => i.last),
+  ];
+  ordered.forEach((intent) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "intent-opt" + (intent.last ? " intent-opt--last" : "");
+    btn.setAttribute("role", "option");
+    btn.dataset.id = intent.id;
+    btn.setAttribute("aria-selected", state.intent === intent.id ? "true" : "false");
+    if (state.intent === intent.id) btn.classList.add("is-on");
+    btn.innerHTML = `
+      <span class="intent-opt__label">${intent.label}</span>
+      <span class="intent-opt__blurb">${intent.blurb}</span>
+    `;
+    btn.addEventListener("click", () => {
+      state.intent = intent.id;
+      $all(".intent-opt").forEach((el) => {
+        const on = el.dataset.id === intent.id;
+        el.classList.toggle("is-on", on);
+        el.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      const go = $("#intentContinue");
+      if (go) go.disabled = false;
+    });
+    grid.appendChild(btn);
+  });
+}
+
+function applyIntentFilter(intentId) {
+  const list = binaryProfiles().filter((p) => intentMatches(intentId, p));
+  state.filteredIds = list.map((p) => p.id);
+  renderOrbit(list.length ? list : binaryProfiles());
+  $("#matchStatus").innerHTML = `<p class="status-idle">Intent · ${MATCH_INTENTS.find((i) => i.id === intentId)?.label || intentId} · ${list.length} people</p>`;
 }
 
 function wirePrefs() {
@@ -1375,25 +1473,27 @@ function wirePrefs() {
         if (e.isIntersecting) showPrefPrompt();
       });
     },
-    { threshold: 0.35 }
+    { threshold: 0.2 }
   );
   io.observe(section);
 
-  $("#prefForm")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    state.prefs = {
-      vibe: $("#prefVibe").value.trim(),
-      must: $("#prefMust").value.trim(),
-      deal: $("#prefDeal").value.trim(),
-      area: $("#prefArea").value,
-    };
+  // Show immediately on arrival to Match
+  if (location.hash === "#match" || !location.hash) {
+    setTimeout(showPrefPrompt, 200);
+  }
+
+  $("#intentContinue")?.addEventListener("click", () => {
+    if (!state.intent) return;
+    state.prefs = { ...(state.prefs || {}), intent: state.intent };
     sessionStorage.setItem("penzi-prefs", JSON.stringify(state.prefs));
+    sessionStorage.setItem("penzi-intent", state.intent);
+    applyIntentFilter(state.intent);
     $("#prefSaved").hidden = false;
-    $("#prefSaved").textContent = `Saved · ${state.prefs.vibe}`;
-    showToast("Preferences saved", "ok");
+    $("#prefSaved").textContent = `Locked · ${MATCH_INTENTS.find((i) => i.id === state.intent)?.label}`;
+    showToast("Match intent saved", "ok");
     setTimeout(() => {
       $("#prefCard").hidden = true;
-    }, 900);
+    }, 700);
   });
 
   $("#prefSkip")?.addEventListener("click", () => {
@@ -1404,9 +1504,229 @@ function wirePrefs() {
   try {
     const saved = sessionStorage.getItem("penzi-prefs");
     if (saved) state.prefs = JSON.parse(saved);
+    const intent = sessionStorage.getItem("penzi-intent") || state.prefs?.intent;
+    if (intent) {
+      state.intent = intent;
+      applyIntentFilter(intent);
+    }
   } catch {
     /* ignore */
   }
+
+  wireMatchSearch();
+  wireBgCheck();
+}
+
+/* ——— semantic search ——— */
+function semanticQuery(raw) {
+  const q = String(raw || "").trim();
+  if (!q) return { type: "empty" };
+  const lower = q.toLowerCase();
+
+  const bg = lower.match(
+    /(?:background\s*check|bg\s*check|verify|vet|run\s+checks?(?:\s+on)?)\s*(?:on\s+)?(.+)?$/i
+  );
+  if (
+    /background\s*check|bg\s*check|verify|vet|run\s+checks/.test(lower)
+  ) {
+    let name = (bg && bg[1] ? bg[1] : "").replace(/[.?!]+$/, "").trim();
+    if (!name || name === "one of the profiles" || name === "a profile" || name === "someone") {
+      name = "";
+    }
+    return { type: "bgcheck", name };
+  }
+
+  const matchAsk = lower.match(
+    /(?:match\s+me\s+with|find\s+me|show\s+me|looking\s+for|i\s+want)\s+(?:an?\s+|the\s+)?(.+)/i
+  );
+  const topic = (matchAsk ? matchAsk[1] : lower)
+    .replace(/^(an?|the)\s+/i, "")
+    .trim();
+
+  return { type: "match", topic };
+}
+
+function profilesForTopic(topic) {
+  const t = topic.toLowerCase();
+  const synonyms = {
+    engineer: ["engineer", "eng", "civil"],
+    designer: ["design", "product designer"],
+    doctor: ["doctor", "medic", "nurse"],
+    lawyer: ["law", "advocate"],
+    creative: ["creative", "strategist", "poet", "art"],
+    muslim: ["muslim"],
+    christian: ["christian"],
+  };
+  let keys = [t];
+  Object.entries(synonyms).forEach(([k, vals]) => {
+    if (t.includes(k) || vals.some((v) => t.includes(v))) keys = keys.concat(vals, k);
+  });
+  return binaryProfiles().filter((p) => {
+    const hay = `${p.career} ${p.company} ${p.education} ${p.bio} ${p.looking} ${(p.interests || []).join(" ")} ${p.city} ${p.faith}`.toLowerCase();
+    return keys.some((k) => k.length > 2 && hay.includes(k));
+  });
+}
+
+function resolveBgTarget(name) {
+  if (name) {
+    const hit = binaryProfiles().find(
+      (p) =>
+        p.name.toLowerCase().includes(name.toLowerCase()) ||
+        p.name.split(" ")[0].toLowerCase() === name.toLowerCase()
+    );
+    if (hit) return hit;
+  }
+  if (state.activeProfile && !state.activeProfile.isYou) return state.activeProfile;
+  const focus = $(".orbit-card.is-focus");
+  if (focus) return findProfile(focus.dataset.id);
+  const pool = binaryProfiles();
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function wireMatchSearch() {
+  const form = $("#matchSearchForm");
+  if (!form) return;
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = $("#matchSearch").value;
+    const parsed = semanticQuery(q);
+    const hint = $("#matchSearchHint");
+
+    if (parsed.type === "empty") {
+      if (hint) hint.textContent = "Type a semantic ask first";
+      return;
+    }
+
+    if (parsed.type === "bgcheck") {
+      const target = resolveBgTarget(parsed.name);
+      if (!target) {
+        showToast("No profile to check", "err");
+        return;
+      }
+      if (hint) hint.textContent = `Background check · ${target.name}`;
+      runBackgroundCheck(target);
+      return;
+    }
+
+    const hits = profilesForTopic(parsed.topic);
+    if (!hits.length) {
+      if (hint) hint.textContent = `No semantic hits for “${parsed.topic}”`;
+      showToast("No matches for that ask", "err");
+      renderOrbit(binaryProfiles());
+      return;
+    }
+    state.filteredIds = hits.map((p) => p.id);
+    renderOrbit(hits);
+    if (hint) hint.textContent = `${hits.length} semantic hits · ${parsed.topic}`;
+    $("#matchStatus").innerHTML = `<p class="ok">Matched ask · ${parsed.topic}</p>`;
+    showToast(`Found ${hits.length} · ${parsed.topic}`, "ok");
+    // If ask implies connect and only bondable hits, nudge spin
+    if (/match me with/i.test(q) && hits.some((p) => canBond(p))) {
+      const bondable = hits.filter((p) => canBond(p));
+      if (bondable.length === 1) {
+        setTimeout(() => attemptMatchById(bondable[0].id), 400);
+      }
+    }
+  });
+}
+
+/* ——— background check animation ——— */
+const BG_CHECKS = [
+  { id: "location", label: "Location", icon: "📍", brand: "plain" },
+  { id: "phone", label: "Phone number", icon: "📱", brand: "plain" },
+  { id: "instagram", label: "Instagram", icon: "IG", brand: "ig" },
+  { id: "facebook", label: "Facebook", icon: "f", brand: "fb" },
+  { id: "x", label: "X / Twitter", icon: "𝕏", brand: "x" },
+  { id: "tiktok", label: "TikTok", icon: "♪", brand: "tt" },
+  { id: "linkedin", label: "LinkedIn", icon: "in", brand: "li" },
+  { id: "whatsapp", label: "WhatsApp", icon: "WA", brand: "wa" },
+  { id: "email", label: "Email identity", icon: "✉", brand: "plain" },
+  { id: "id", label: "ID consistency", icon: "ID", brand: "plain" },
+];
+
+function wireBgCheck() {
+  $("#profileBgCheck")?.addEventListener("click", () => {
+    if (state.activeProfile && !state.activeProfile.isYou) {
+      runBackgroundCheck(state.activeProfile);
+    }
+  });
+  $("#bgClose")?.addEventListener("click", () => {
+    $("#bgCheckOverlay").hidden = true;
+  });
+  $("#bgCheckOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "bgCheckOverlay") $("#bgCheckOverlay").hidden = true;
+  });
+}
+
+function runBackgroundCheck(profile) {
+  const overlay = $("#bgCheckOverlay");
+  const steps = $("#bgSteps");
+  const result = $("#bgResult");
+  const close = $("#bgClose");
+  if (!overlay || !steps) return;
+
+  overlay.hidden = false;
+  result.hidden = true;
+  close.hidden = true;
+  $("#bgLove").textContent = "verifying";
+  $("#bgTitle").textContent = `Checking ${profile.name.split(" ")[0]}`;
+  $("#bgSub").textContent = "Location · socials · phone · identity";
+  $("#bgFace").innerHTML = `<img src="${profile.photo}" alt="">`;
+  steps.innerHTML = "";
+  overlay.classList.remove("is-pass", "is-fail");
+
+  // Deterministic-ish outcome from profile stats
+  const score = profile.personStars * 12 + profile.dateStars * 8 + (canBond(profile) ? 10 : 0);
+  const pass = score >= 92 || (profile.personStars >= 4.5 && profile.dateStars >= 4.2);
+
+  let i = 0;
+  const tick = () => {
+    if (i >= BG_CHECKS.length) {
+      finishBgCheck(profile, pass);
+      return;
+    }
+    const check = BG_CHECKS[i];
+    // Occasional soft fail on a social before final result
+    const stepPass = pass ? Math.random() > 0.08 : Math.random() > 0.45;
+    const li = document.createElement("li");
+    li.className = "bg-step is-running";
+    li.innerHTML = `
+      <span class="bg-icon bg-icon--${check.brand || "plain"}" aria-hidden="true">${check.icon}</span>
+      <span class="bg-step__label">${check.label}</span>
+      <span class="bg-step__status">Scanning…</span>
+    `;
+    steps.appendChild(li);
+    li.scrollIntoView({ block: "nearest", behavior: "smooth" });
+
+    setTimeout(() => {
+      li.classList.remove("is-running");
+      li.classList.add(stepPass ? "is-pass" : "is-fail");
+      li.querySelector(".bg-step__status").textContent = stepPass ? "Verified" : "Flagged";
+      i += 1;
+      setTimeout(tick, 280);
+    }, 520 + Math.random() * 280);
+  };
+  tick();
+}
+
+function finishBgCheck(profile, pass) {
+  const overlay = $("#bgCheckOverlay");
+  const result = $("#bgResult");
+  const stamp = $("#bgStamp");
+  const close = $("#bgClose");
+  result.hidden = false;
+  close.hidden = false;
+  overlay.classList.toggle("is-pass", pass);
+  overlay.classList.toggle("is-fail", !pass);
+  stamp.className = "bg-stamp " + (pass ? "bg-stamp--pass" : "bg-stamp--fail");
+  stamp.textContent = pass ? "✓" : "✕";
+  $("#bgLove").textContent = pass ? "cleared" : "flagged";
+  $("#bgResultTitle").textContent = pass ? "Check passed" : "Check failed";
+  $("#bgResultSub").textContent = pass
+    ? `${profile.name} · location & socials look consistent.`
+    : `${profile.name} · inconsistencies on phone / social graph.`;
+  showToast(pass ? "Background check · pass" : "Background check · fail", pass ? "ok" : "err");
+  stamp.classList.add("is-pop");
 }
 
 /* ——— personality / zodiac / character calendar ——— */

@@ -110,42 +110,34 @@
         <p class="section-sub">Scroll the constellation. When two circles meet, the bond turns green.</p>
       </div>
 
-      <div class="pref-card geo-tile geo-tile--tr mx-card" id="prefCard" hidden>
-        <p class="meta-label">Before you scroll</p>
-        <p class="love-script love-eyebrow">who are you looking for?</p>
-        <p class="section-sub">Tell PENZI the best info about a partner you want — we’ll weight the constellation.</p>
-        <form class="pref-form" id="prefForm">
-          <label class="stk-field">
-            <span class="meta-label">Ideal vibe</span>
-            <input type="text" id="prefVibe" placeholder="Warm, curious, loves chai &amp; late walks" required>
-          </label>
-          <label class="stk-field">
-            <span class="meta-label">Must-have</span>
-            <input type="text" id="prefMust" placeholder="Kindness, ambition, faith…" required>
-          </label>
-          <label class="stk-field">
-            <span class="meta-label">Deal-breaker</span>
-            <input type="text" id="prefDeal" placeholder="Ghosting, no ambition…">
-          </label>
-          <label class="stk-field">
-            <span class="meta-label">Preferred area</span>
-            <select id="prefArea">
-              <option value="">Anywhere in Kenya</option>
-              <option>Nairobi</option>
-              <option>Mombasa</option>
-              <option>Kisumu</option>
-              <option>Nakuru</option>
-              <option>Eldoret</option>
-              <option>Lamu</option>
-            </select>
-          </label>
-          <div class="pref-actions">
-            <button type="submit" class="btn-block">Save preferences</button>
-            <button type="button" class="btn-block btn-block--ghost" id="prefSkip">Skip for now</button>
-          </div>
-        </form>
+      <div class="pref-card intent-card geo-tile geo-tile--tr mx-card" id="prefCard" hidden>
+        <p class="meta-label">On arrival</p>
+        <p class="love-script love-eyebrow">Who do you want to Match with?</p>
+        <p class="section-sub">Pick a lane. PENZI will weight the constellation — Sugar Mummy stays last.</p>
+        <div class="intent-grid" id="intentGrid" role="listbox" aria-label="Match intent">
+          <!-- filled by JS -->
+        </div>
+        <div class="pref-actions">
+          <button type="button" class="btn-block" id="intentContinue" disabled>Continue</button>
+          <button type="button" class="btn-block btn-block--ghost" id="prefSkip">Skip for now</button>
+        </div>
         <p class="pref-saved meta-label" id="prefSaved" hidden></p>
       </div>
+
+      <form class="match-search" id="matchSearchForm" autocomplete="off">
+        <label class="match-search__label meta-label" for="matchSearch">Semantic ask</label>
+        <div class="match-search__row">
+          <input
+            type="search"
+            id="matchSearch"
+            name="q"
+            placeholder="match me with an engineer · background check on Amina"
+            enterkeyhint="search"
+          >
+          <button type="submit" class="btn-block match-search__go">Ask</button>
+        </div>
+        <p class="match-search__hint meta-label" id="matchSearchHint">Try a career match or a background check</p>
+      </form>
 
       <div class="match-stage" id="matchStage">
         <div class="constant-profile" id="constantProfile" role="button" tabindex="0" aria-label="Open your profile">
@@ -404,8 +396,26 @@
       <div class="profile-tags" id="profileTags"></div>
       <div class="profile-actions">
         <button type="button" class="btn-block btn-block--blue" id="profileLocate">Show on map</button>
+        <button type="button" class="btn-block btn-block--ghost" id="profileBgCheck">Background check</button>
         <button type="button" class="btn-block btn-block--green" id="profileConnect">Try connect</button>
       </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="bgCheckOverlay" hidden>
+    <div class="overlay-panel bg-panel geo-tile geo-tile--br" id="bgPanel" role="dialog" aria-modal="true" aria-labelledby="bgTitle">
+      <p class="meta-label">Background check</p>
+      <p class="love-script love-overlay" id="bgLove">verifying</p>
+      <h3 class="overlay-title" id="bgTitle">Running checks</h3>
+      <p class="overlay-sub" id="bgSub">Scanning public signals for this profile…</p>
+      <div class="bg-face" id="bgFace"></div>
+      <ul class="bg-steps" id="bgSteps" aria-live="polite"></ul>
+      <div class="bg-result" id="bgResult" hidden>
+        <div class="bg-stamp" id="bgStamp" aria-hidden="true"></div>
+        <p class="bg-result-title" id="bgResultTitle"></p>
+        <p class="bg-result-sub" id="bgResultSub"></p>
+      </div>
+      <button type="button" class="btn-block" id="bgClose" hidden>Close</button>
     </div>
   </div>
 

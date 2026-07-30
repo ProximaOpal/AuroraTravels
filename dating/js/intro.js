@@ -13,10 +13,8 @@
     try {
       sessionStorage.removeItem("penzi-intro-seen");
     } catch (e) {}
-  } else if (sessionStorage.getItem("penzi-intro-seen") === "1") {
-    location.replace(HOME);
-    return;
   }
+  // Always play landing when this page is opened (do not bounce away).
 
   const slides = [...root.querySelectorAll(".cine-slide")];
   const steps = [...root.querySelectorAll(".cine-steps li")];
@@ -158,9 +156,11 @@
   function goHome() {
     try {
       sessionStorage.setItem("penzi-intro-seen", "1");
+      sessionStorage.setItem("penzi-show-intent", "1");
     } catch (e) {}
-    // Home page 01 — Match
-    location.href = HOME + "?home=1#match";
+    // Absolute dating home so landing → home always resolves
+    const base = location.pathname.replace(/landing\.html$/i, "");
+    location.href = `${base}index.html?home=1#match`;
   }
 
   function finish() {
@@ -185,18 +185,26 @@
     root.hidden = false;
     root.removeAttribute("aria-hidden");
     root.classList.remove("is-out");
-    document.body.classList.add("is-intro");
+    document.body.classList.add("is-intro", "landing-page");
     clearTimeout(finishTimer);
     cancelAnimationFrame(carveRaf);
     carveToken += 1;
     const token = carveToken;
 
-    showCopy();
-    carveWord(token);
+    const kick = () => {
+      showCopy();
+      carveWord(token);
+      finishTimer = setTimeout(() => {
+        if (!done) finish();
+      }, reduced ? 400 : LANDING_MS);
+    };
 
-    finishTimer = setTimeout(() => {
-      if (!done) finish();
-    }, reduced ? 400 : LANDING_MS);
+    // Wait for calligraphy fonts so the pencil carve is visible
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(kick).catch(kick);
+    } else {
+      kick();
+    }
   }
 
   document.getElementById("cineEnter")?.addEventListener("click", finish);

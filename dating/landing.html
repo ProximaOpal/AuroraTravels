@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="css/motion.css">
   <link rel="stylesheet" href="css/cine.css">
   <style>
-    /* Landing is its own page — no home chrome underneath */
     html, body {
       margin: 0;
       min-height: 100%;
@@ -21,9 +20,8 @@
     body.landing-page {
       overflow: hidden;
     }
-    body.landing-page > :not(.cine) {
-      display: none !important;
-    }
+    /* Keep landing self-contained — only the cine stage is visible */
+    body.landing-page .toast { display: none !important; }
   </style>
 </head>
 <body class="landing-page is-intro">
