@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Bebas+Neue&family=Dancing+Script:wght@500;600;700&family=Great+Vibes&family=IBM+Plex+Mono:wght@400;500&family=Italianno&family=Outfit:wght@300;400;500;600;700&family=Parisienne&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Sacramento&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="css/dating.css">
+  <link rel="stylesheet" href="css/motion.css">
 </head>
 <body>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
@@ -170,7 +171,7 @@
         <h2>Lines that land</h2>
         <p class="section-sub">Minimal verses with feeling. Send one when words are enough.</p>
       </div>
-      <div class="poetry-list" id="poetryList"></div>
+      <div class="poetry-list mx-stagger" id="poetryList"></div>
     </div>
   </section>
 
@@ -230,7 +231,7 @@
         <h2>Favorites only</h2>
         <p class="section-sub">A quiet stack of songs that say who you are.</p>
       </div>
-      <ul class="song-list" id="songList"></ul>
+      <ul class="song-list mx-stagger" id="songList"></ul>
     </div>
   </section>
 
@@ -260,15 +261,15 @@
         </div>
       </div>
 
-      <div class="mall-rail" id="mallRail" aria-label="Nairobi shopping centres"></div>
+      <div class="mall-rail mx-stagger" id="mallRail" aria-label="Nairobi shopping centres"></div>
 
-      <div class="pay-row">
-        <button type="button" class="pay-card pay-card--shop geo-tile geo-tile--br is-active" id="payTypeShop" data-type="shopping">
+      <div class="pay-row mx-stagger">
+        <button type="button" class="pay-card pay-card--shop geo-tile geo-tile--br is-active mx-card mx-card--green" id="payTypeShop" data-type="shopping">
           <span class="meta-label">Pay</span>
           <span class="pay-card-title">Shopping</span>
           <span class="pay-card-sub">At the selected centre</span>
         </button>
-        <button type="button" class="pay-card pay-card--ride geo-tile geo-tile--tl" id="payTypeRide" data-type="transport">
+        <button type="button" class="pay-card pay-card--ride geo-tile geo-tile--tl mx-card mx-card--blue" id="payTypeRide" data-type="transport">
           <span class="meta-label">Pay</span>
           <span class="pay-card-title">Transport</span>
           <span class="pay-card-sub">Ride to the centre</span>
@@ -338,5 +339,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="js/dating.js"></script>
   <script src="js/places.js"></script>
+  <script src="js/motion.js"></script>
 </body>
 </html>
