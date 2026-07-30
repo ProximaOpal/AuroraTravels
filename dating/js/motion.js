@@ -80,14 +80,8 @@
   }
 
   function enhanceHeroCta() {
-    const cta = document.querySelector(".hero-cta .btn-block");
-    if (!cta || cta.classList.contains("mx-split")) return;
-    const href = cta.getAttribute("href") || "#match";
-    const split = document.createElement("a");
-    split.className = "mx-split";
-    split.href = href;
-    split.innerHTML = `<span>Start matching</span><i aria-hidden="true">→</i>`;
-    cta.replaceWith(split);
+    // Hero CTA is already a split button in the cinematic landing.
+    return;
   }
 
   function enhancePayButtons() {
