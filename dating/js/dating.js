@@ -9,6 +9,7 @@ const PROFILES = [
     lng: 39.6682,
     photo: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=640&q=80&auto=format&fit=crop",
     match: true,
+    gender: "female",
     age: 27,
     birthdate: "12 Mar 1999",
     career: "Marine biologist",
@@ -34,6 +35,7 @@ const PROFILES = [
     lng: 36.8219,
     photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 29,
     birthdate: "3 Aug 1996",
     career: "Product designer",
@@ -59,6 +61,7 @@ const PROFILES = [
     lng: 36.9500,
     photo: "https://images.unsplash.com/photo-1589156280159-27698a70f29e?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "female",
     age: 26,
     birthdate: "21 Jan 2000",
     career: "Coffee agronomist",
@@ -84,6 +87,7 @@ const PROFILES = [
     lng: 34.7680,
     photo: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 31,
     birthdate: "9 Nov 1994",
     career: "Civil engineer",
@@ -109,6 +113,7 @@ const PROFILES = [
     lng: 40.9020,
     photo: "https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=640&q=80&auto=format&fit=crop",
     match: true,
+    gender: "female",
     age: 25,
     birthdate: "17 May 2000",
     career: "Heritage guide",
@@ -134,6 +139,7 @@ const PROFILES = [
     lng: 35.2698,
     photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 28,
     birthdate: "2 Feb 1998",
     career: "Physio · athletics",
@@ -159,6 +165,7 @@ const PROFILES = [
     lng: 36.0800,
     photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "female",
     age: 24,
     birthdate: "28 Sep 2001",
     career: "Wildlife ranger",
@@ -184,6 +191,7 @@ const PROFILES = [
     lng: 40.1169,
     photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 30,
     birthdate: "14 Jul 1995",
     career: "Chef",
@@ -209,6 +217,7 @@ const PROFILES = [
     lng: 37.0693,
     photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "female",
     age: 27,
     birthdate: "5 Dec 1998",
     career: "Software engineer",
@@ -234,6 +243,7 @@ const PROFILES = [
     lng: 39.6461,
     photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 32,
     birthdate: "19 Apr 1994",
     career: "Public health officer",
@@ -259,6 +269,7 @@ const PROFILES = [
     lng: 36.8100,
     photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=640&q=80&auto=format&fit=crop",
     match: true,
+    gender: "female",
     age: 26,
     birthdate: "8 Jun 1999",
     career: "Fashion stylist",
@@ -284,6 +295,7 @@ const PROFILES = [
     lng: 35.0062,
     photo: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "female",
     age: 28,
     birthdate: "11 Oct 1997",
     career: "Primary teacher",
@@ -309,6 +321,7 @@ const PROFILES = [
     lng: 37.0734,
     photo: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 33,
     birthdate: "22 Mar 1993",
     career: "Safari guide",
@@ -334,6 +347,7 @@ const PROFILES = [
     lng: 39.6660,
     photo: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "female",
     age: 29,
     birthdate: "30 Jan 1997",
     career: "Lawyer",
@@ -359,6 +373,7 @@ const PROFILES = [
     lng: 36.8167,
     photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 30,
     birthdate: "16 Aug 1995",
     career: "Architect",
@@ -384,6 +399,7 @@ const PROFILES = [
     lng: 36.8050,
     photo: "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=640&q=80&auto=format&fit=crop",
     match: true,
+    gender: "female",
     age: 27,
     birthdate: "4 Apr 1999",
     career: "Pharmacist",
@@ -409,6 +425,7 @@ const PROFILES = [
     lng: 34.7667,
     photo: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "male",
     age: 28,
     birthdate: "25 Dec 1997",
     career: "Agribusiness founder",
@@ -434,6 +451,7 @@ const PROFILES = [
     lng: 35.2833,
     photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=640&q=80&auto=format&fit=crop",
     match: false,
+    gender: "female",
     age: 25,
     birthdate: "7 Sep 2000",
     career: "Tea sommelier",
@@ -461,6 +479,7 @@ const YOU = {
   lng: 36.817223,
   photo: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=640&q=80&auto=format&fit=crop",
   match: false,
+  gender: "male",
   age: 28,
   birthdate: "15 Feb 1998",
   career: "Creative strategist",
@@ -665,10 +684,32 @@ const ZODIAC = [
   },
 ];
 
-/** Illustrated cartoon face for Personality zodiac cards (not real photos). */
-function cartoonAvatar(seed) {
+/** Illustrated people cartoons for Personality (page 02) — never non-human. */
+function cartoonAvatar(seed, gender = "female") {
   const s = encodeURIComponent(String(seed || "penzi").toLowerCase());
-  return `https://api.dicebear.com/9.x/lorelei/svg?seed=${s}&backgroundColor=f7f5f2&radius=50`;
+  // People-only DiceBear styles (male / female)
+  const style = gender === "male" ? "adventurer" : "lorelei";
+  return `https://api.dicebear.com/9.x/${style}/svg?seed=${s}&backgroundColor=f7f5f2&radius=50`;
+}
+
+function isBinaryGender(g) {
+  return g === "female" || g === "male";
+}
+
+/** Matches are only between female ↔ male. */
+function isOppositeGender(a, b) {
+  if (!a || !b) return false;
+  if (!isBinaryGender(a.gender) || !isBinaryGender(b.gender)) return false;
+  return a.gender !== b.gender;
+}
+
+function canBond(profile) {
+  return !!profile && !profile.isYou && !!profile.match && isOppositeGender(YOU, profile);
+}
+
+/** Orbit shows only female and male people. */
+function binaryProfiles(list = PROFILES) {
+  return list.filter((p) => isBinaryGender(p.gender));
 }
 
 const GENERATIONS = [
@@ -1153,18 +1194,19 @@ function renderConstant() {
 function renderOrbit(list = PROFILES) {
   const track = $("#orbitTrack");
   track.innerHTML = "";
-  list.forEach((p, i) => {
+  binaryProfiles(list).forEach((p, i) => {
     const card = document.createElement("button");
     card.type = "button";
     card.className = "orbit-card";
-    card.dataset.match = p.match ? "1" : "0";
+    card.dataset.match = canBond(p) ? "1" : "0";
     card.dataset.id = p.id;
     card.dataset.name = p.name;
+    card.dataset.gender = p.gender || "";
     card.style.animationDelay = `${i * 40}ms`;
     card.innerHTML = `
       <img class="avatar" src="${p.photo}" alt="${p.name}" width="96" height="96" loading="lazy">
       <p class="avatar-name">${p.name.split(" ")[0]}</p>
-      <p class="avatar-tag">${p.city}</p>
+      <p class="avatar-tag">${p.city} · ${p.gender === "female" ? "F" : "M"}</p>
       ${ratingHTML(p)}
     `;
     card.addEventListener("click", () => openProfile(p));
@@ -1227,7 +1269,7 @@ function attemptMatchById(id) {
   const profile = findProfile(id);
   if (!profile || profile.isYou) return;
   state.matchLocked = true;
-  if (profile.match) {
+  if (canBond(profile)) {
     celebrateMatch(profile);
   } else {
     const ring = $("#constantRing");
@@ -1253,15 +1295,15 @@ function spinConnect() {
   if (!cards.length) return;
 
   const preferred = state.prefs?.area
-    ? PROFILES.filter((p) => p.match && p.city === state.prefs.area)
+    ? binaryProfiles().filter((p) => canBond(p) && p.city === state.prefs.area)
     : [];
   const matchPool = preferred.length
     ? preferred
-    : PROFILES.filter((p) => p.match);
+    : binaryProfiles().filter((p) => canBond(p));
   const winner =
     matchPool[Math.floor(Math.random() * matchPool.length)] ||
-    PROFILES.find((p) => p.match) ||
-    PROFILES[0];
+    binaryProfiles().find((p) => canBond(p)) ||
+    binaryProfiles()[0];
 
   state.spinning = true;
   state.matchLocked = true;
@@ -1393,7 +1435,7 @@ function zodiacForDate(month, day) {
 }
 
 function peopleForZodiac(z) {
-  return [YOU, ...PROFILES].filter((p) => {
+  return [YOU, ...binaryProfiles()].filter((p) => {
     const bd = parseBirthdate(p.birthdate);
     if (!bd) return false;
     return zodiacForDate(bd.month, bd.day).id === z.id;
@@ -1429,15 +1471,26 @@ function renderPersonalities() {
   });
 
   grid.innerHTML = "";
-  ZODIAC.forEach((z) => {
-    const matches = peopleForZodiac(z);
-    // Personality avatars are cartoons — never real profile photos
-    const photo = cartoonAvatar(matches[0]?.name || z.cartoon || z.id);
+  ZODIAC.forEach((z, zi) => {
+    const matches = peopleForZodiac(z).filter((p) => !p.isYou);
+    const face =
+      matches[0] ||
+      binaryProfiles()[zi % binaryProfiles().length] ||
+      YOU;
+    // Personality avatars are always people cartoons (F/M)
+    const photo = cartoonAvatar(face.name || z.cartoon || z.id, face.gender || "female");
     const names = matches.map((p) => p.name.split(" ")[0]).slice(0, 3).join(", ");
     const traitNames = z.traits
       .map((id) => PSYCH_TRAITS.find((t) => t.id === id)?.name)
       .filter(Boolean)
       .join(" · ");
+    const peopleRow = (matches.length ? matches : [face])
+      .slice(0, 4)
+      .map(
+        (p) =>
+          `<img class="zodiac-mini" src="${cartoonAvatar(p.name, p.gender)}" alt="${p.name}" width="28" height="28" loading="lazy">`
+      )
+      .join("");
 
     const btn = document.createElement("button");
     btn.type = "button";
@@ -1446,14 +1499,15 @@ function renderPersonalities() {
     btn.dataset.traits = z.traits.join(",");
     btn.innerHTML = `
       <div class="zodiac-top">
-        <img class="zodiac-photo zodiac-photo--cartoon" src="${photo}" alt="${z.name} cartoon avatar" width="72" height="72" loading="lazy">
+        <img class="zodiac-photo zodiac-photo--cartoon" src="${photo}" alt="${z.name} person avatar" width="72" height="72" loading="lazy">
         <span class="zodiac-emoji" aria-hidden="true">${z.emoji}</span>
       </div>
+      <div class="zodiac-people" aria-hidden="true">${peopleRow}</div>
       <p class="zodiac-symbol">${z.symbol} ${z.name}</p>
       <p class="meta-label">${z.range}</p>
       <p class="zodiac-blurb">${z.blurb}</p>
       <p class="zodiac-traits">${traitNames}</p>
-      <p class="zodiac-matches meta-label">${matches.length ? `In PENZI · ${names}` : "No birthdays yet"}</p>
+      <p class="zodiac-matches meta-label">${matches.length ? `In PENZI · ${names}` : "People of this sign"}</p>
     `;
     btn.addEventListener("click", () => {
       $all(".zodiac-card").forEach((c) => c.classList.remove("is-active"));
@@ -1954,13 +2008,8 @@ function wireUI() {
     const p = state.activeProfile;
     closeProfile();
     if (p && !p.isYou) {
-      // Spin toward this person if matchable, else attempt
-      if (p.match) {
-        // Ensure they are in view then celebrate after short spin
-        spinConnect();
-      } else {
-        attemptMatchById(p.id);
-      }
+      if (canBond(p)) spinConnect();
+      else attemptMatchById(p.id);
     }
   });
   $("#profileGrid").addEventListener("click", (e) => {

@@ -97,6 +97,9 @@
     gpsCircle: null,
     gpsMarker: null,
     amenityCircle: null,
+    routeOut: null,
+    routeBack: null,
+    lastGps: null,
     activePoll: null,
     paying: false,
     mapReady: false,
@@ -256,7 +259,6 @@
       state.amenityCircle = null;
     }
 
-    state.map.flyTo([mall.lat, mall.lng], CONFIG.GPS_ZOOM, { duration: 1.1 });
     state.amenityCircle = L.circle([mall.lat, mall.lng], {
       radius: CONFIG.AUTH_RADIUS_M,
       color: "#2f6fed",
@@ -265,6 +267,13 @@
       fillOpacity: 0.18,
       className: "gps-radial",
     }).addTo(state.map);
+
+    if (state.payType === "transport") {
+      maybeDrawTransport(mall);
+    } else {
+      clearTransportRoutes();
+      state.map.flyTo([mall.lat, mall.lng], CONFIG.GPS_ZOOM, { duration: 1.1 });
+    }
 
     if (!fromMap) {
       const card = document.querySelector(`.mall-card[data-id="${id}"]`);
@@ -282,6 +291,78 @@
       state.map.removeLayer(state.gpsMarker);
       state.gpsMarker = null;
     }
+  }
+
+  function clearTransportRoutes() {
+    if (!state.map) return;
+    if (state.routeOut) {
+      state.map.removeLayer(state.routeOut);
+      state.routeOut = null;
+    }
+    if (state.routeBack) {
+      state.map.removeLayer(state.routeBack);
+      state.routeBack = null;
+    }
+  }
+
+  /** Midpoint nudged sideways so outbound ≠ return visually. */
+  function bentMid(a, b, sway = 0.22) {
+    const mx = (a.lat + b.lat) / 2;
+    const my = (a.lng + b.lng) / 2;
+    const dx = b.lat - a.lat;
+    const dy = b.lng - a.lng;
+    return [mx - dy * sway, my + dx * sway];
+  }
+
+  /** Draw to-and-fro polylines: You → place (blue) and place → You (red dashed). */
+  function drawTransportRoundTrip(from, mall) {
+    if (!state.map || !from || !mall) return;
+    clearTransportRoutes();
+
+    const origin = [from.lat, from.lng];
+    const dest = [mall.lat, mall.lng];
+    const midOut = bentMid(from, mall, 0.12);
+    const midBack = bentMid(mall, from, 0.18);
+
+    state.routeOut = L.polyline([origin, midOut, dest], {
+      color: "#2f6fed",
+      weight: 4.5,
+      opacity: 0.95,
+      lineJoin: "round",
+      className: "route-poly route-poly--out",
+    })
+      .bindTooltip("To · transport", { sticky: true })
+      .addTo(state.map);
+
+    state.routeBack = L.polyline([dest, midBack, origin], {
+      color: "#e10600",
+      weight: 3.5,
+      opacity: 0.88,
+      dashArray: "10 9",
+      lineJoin: "round",
+      className: "route-poly route-poly--back",
+    })
+      .bindTooltip("Fro · return", { sticky: true })
+      .addTo(state.map);
+
+    const bounds = L.latLngBounds([origin, dest, midOut, midBack]);
+    state.map.fitBounds(bounds.pad(0.28), { maxZoom: 15, animate: true });
+  }
+
+  function maybeDrawTransport(mall) {
+    if (state.payType !== "transport" || !mall) {
+      clearTransportRoutes();
+      return;
+    }
+    const from =
+      state.lastGps ||
+      (YOU_FALLBACK());
+    drawTransportRoundTrip(from, mall);
+  }
+
+  function YOU_FALLBACK() {
+    // Nairobi CBD if GPS not yet available
+    return { lat: -1.286389, lng: 36.817223 };
   }
 
   function placeBlueRadial(lat, lng, { label = "You" } = {}) {
@@ -333,12 +414,16 @@
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const { latitude: lat, longitude: lng } = pos.coords;
+          state.lastGps = { lat, lng };
           placeBlueRadial(lat, lng);
           status.textContent = `GPS · ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
           if (thenSelect) {
             const near = nearestMall(lat, lng);
             selectMall(near.id);
             toast(`Near ${near.name}`, "ok");
+          } else if (state.payType === "transport" && state.selectedId) {
+            const mall = MALLS.find((m) => m.id === state.selectedId);
+            maybeDrawTransport(mall);
           }
           resolve({ lat, lng });
         },
@@ -360,7 +445,7 @@
 
     return requestGps({ thenSelect: false })
       .then(({ lat, lng }) => {
-        // Keep amenity focus; overlay GPS radial at user, ensure amenity radial stays
+        state.lastGps = { lat, lng };
         placeBlueRadial(lat, lng, { label: "You" });
         if (state.amenityCircle) {
           state.map.removeLayer(state.amenityCircle);
@@ -373,13 +458,21 @@
           fillOpacity: 0.16,
           className: "gps-radial",
         }).addTo(state.map);
-        state.map.flyTo([mall.lat, mall.lng], CONFIG.GPS_ZOOM, { duration: 0.9 });
-        $("#gpsStatus").textContent = `Authenticated · ${mall.name}`;
+        if (state.payType === "transport") {
+          drawTransportRoundTrip({ lat, lng }, mall);
+          $("#gpsStatus").textContent = `Route · to & fro · ${mall.name}`;
+        } else {
+          clearTransportRoutes();
+          state.map.flyTo([mall.lat, mall.lng], CONFIG.GPS_ZOOM, { duration: 0.9 });
+          $("#gpsStatus").textContent = `Authenticated · ${mall.name}`;
+        }
         return true;
       })
       .catch(() => {
-        // Still allow payment if GPS denied, but amenity is zoomed with blue radial
-        $("#gpsStatus").textContent = "GPS skipped · amenity locked";
+        $("#gpsStatus").textContent =
+          state.payType === "transport"
+            ? "GPS skipped · demo route from CBD"
+            : "GPS skipped · amenity locked";
         if (!state.amenityCircle) {
           state.amenityCircle = L.circle([mall.lat, mall.lng], {
             radius: CONFIG.AUTH_RADIUS_M,
@@ -389,6 +482,9 @@
             fillOpacity: 0.18,
             className: "gps-radial gps-radial--pulse",
           }).addTo(state.map);
+        }
+        if (state.payType === "transport") {
+          maybeDrawTransport(mall);
         }
         return false;
       });
@@ -413,6 +509,9 @@
     $("#paySuccessSub").textContent = `${type} · KES ${amount} · ${mall.name}`;
     $("#paySuccessOverlay").hidden = false;
     toast("Payment verified", "ok");
+    if (type === "Transport") {
+      maybeDrawTransport(mall);
+    }
   }
 
   function pollPayment(checkoutID, mall, amount, type) {
@@ -507,6 +606,11 @@
       $("#payTypeShop").classList.add("is-active");
       $("#payTypeRide").classList.remove("is-active");
       if (!$("#payAmount").value) $("#payAmount").value = "50";
+      clearTransportRoutes();
+      const mall = MALLS.find((m) => m.id === state.selectedId);
+      if (mall && state.map) {
+        state.map.flyTo([mall.lat, mall.lng], CONFIG.GPS_ZOOM, { duration: 0.8 });
+      }
     });
 
     $("#payTypeRide")?.addEventListener("click", () => {
@@ -514,6 +618,13 @@
       $("#payTypeRide").classList.add("is-active");
       $("#payTypeShop").classList.remove("is-active");
       if (Number($("#payAmount").value) < 100) $("#payAmount").value = "150";
+      const mall = MALLS.find((m) => m.id === state.selectedId);
+      if (mall) {
+        maybeDrawTransport(mall);
+        toast("Route · to & fro on map", "ok");
+      } else {
+        toast("Pick a place for the transport route", "err");
+      }
     });
 
     $("#stkForm")?.addEventListener("submit", handlePayment);

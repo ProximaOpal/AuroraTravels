@@ -2275,6 +2275,21 @@ button {
   background: #f7f5f2;
 }
 
+.zodiac-people {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0 0 0.55rem;
+}
+
+.zodiac-mini {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f7f5f2;
+  outline: 1px solid rgba(225, 6, 0, 0.25);
+}
+
 .zodiac-emoji {
   position: absolute;
   right: -4px;
