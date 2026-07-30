@@ -1114,8 +1114,14 @@ function openProfile(profile) {
   state.activeProfile = profile;
   $("#profilePhoto").src = profile.photo;
   $("#profilePhoto").alt = profile.name;
-  $("#profileMeta").textContent = profile.isYou ? "Your profile" : `${profile.city} · ${profile.age}`;
-  $("#profileLove").textContent = profile.isYou ? "this is you" : "possible match";
+  $("#profileMeta").textContent = profile.isYou
+    ? "Your profile"
+    : `${profile.city} · ${profile.age} · ${profile.gender === "female" ? "Female" : "Male"}`;
+  $("#profileLove").textContent = profile.isYou
+    ? "this is you"
+    : canBond(profile)
+      ? "female ↔ male match"
+      : "no bond";
   $("#profileName").textContent = profile.name;
   $("#profileRole").textContent = `${profile.career} · ${profile.company}`;
   $("#profileRatings").innerHTML = `
@@ -1132,6 +1138,7 @@ function openProfile(profile) {
   `;
   const rows = [
     ["Location", profile.city],
+    ["Gender", profile.gender === "female" ? "Female" : "Male"],
     ["Birthdate", profile.birthdate],
     ["Age", String(profile.age)],
     ["Career", profile.career],
