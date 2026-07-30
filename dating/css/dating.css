@@ -2745,6 +2745,18 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .intent-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intent-opt--last {
+    grid-column: auto;
+  }
+
+  .match-search__row {
+    grid-template-columns: 1fr;
+  }
+
   .match-seat {
     width: min(100%, 180px);
     margin: 0.5rem auto;
