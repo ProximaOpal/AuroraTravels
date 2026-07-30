@@ -1,18 +1,9 @@
-/* PENZI landing — same page: 4s pencil carve, then reveal home */
+/* PENZI landing — same page; Enter PENZI opens the app (no auto-advance) */
 
 (() => {
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = document.getElementById("cineIntro");
   if (!root) return;
-
-  const params = new URLSearchParams(location.search);
-  const forceReplay = params.get("replay") === "1";
-
-  if (forceReplay) {
-    try {
-      sessionStorage.removeItem("penzi-intro-seen");
-    } catch (e) {}
-  }
 
   const slides = [...root.querySelectorAll(".cine-slide")];
   const steps = [...root.querySelectorAll(".cine-steps li")];
@@ -37,7 +28,6 @@
   let done = false;
   let carveRaf = 0;
   let carveToken = 0;
-  let finishTimer = null;
 
   function easeInOut(t) {
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
@@ -149,10 +139,8 @@
     if (bar) bar.style.width = "0%";
   }
 
-  /** Same-page handoff — no navigation to another file. */
   function revealHome() {
     try {
-      sessionStorage.setItem("penzi-intro-seen", "1");
       sessionStorage.setItem("penzi-show-intent", "1");
     } catch (e) {}
 
@@ -161,14 +149,12 @@
     root.hidden = true;
     root.setAttribute("aria-hidden", "true");
 
-    // Soft-land on Match (page 01) in the same document
     const match = document.getElementById("match");
     if (match) {
       history.replaceState(null, "", "#match");
       match.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     }
 
-    // Re-open arrival intent prompt if dating.js already wired
     if (typeof window.showPrefPrompt === "function") {
       window.showPrefPrompt();
     } else {
@@ -182,7 +168,6 @@
     if (done) return;
     done = true;
     carveToken = -1;
-    clearTimeout(finishTimer);
     cancelAnimationFrame(carveRaf);
     setClip(1);
     if (carve) {
@@ -203,7 +188,6 @@
     document.body.classList.add("is-intro");
     document.body.classList.remove("intro-done");
     window.scrollTo({ top: 0, behavior: "auto" });
-    clearTimeout(finishTimer);
     cancelAnimationFrame(carveRaf);
     carveToken += 1;
     const token = carveToken;
@@ -211,7 +195,7 @@
     const kick = () => {
       showCopy();
       carveWord(token);
-      // Stay on landing until Enter / Skip — no auto-advance
+      // No timer. Wait for Enter PENZI only.
     };
 
     if (document.fonts && document.fonts.ready) {
@@ -222,34 +206,19 @@
   }
 
   function replay() {
-    try {
-      sessionStorage.removeItem("penzi-intro-seen");
-    } catch (e) {}
     start();
   }
 
+  // Only the Enter button opens the app
   document.getElementById("cineEnter")?.addEventListener("click", finish);
-  document.getElementById("cineSkip")?.addEventListener("click", finish);
   document.getElementById("replayIntro")?.addEventListener("click", replay);
 
-  root.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") finish();
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      finish();
-    }
-  });
+  // Hide Skip — Enter only
+  const skip = document.getElementById("cineSkip");
+  if (skip) skip.hidden = true;
 
-  // First visit / replay: play landing. Already seen this session: skip straight to home.
-  const seen = !forceReplay && sessionStorage.getItem("penzi-intro-seen") === "1";
-  if (seen) {
-    root.hidden = true;
-    root.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("is-intro");
-    document.body.classList.add("intro-done");
-  } else {
-    start();
-  }
+  // Always show landing on load; Enter is the only way in
+  start();
 
   window.PenziIntro = { finish, start, replay, revealHome };
 })();
