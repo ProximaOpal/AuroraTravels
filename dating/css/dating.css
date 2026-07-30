@@ -18,6 +18,13 @@
   --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
   --font-body: "Outfit", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-love: "Great Vibes", cursive;
+  --font-love-soft: "Allura", cursive;
+  --font-love-hand: "Sacramento", cursive;
+  --font-love-dance: "Dancing Script", cursive;
+  --font-love-fine: "Parisienne", cursive;
+  --font-love-italic: "Italianno", cursive;
+  --font-love-serif: "Playfair Display", Georgia, serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --radius-none: 0;
   /* Hero cutout language — one large swoop among sharp corners */
@@ -76,6 +83,51 @@ button {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--mute);
+}
+
+/* ——— LOVE FONTS ——— */
+.love-script {
+  margin: 0;
+  font-family: var(--font-love);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  line-height: 1.1;
+  color: var(--red);
+  letter-spacing: 0.01em;
+}
+
+.love-script--on-ink {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.love-eyebrow {
+  margin: 0.15rem 0 0.1rem;
+  font-family: var(--font-love-soft);
+  font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+}
+
+.hero-love {
+  margin: -0.35rem 0 0.85rem;
+  font-family: var(--font-love-fine);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  color: var(--red);
+}
+
+.love-overlay {
+  margin: 0.15rem 0 0.35rem;
+  font-family: var(--font-love);
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  color: var(--green);
+}
+
+.love-overlay--miss {
+  color: var(--error);
+}
+
+.love-serif {
+  font-family: var(--font-love-serif);
+  font-style: italic;
+  font-weight: 500;
 }
 
 /* ——— HERO ——— */
@@ -705,8 +757,10 @@ button {
 
 .avatar-name {
   margin: 0.75rem 0 0.15rem;
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-family: var(--font-love-hand);
+  font-weight: 400;
+  font-size: 1.15rem;
+  line-height: 1.1;
 }
 
 .avatar-tag {
@@ -764,7 +818,7 @@ button {
 }
 
 .orbit-card .avatar-name {
-  font-size: 0.8rem;
+  font-size: 1.05rem;
 }
 
 .match-connector {
@@ -864,10 +918,12 @@ button {
 
 .type-name {
   display: block;
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  letter-spacing: 0.04em;
-  line-height: 1;
+  font-family: var(--font-love-serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
 }
 
 .type-desc {
@@ -914,9 +970,10 @@ button {
 .char-blurb {
   max-width: 34rem;
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 300;
-  line-height: 1.55;
+  font-family: var(--font-love-italic);
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 /* ——— POETRY ——— */
@@ -955,10 +1012,12 @@ button {
 
 .poetry-text {
   margin: 0 0 1rem;
-  font-size: 1.05rem;
-  font-weight: 300;
-  line-height: 1.7;
+  font-family: var(--font-love-dance);
+  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.55;
   white-space: pre-line;
+  color: var(--ink);
 }
 
 .poetry-meta {
@@ -1117,8 +1176,10 @@ button {
 
 .song-title {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
+  font-family: var(--font-love-hand);
+  font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.15;
 }
 
 .song-artist {
@@ -1253,9 +1314,11 @@ button {
 
 .overlay-title {
   margin: 0.35rem 0 0.5rem;
-  font-family: var(--font-display);
-  font-size: 3rem;
-  letter-spacing: 0.04em;
+  font-family: var(--font-love-serif);
+  font-size: clamp(2.2rem, 5vw, 2.8rem);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.01em;
   line-height: 1;
 }
 
